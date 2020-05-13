@@ -1,0 +1,369 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints AS Assert;
+
+/**
+ * Abogado
+ *
+ * @ORM\Table(name="abogado")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\AbogadoRepository")
+ * @Vich\Uploadable
+ */
+class Abogado
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombres", type="string", length=255)
+     */
+    private $nombres;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellidos", type="string", length=255)
+     */
+    private $apellidos;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="foto", type="string", length=255)
+     */
+    private $foto;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="foto")
+     * @var File
+     */
+    private $fotoFile;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="banner", type="string", length=255)
+     */
+    private $banner;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="banner")
+     * @var File
+     */
+    private $bannerFile;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Cargo")
+     * @ORM\JoinColumn(name="cargo_id", referencedColumnName="id")
+     */
+    public $cargo;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Email
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AreaPractica")
+     * @ORM\JoinTable(name="abogados_areas",
+     *      joinColumns={@ORM\JoinColumn(name="abogado_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="area_id", referencedColumnName="id")}
+     *      )
+     */
+    private $areas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column( type="text")
+     */
+    private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column( type="text")
+     */
+    private $description;
+
+
+    /**
+     * @var string
+     * @Assert\Url()
+     * @ORM\Column( type="string")
+     */
+    private  $linkedIn;
+
+
+
+    public function getNombre($locale)
+    {
+        return $this->nombres.' '.$this->apellidos;
+    }
+
+    public function getDescripcionLocale($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->description : $this->descripcion;
+
+
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombres()
+    {
+        return $this->nombres;
+    }
+
+    /**
+     * @param mixed $nombres
+     */
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApellidos()
+    {
+        return $this->apellidos;
+    }
+
+    /**
+     * @param mixed $apellidos
+     */
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * @param string $foto
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+    }
+
+    /**
+     * @return File
+     */
+    public function getFotoFile()
+    {
+        return $this->fotoFile;
+    }
+
+    /**
+     * @param File $fotoFile
+     */
+    public function setFotoFile($fotoFile)
+    {
+        $this->fotoFile = $fotoFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
+    }
+
+    /**
+     * @param mixed $cargo
+     */
+    public function setCargo($cargo)
+    {
+        $this->cargo = $cargo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAreas()
+    {
+        return $this->areas;
+    }
+
+    /**
+     * @param mixed $areas
+     */
+    public function setAreas($areas)
+    {
+        $this->areas = $areas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param mixed $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBanner()
+    {
+        return $this->banner;
+    }
+
+    /**
+     * @param string $banner
+     */
+    public function setBanner($banner)
+    {
+        $this->banner = $banner;
+    }
+
+    /**
+     * @return File
+     */
+    public function getBannerFile()
+    {
+        return $this->bannerFile;
+    }
+
+    /**
+     * @param File $bannerFile
+     */
+    public function setBannerFile($bannerFile)
+    {
+        $this->bannerFile = $bannerFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkedIn()
+    {
+        return $this->linkedIn;
+    }
+
+    /**
+     * @param string $linkedIn
+     */
+    public function setLinkedIn($linkedIn)
+    {
+        $this->linkedIn = $linkedIn;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+
+
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->areas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add area
+     *
+     * @param \HomeBundle\Entity\AreaPractica $area
+     *
+     * @return Abogado
+     */
+    public function addArea(\HomeBundle\Entity\AreaPractica $area)
+    {
+        $this->areas[] = $area;
+
+        return $this;
+    }
+
+    /**
+     * Remove area
+     *
+     * @param \HomeBundle\Entity\AreaPractica $area
+     */
+    public function removeArea(\HomeBundle\Entity\AreaPractica $area)
+    {
+        $this->areas->removeElement($area);
+    }
+}

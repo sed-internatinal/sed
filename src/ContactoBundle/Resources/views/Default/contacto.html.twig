@@ -1,0 +1,72 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/contacto.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="contacto">
+
+        <div class="form_registro" style="background-image: url({{ qi.imagen('back_contacto') }})">
+            <div class="texto_reg">
+                <div class="cont_title_big_contact">
+                    <h3 class="title_big">{{ qi.textoDB('contacto') }}</h3>
+                </div>
+                <div class="cont_title_small_contact">
+                    <h2 class="title_small">{{ qi.textoDB('déjanos tus datos') }}</h2>
+                </div>
+                <div class="parg_reg">
+                    {{ qi.textoBigDB('texto_emp_reg') | raw}}
+                </div>
+            </div>
+
+
+            {{ form_start(form,{'attr': {'id':'formulario','class':"form_reg registro_empresa" }} ) }}
+            <div class="cont_form">
+            {#{ form(form, {'attr': {'novalidate': 'novalidate'}}) }#}
+                {{ form_widget(form.nombre, {'attr': {'placeholder':  qi.textoDB('form-placeholder-nombre') }}) }}
+                {{ form_widget(form.email, {'attr': {'placeholder':qi.textoDB('form-placeholder-email') }}) }}
+                {{ form_widget(form.telefono, {'attr': {'placeholder': qi.textoDB('form-placeholder-telefono') }}) }}
+                {{ form_widget(form.ciudad, {'attr': {'placeholder': qi.textoDB('form-placeholder-ciudad') }}) }}
+                <!--{{ form_widget(form.tipoconsulta, {'attr': {'placeholder': qi.textoDB('form-placeholder-tipoconsulta') }}) }}-->
+                {{ form_widget(form.mensaje, {'attr': {'placeholder': qi.textoDB('form-placeholder-mensaje'),'cols':30,'rows':10,'class':"form-field"}}) }}
+                <div class="cont_label">
+                    <label for="terminos" class="terminos">
+                        {{ form_widget(form.conditions) }}
+                        {{ qi.textoDB('acepto') }}
+                        <a href="{{ path('terminos') }}">{{ qi.textoDB('terminos_condiciones') }}</a>
+                    </label>
+                </div>
+            </div>
+            <input type="submit" class="btn_gradient_red submit" value="{{ qi.textoDB('enviar') }}" >
+            {{ form_end(form) }}
+
+
+        </div>
+
+        <div class="remodal contacto_rem" data-remodal-id="modal" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                {{ qi.textoDB('tu_mensaje') }} <br>
+                <span>{{ qi.textoDB('enviado_exitosamente') }}</span>
+            </h3>
+            <br>
+            <a href="#" data-remodal-action="confirm" class="btn_gradient_red">{{ qi.textoDB('continuar') }}</a>
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+
+        {% if(gracias) %}
+        var inst = $('[data-remodal-id=modal]').remodal();
+        inst.open();
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% for item in ciudades %}
+    <option value="{{ item.id }}" data-costo="${{ item.costo | number_format }}" data-costo-noformato="{{ item.costo }}" {% if ciudad_id == item.id %} selected {% endif %}>{{ item.nombre }}</option>
+{% endfor %}

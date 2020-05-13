@@ -1,0 +1,198 @@
+{% extends 'lay_iridian.html.twig' %}
+
+
+{% block content %}
+    <div class="banner_tarjeta">
+        <div class="swiper-wrapper">
+            {% for item in qi.galeria('tarjeta-banner') %}
+                <div class="item swiper-slide" style="background-image: url({{ item.imagen }})">
+                    <div class="bannerContent">
+                        <h1 class="ttlGrandGris">{{ item.titulo }}</h1>
+                        <p class="txtHelveLtBig">{{ item.resumen | raw }}</p>
+                        <a class="btnGreen">{{ qi.textoDB('leer-mas') }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <img src="/images/franja-blanca.png" class="franja"/>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="descripcionPag2">
+                <h1 class="ttlGrandGris">{{ qi.textoDB('obten') }}</h1>
+                <hr class="ttlLineLt"/>
+            </div>
+            {% for item in qi.galeria('tarjeta-beneficios') %}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="beneficio">
+                        <img src="{{ item.imagen }}"/>
+                        <h3>{{ item.titulo }}</h3>
+                        <hr class="ttlLineLt"/>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="tarjetaFondo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titulos">
+                        <h2 class="ttlRounded">{{ qi.textoDB('unete') }}</h2>
+                        <h3>{{ qi.textoDB('condiciones') }}</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table tarjetaTable">
+                            <thead>
+                            <tr>
+                                <td></td>
+                                <td><h4 class="uno">{{ qi.textoDB('plata') }}</h4></td>
+                                <td><h4 class="dos">{{ qi.textoDB('oro') }}</h4></td>
+                                <td><h4 class="tres">{{ qi.textoDB('diamante') }}</h4></td>
+                                <td><h4 class="cuatro">{{ qi.textoDB('platino') }}</h4></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span>{{ qi.textoDB('descuentos') }}</span></td>
+                                <td><span>10%</span></td>
+                                <td><span>20%</span></td>
+                                <td><span>30%</span></td>
+                                <td><span>40%</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{ qi.textoDB('express') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{ qi.textoDB('linea-contacto') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{ qi.textoDB('acceso') }}</span></td>
+                                <td></td>
+                                <td><span>{{ qi.textoDB('tercera-opc') }}</span></td>
+                                <td><span>{{ qi.textoDB('segunda-opc') }}</span></td>
+                                <td><span>{{ qi.textoDB('primera-opc') }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{ qi.textoDB('linea-platino') }}</span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span>{{ qi.textoDB('si') }}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titulos">
+                    <h2 class="ttlRounded blue">{{ qi.textoDB('como-categoria') }}</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table tarjetaTable">
+                        <thead>
+                        <tr>
+                            <td></td>
+                            <td><h4 class="uno">{{ qi.textoDB('plata') }}</h4></td>
+                            <td><h4 class="dos">{{ qi.textoDB('oro') }}</h4></td>
+                            <td><h4 class="tres">{{ qi.textoDB('diamante') }}</h4></td>
+                            <td><h4 class="cuatro">{{ qi.textoDB('platino') }}</h4></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2a') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2b') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2c') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2d') }}</span></td>
+                            <td></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2e') }}</span></td>
+                            <td></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2f') }}</span></td>
+                            <td></td>
+                            <td></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2g') }}</span></td>
+                            <td></td>
+                            <td></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><span>{{ qi.textoDB('tabla2h') }}</span></td>
+                            <td></td>
+                            <td></td>
+                            <td><span>{{ qi.textoDB('si') }}</span></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="preFondo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="txtHelveLtBig center">{{ qi.textoDB('programa-ttl') }}</h2>
+                    <hr class="ttlLine"/>
+                    <div class="preCont">
+                        <h3 class="txtHelveMedMed">¿Aliquam luctus lectus non tortor aliquet sodales?</h3>
+                        <p class="txtHelveLtReg">Nullam purus nulla, pretium quis suscipit nec, mollis ut enim.
+                            Fusce eu ultricies risus. Maecenas lobortis justo sed arcu luctus faucibus.
+                            Praesent sit amet tristique ex. Maecenas vehicula non ante eu feugiat.
+                            Etiam eu augue quis odio tincidunt lobortis.
+                            Morbi vitae arcu rhoncus, semper augue vitae, facilisis sem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

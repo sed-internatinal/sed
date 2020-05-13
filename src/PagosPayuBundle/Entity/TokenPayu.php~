@@ -1,0 +1,157 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: iridian_dev5
+ * Date: 12/05/2017
+ * Time: 3:53 PM
+ */
+
+namespace PagosPayuBundle\Entity;
+
+use AppBundle\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * DatosPayu
+ *
+ * @ORM\Table(name="token_payu")
+ * @ORM\Entity(repositoryClass="PagosPayuBundle\Repository\DatosPayuRepository")
+ */
+class TokenPayu
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", nullable=true)
+     */
+    private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="creditCardTokenId", type="string", nullable=true)
+     */
+    private $creditCardTokenId;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message = "El nombre no puede ser vacio")
+     * @ORM\Column(name="name", type="string")
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="payerId", type="string", nullable=true)
+     */
+    private $payerId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="identificationNumber", type="string", nullable=true)
+     */
+    private $identificationNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="paymentMethod", type="string", nullable=true)
+     */
+    private $paymentMethod;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="maskedNumber", type="string", nullable=true)
+     */
+    private $maskedNumber;
+
+    /**
+     * @var string
+     *  @Assert\NotBlank(message = "El apellido no puede ser vacio")
+     * @ORM\Column(name="lastname", type="string")
+     */
+    private $lastname;
+
+    /**
+     * @var string
+     *@Assert\NotBlank(message = "El email no puede ser vacio")
+     * @Assert\Email(message = "'{{ value }}' no es un email válido")
+     * @ORM\Column(name="email", type="string")
+     */
+    private $email;
+
+    /**
+     * @var string
+     *@Assert\NotBlank(message = "El telefono no puede ser vacio")
+     * @ORM\Column(name="phone", type="string")
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *  @Assert\NotBlank(message = "El documento de identidad no puede ser vacio")
+     * @ORM\Column(name="dni", type="string")
+     */
+    private $dni;
+
+    /**
+     * @var string
+     *  @Assert\NotBlank(message = "La direccion no puede ser vacio")
+     * @ORM\Column(name="dir", type="string")
+     */
+    private $dir;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message = "La ciudad no puede ser vacio")
+     *
+     * @ORM\Column(name="city", type="string")
+     */
+    private $city;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message = "El estado no puede ser vacio")
+     * @ORM\Column(name="state", type="string")
+     */
+    private $state;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message = "El pais no puede ser vacio")
+     * @ORM\Column(name="country", type="string")
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message = "El codigo postal no puede ser vacio")
+     * @ORM\Column(name="postalcode", type="string")
+     */
+    private $postalcode;
+
+    /**
+     * The user who made the purchase.
+     *
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="tokens")
+     */
+    protected $usuario;
+}

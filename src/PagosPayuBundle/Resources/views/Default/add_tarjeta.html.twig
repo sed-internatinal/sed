@@ -1,0 +1,50 @@
+{% extends 'lay_iridian.html.twig' %}
+
+
+{% block content %}
+    <div class="container add_card">
+        <div class="row">
+            <div class="col-lg-12">
+                {{ form_start(form, {'attr': { 'novalidate': 'novalidate', "class": "f_tarjeta" }}) }}
+                {{ form_errors(form) }}
+                    {{ form_errors(form.card_number) }}
+                    {{ form_widget(form.card_number, { 'attr': {'placeholder': qi.textoDB("card_number")} }) }}
+                    {{ form_errors(form.mes) }}
+                    {{ form_widget(form.mes, { 'attr': {'placeholder': qi.textoDB("month_card")} }) }}
+                    {{ form_errors(form.ano) }}
+                    {{ form_widget(form.ano, { 'attr': {'placeholder': qi.textoDB("year_card")} }) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name, { 'attr': {'placeholder': qi.textoDB("name")} } ) }}
+                    {{ form_errors(form.lastname) }}
+                    {{ form_widget(form.lastname, { 'attr': {'placeholder': qi.textoDB("lastname")} }) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, { 'attr': {'placeholder': qi.textoDB("email")} }) }}
+                    {{ form_errors(form.phone) }}
+                    {{ form_widget(form.phone, { 'attr': {'placeholder': qi.textoDB("phone")} }) }}
+                    {{ form_errors(form.dni) }}
+                    {{ form_widget(form.dni, { 'attr': {'placeholder': qi.textoDB("dni")} }) }}
+                    {{ form_errors(form.dir) }}
+                    {{ form_widget(form.dir, { 'attr': {'placeholder': qi.textoDB("dir")} }) }}
+                    {{ form_errors(form.city) }}
+                    {{ form_widget(form.city, { 'attr': {'placeholder': qi.textoDB("city")} }) }}
+                    {{ form_errors(form.state) }}
+                    {{ form_widget(form.state, { 'attr': {'placeholder': qi.textoDB("state")} }) }}
+                    {{ form_errors(form.country) }}
+                    {{ form_widget(form.country, { 'attr': {'placeholder': qi.textoDB("country")} }) }}
+                    {{ form_errors(form.postalcode) }}
+                    {{ form_widget(form.postalcode, { 'attr': {'placeholder': qi.textoDB("postalcode")} }) }}
+                    {{ form_errors(form.terminos) }}
+                    {{ form_widget(form.terminos) }} {{ qi.textoDB("terms") }}
+
+                    <button class="boton_g" href="javascript:void(0)" onclick="$(this).find('form').submit()">
+                        <img class="sbx sbx1" src="/images/search-L.png"/>
+                        <img class="sbx sbx2" src="/images/search-T.png"/>
+                        <img class="sbx sbx3" src="/images/search-R.png"/>
+                        <img class="sbx sbx4" src="/images/search-B.png"/>
+                        <span>{{ qi.textoDB("add") }}</span>
+                    </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

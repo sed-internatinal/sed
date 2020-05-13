@@ -1,0 +1,70 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/registro.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="registro persona">
+
+        <div class="form_registro" style="background-image: url({{ qi.imagen('back_registro') }})">
+            <div class="texto_reg">
+                <div class="cont_title_small">
+                    <h3 class="title_small">{{ qi.textoDB('persona_title_reg') }}</h3>
+                </div>
+                <div class="cont_title_big">
+                    <h2 class="title_big no_fonts">
+                        <span>{{ qi.textoDB('data_update_tl1') }}</span>
+                        <span>{{ qi.textoDB('data_update_tl2') }}</span>
+                    </h2>
+                </div>
+                <div class="parg_reg">
+                    {{ qi.textoBigDB('texto_emp_update') | raw}}
+                </div>
+                <br>
+                <a href="{{ path('registro-persona') }}" class="btn_gradient_red big">{{ qi.textoDB('registro_title_btn') }}</a>
+            </div>
+            <form action="" class="form_reg registro_empresa">
+                <div class="cont_form">
+                    <input type="text" placeholder="Nombre y Apellido">
+                    <input type="email" placeholder="Correo">
+                    <input type="number" placeholder="Teléfono">
+                    <input type="number" placeholder="Celular">
+                    <div class="cont_label">
+                        <label for="terminos" class="terminos">
+                            <input type="checkbox" id="terminos">
+                            acepto
+                            <a href="javacript:void(0)">términos y condiciones</a>
+                        </label>
+                    </div>
+                </div>
+                {#<div class="docs person">#}
+                    {#<h4>{{ qi.textoDB('aduntar_title') }}</h4>#}
+                    {#{% for item in qi.galeria('docs_upload') %}#}
+                        {#<label for="{{ item.titulo }}" class="file">#}
+                            {#<img src="{{ item.imagen }}" alt="SED"> <br>#}
+                            {#<span>{{ item.resumen | raw }}</span>#}
+                            {#<input type="file" id="{{ item.titulo }}">#}
+                        {#</label>#}
+                    {#{% endfor %}#}
+                {#</div>#}
+                <input type="submit" class="btn_gradient_red submit" value="{{ qi.textoDB('actualizar_datos_btn') }}" data-remodal-target="modal">
+            </form>
+        </div>
+
+        <div class="remodal big_txt" data-remodal-id="modal" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                tus datos han sido <br>
+                <span>actualizados con exito</span>
+            </h3>
+            <br>
+            <a href="{{ path('homepage') }}" class="btn_gradient_red">continuar</a>
+        </div>
+
+    </section>
+{% endblock %}

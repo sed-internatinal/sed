@@ -1,0 +1,43 @@
+{
+  "name": "iridian_s3_nuevo",
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public_html/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^3.1.1",
+    "bootstrap": "~3.3.6",
+    "remodal": "^1.1.0",
+    "jquery-ui": "^1.12.1",
+    "slideout.js": "^1.0.1",
+    "moment": "^2.18.1",
+    "daterangepicker": "^1.6.0",
+    "moment-timezone": "^0.5.13",
+    "jssocials": "^1.5.0",
+    "instafeed.js": "^1.4.1",
+    "tableexport.js": "^5.0.0",
+    "components-font-awesome": "^5.0.6",
+    "gsap": "^1.20.4",
+    "jQuery.dotdotdot": "^3.2.2",
+    "swiper": "^4.2.6",
+    "cloud9carousel": "^2.2.0",
+    "parallax.js": "^1.5.0",
+    "jquery-scroll-indicator-bullets": "2.0.0",
+    "Flowtype.js": "^1.1.0"
+  },
+  "dependencies": {
+    "jQuery.dotdotdot": "^3.2.2"
+  }
+}

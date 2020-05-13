@@ -1,0 +1,107 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block content %}
+    {% set lc = app.request.locale() %}
+
+<div class="section-top">
+  <div class="container-md">
+    <!-- Post Row -->
+    <div class="row product-row">
+      <!-- Post -->
+      <div class="col-sm-12">
+        <div class="blog-post">
+          <p class="post-date"><span></span>&nbsp;{{ post.fecha |localizeddate('long', 'none', lc) }} </p>
+          <h1 class="post-title">{{ post.gen('titulo',lc) }}</h1>
+          <div class="row">
+            <div class="col-sm-offset-3 col-sm-6">
+              <p class="post-image">
+                <a href="#"><img src="{{ path_blogs ~ "/" ~ post.image }}" alt="" class="post-img box-shadow"></a>
+              </p>
+              <p class="post-actions text-center">
+                {#<a href="mailto:?subject={{ qi.textoDB('share_mail_subject') }}&body={{ qi.textoDB('shar_mail_content') }} {{ app.request.uri }}"><img src="{{ qi.imagen('post-reply') }}" alt="Reply"></a>&nbsp;#}
+                <a href="" class="comment"><img src="{{ qi.imagen('post-comment') }}" alt="Comment" id="comment"></a>&nbsp;
+                <a href="#" class="likeb" data-id="{{ post.id }}"><img src="{{ qi.imagen('post-like') }}" alt="Like"></a>&nbsp;
+                <a href="#" class="share"><img src="{{ qi.imagen('post-share') }}" alt="Share"></a>
+              </p>
+            </div>
+          </div>
+            {% if gracias %}
+                <h3 class="descLinea">{{ qi.textoDB('gracias-comentario') }}</h3>
+            {% endif %}
+          <div class="row post-comments text-center" id="post-comments">
+            <div class="col-sm-offset-2 col-sm-8">
+                {{ form(form, {'attr': {}}) }}
+            </div>
+          </div>
+          <div class="row share-icons-display">
+            <div class="col-xs-offset-5 col-xs-2">
+              <div class="share-icons" data-url="{{ url('post', {'id': post.id, 'name':qi.slugify(post.gen('titulo',lc))} ) }}"></div>
+            </div>
+          </div>
+          <div class="row post-content">
+            <div class="col-sm-12">
+              {{ post.gen('contenido',lc) | raw }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / Post -->
+    </div>
+    <!-- / Post Row -->
+    <!-- Related Items -->
+    <div class="row product-row">
+      {% for item in todos %}
+        {% if item.id != post.id %}
+          <div class="col-sm-6">
+            <div class="blog-post">
+              <p class="post-image">
+                <a href="{{ path('post', {'id': item.id, 'name':qi.slugify(item.gen("titulo", lc))} ) }}"><img src="{{ path_blogs ~ "/" ~ item.image }}" alt="" class="post-img box-shadow"></a>
+              </p>
+              {#<p class="post-actions text-center">
+                <a href="#"><img src="{{ qi.imagen('post-reply') }}" alt="Reply"></a>&nbsp;
+                <a href="#"><img src="{{ qi.imagen('post-comment') }}" alt="Comment"></a>&nbsp;
+                <a href="#"><img src="{{ qi.imagen('post-like') }}" alt="Like"></a>&nbsp;
+                <a href="#"><img src="{{ qi.imagen('post-share') }}" alt="Share"></a>
+              </p>#}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <!-- / Related Items -->
+  </div>
+</div>
+
+
+
+
+{% endblock %}
+{% block javascripts %}
+
+<script>
+  $(".share2").jsSocials({
+    shares: [ "facebook","pinterest"]
+  });
+  
+  $("#comment").click(function(e) {
+      e.preventDefault();
+    $( "#post-comments" ).toggle( "slow" );
+  });
+  $('.share-icons').jsSocials({
+      url: $(this).data('url'),
+      showLabel: false,
+      showCount: false,
+      shares: ["twitter", "facebook", "pinterest"]
+  });
+  $('.share').click(function (e) {
+      e.preventDefault();
+      $('.share-icons-display').toggle();
+  })
+  $('.form-control').addClass('site-forms').addClass('box-shadow');
+  $('button').addClass('btn-kamex btn-second uppercase');
+  $('#comentario_acepta').removeAttr('required');
+
+</script>
+{% endblock %}
+

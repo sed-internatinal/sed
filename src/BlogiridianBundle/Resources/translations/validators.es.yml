@@ -1,0 +1,9 @@
+name.not_blank: El nombre no puede ser vacio
+last.not_blank: El apellido no puede ser vacio
+subject.not_blank: El asunto no puede ser vacio
+email.not_blank: El email no puede ser vacio
+email.not_valid: Debe ingresar un email válido
+telefono.not_blank: El teléfono no puede ser vacio
+telefono.min: Debes ingresar entre 7 y 10 número
+telefono.max: Debes ingresar entre 7 y 10 número
+mensaje.not_blank: El mensaje no puede ser vacio

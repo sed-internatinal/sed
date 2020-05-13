@@ -1,0 +1,300 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use AppBundle\Entity\Imagen;
+
+/**
+ * AreaPractica
+ * @ORM\Table(name="area_practica")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\AreaPracticaRepository")
+ * @Vich\Uploadable
+ */
+class AreaPractica
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * @ORM\Column(name="nombre", type="string", length=50)
+     */
+    protected $nombre;
+
+    /**
+     * @ORM\Column(name="name", type="string", length=50)
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(name="descripcion", type="text")
+     */
+    protected $descripcion;
+
+    /**
+     * @ORM\Column(name="description", type="text")
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(name="lista", type="text")
+     */
+    protected $lista;
+
+    /**
+     * @ORM\Column(name="list", type="text")
+     */
+    protected $list;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Experiencia")
+     */
+    private $experiencia;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Imagengaleria")
+     * @ORM\JoinColumn(name="banner_id", referencedColumnName="id")
+     */
+    private $banner;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity="AreaIcono")
+     * @ORM\JoinColumn(name="icono_id", referencedColumnName="id")
+     */
+    private $icono;
+
+    /**
+     * @ORM\Column(name="tabla_es", type="text", nullable=true)
+     */
+    protected $tablaEs;
+
+    /**
+     * @ORM\Column(name="tabla_en", type="text", nullable=true)
+     */
+    protected $tablaEn;
+
+
+
+    public function nombre($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->name : $this->nombre;
+    }
+
+    public function descripcion($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->description : $this->descripcion;
+    }
+
+    public function lista($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->list : $this->lista;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param mixed $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLista()
+    {
+        return $this->lista;
+    }
+
+    /**
+     * @param mixed $lista
+     */
+    public function setLista($lista)
+    {
+        $this->lista = $lista;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExperiencia()
+    {
+        return $this->experiencia;
+    }
+
+    /**
+     * @param mixed $experiencia
+     */
+    public function setExperiencia($experiencia)
+    {
+        $this->experiencia = $experiencia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanner()
+    {
+        return $this->banner;
+    }
+
+    /**
+     * @param mixed $banner
+     */
+    public function setBanner($banner)
+    {
+        $this->banner = $banner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIcono()
+    {
+        return $this->icono;
+    }
+
+    /**
+     * @param mixed $icono
+     */
+    public function setIcono($icono)
+    {
+        $this->icono = $icono;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->list;
+    }
+
+    /**
+     * @param mixed $list
+     */
+    public function setList($list)
+    {
+        $this->list = $list;
+    }
+
+
+    public function __toString()
+    {
+        return $this->getNombre().' ';
+    }
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->experiencia = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
+
+    /**
+     * Add experiencium
+     *
+     * @param \HomeBundle\Entity\Experiencia $experiencium
+     *
+     * @return AreaPractica
+     */
+    public function addExperiencium(\HomeBundle\Entity\Experiencia $experiencium)
+    {
+        $this->experiencia[] = $experiencium;
+
+        return $this;
+    }
+
+    /**
+     * Remove experiencium
+     *
+     * @param \HomeBundle\Entity\Experiencia $experiencium
+     */
+    public function removeExperiencium(\HomeBundle\Entity\Experiencia $experiencium)
+    {
+        $this->experiencia->removeElement($experiencium);
+    }
+}

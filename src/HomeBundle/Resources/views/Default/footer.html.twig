@@ -1,0 +1,121 @@
+{% set ruta = app.request.get('_route') %}
+{% set paramsO = app.request.attributes.get('_route_params')  %}
+{% set params = [] %}
+{% set index = 0 %}
+{% set indexu = 0 %}
+{% for key, value in paramsO %}
+    {% if key == "_locale" %}
+        {% set index= loop.index0  %}
+        {% set indexu= loop.index  %}
+    {% endif %}
+
+{% endfor %}
+{% set params = params|merge(paramsO[:index])|merge(paramsO[indexu:]) %}
+{% set lc = app.request.locale %}
+
+<footer>
+    <div class="cont_foot">
+        <div class="col_foot big">
+            <h3>{{ qi.textoDB('contact') }}</h3>
+            <div class="phone rowwer">
+                <div class="icon"><b><i class="fa fa-phone"></i></b></div>
+                <div class="txt">
+                    <span>{{ qi.textoDB('tel_1') }}</span>
+                    <span>{{ qi.textoDB('tel_2') }}</span>
+                </div>
+            </div>
+            <div class="mail rowwer">
+                <div class="icon"><b><i class="fa fa-envelope"></i></b></div>
+                <div class="txt">
+                    <span>{{ qi.textoDB('mail_1') }}</span>
+                    <span>{{ qi.textoDB('mail_2')|raw }}</span>
+                </div>
+            </div>
+            <div class="ubicaton rowwer">
+                <div class="icon"><b><i class="fa fa-map-marker"></i></b></div>
+                <div class="txt">
+                    <span>{{ qi.textoDB('address_1')|raw }}</span>
+                    <span>{{ qi.textoDB('address_2')|raw }}</span>
+                </div>
+            </div>
+            <div class="mail_bar rowwer">
+                <span>{{ qi.textoDB('susbs') }}</span>
+
+                <form id="form_newsletter" >
+                    <input type="text" placeholder="E-MAIL"/>
+                    <label>
+                        <span id="terms_error">{{ qi.textoDB('terms_error') }}</span>
+                        <span id="news_email_error">{{ qi.textoDB('news_email_error') }}</span>
+                        <input type="checkbox" id="acepta" checked>
+                        <a href="{{ path('terminos') }}" target="_blank">{{ qi.textoDB('acepta') }}</a>
+                    </label>
+                    <input type="submit" value="{{ qi.textoDB('enviar') }}"/>
+                </form>
+            </div>
+        </div>
+        <div class="col_foot big">
+            {#<img src="{{qi.imagen('map')}}" alt="mapa">#}
+            <div class="cont_map">
+                <div id="map" style="width: 75%;height:300px;display: block;margin: auto"></div>
+            </div>
+            <a href="{{ path('terminos') }}" class="dwn_map">{{ qi.textoDB('term') }}</a>
+            <a href="{{ path('politicas') }}" class="dwn_map">{{ qi.textoDB('poliypriv') }}</a>
+            <a href="{{ path('servicios_info') }}" class="dwn_map">{{ qi.textoDB('servi') }}</a>
+        </div>
+        <div class="col_foot smll">
+            <h3>{{ qi.textoDB('nos') }}</h3>
+            <a href="{{ path("empresa") }}" class="nost">- {{ qi.textoDB('historia') }}</a>
+            <a href="{{ path(ruta, {"_locale": "en"} | merge(params)) }}" class="nost">- {{ qi.textoDB('vs_ing') }}</a>
+            <a href="{{ path("empresa") }}" class="nost">- {{ qi.textoDB('mvv') }}</a>
+            <a href="{{ path('directorio') }}" class="nost">- {{ qi.textoDB('direc') }}</a>
+            <a href="{{ qi.textoDB("link_fact") }}" class="nost">- {{ qi.textoDB('fact') }}</a>
+        </div>
+        <div class="col_foot smll">
+            <h3>{{ qi.textoDB('hora') }}</h3>
+            <div class="clock rowwer">
+                <div class="icon"><b><i class="far fa-clock"></i></b></div>
+                <div class="txt">
+                    <span>{{ qi.textoDB('hora_inicio') }}</span>
+                    <span>{{ qi.textoDB('hora_fin') }}</span>
+                </div>
+            </div>
+            <a href="{{ qi.textoDB('link-zona-empleados') }}" class="foot_btn1">{{ qi.textoDB('footer_empleados1') }}<br>{{ qi.textoDB('footer_empleados2') }} </a> <br>
+            <a href="#noticias" class="ft_btn2">{{ qi.textoDB('Noticias') }}</a>
+        </div>
+    </div>
+    <div class="cont_foot">
+        <span>{{ qi.textoDB('terms') }}</span>
+            <span>Crafted by:
+                <a href="http://iridian.co/"> <img src="/uploads/images/general/foot_iridian.png" alt="Iridian"> </a>
+            </span>
+    </div>
+    <div class="remodal" data-remodal-id="noticias">
+        <button data-remodal-action="close" class="remodal-close"></button>
+        <a href="{{ qi.textoDB('link-noticia') }}"><img style="width: 100%" src="{{ qi.imagen('Noticia') }}"></a>
+    </div>
+</footer>
+
+{% block javascripts %}
+    <script>
+        function initMap() {
+//            var sed = {lat: 4.6108944, lng: -74.0890682};
+            var sed = {lat: {{ qi.textoDB('lat') }}, lng: {{ qi.textoDB('lng') }} };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: {lat: {{ qi.textoDB('lat') }} , lng: {{ qi.textoDB('lng') }} }
+            });
+            var marker = new google.maps.Marker({
+                position: sed,
+                map: map,
+                title: 'sed',
+                icon: '/images/marker.png'
+            });
+            marker.addListener('click', function() {
+                $('.popup_map').slideToggle();
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTCdhyUKZ1m7QGizzCsXxCeU6_ndiClok&callback=initMap">
+    </script>
+{% endblock %}

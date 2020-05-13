@@ -1,0 +1,263 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Encuesta
+ *
+ * @ORM\Table(name="encuesta")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\EncuestaRepository")
+ */
+class Encuesta
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="grandes", type="string", length=255, nullable=true)
+     */
+    private $grandes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="distribuidor", type="string", length=255, nullable=true)
+     */
+    private $distribuidor;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="exportaciones", type="string", length=255, nullable=true)
+     */
+    private $exportaciones;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cliente", type="string", length=255)
+     */
+    private $cliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fecha_ciudad", type="string", length=255)
+     */
+    private $fechaCiudad;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
+     */
+    private $observaciones;
+
+    /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="HomeBundle\Entity\Resultado", mappedBy="encuesta")
+     */
+    private $resultados;
+
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set grandes
+     *
+     * @param string $grandes
+     *
+     * @return Encuesta
+     */
+    public function setGrandes($grandes)
+    {
+        $this->grandes = $grandes;
+    
+        return $this;
+    }
+
+    /**
+     * Get grandes
+     *
+     * @return string
+     */
+    public function getGrandes()
+    {
+        return $this->grandes;
+    }
+
+    /**
+     * Set distribuidor
+     *
+     * @param string $distribuidor
+     *
+     * @return Encuesta
+     */
+    public function setDistribuidor($distribuidor)
+    {
+        $this->distribuidor = $distribuidor;
+    
+        return $this;
+    }
+
+    /**
+     * Get distribuidor
+     *
+     * @return string
+     */
+    public function getDistribuidor()
+    {
+        return $this->distribuidor;
+    }
+
+    /**
+     * Set exportaciones
+     *
+     * @param string $exportaciones
+     *
+     * @return Encuesta
+     */
+    public function setExportaciones($exportaciones)
+    {
+        $this->exportaciones = $exportaciones;
+    
+        return $this;
+    }
+
+    /**
+     * Get exportaciones
+     *
+     * @return string
+     */
+    public function getExportaciones()
+    {
+        return $this->exportaciones;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param string $cliente
+     *
+     * @return Encuesta
+     */
+    public function setCliente($cliente)
+    {
+        $this->cliente = $cliente;
+    
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return string
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * Set fechaCiudad
+     *
+     * @param string $fechaCiudad
+     *
+     * @return Encuesta
+     */
+    public function setFechaCiudad($fechaCiudad)
+    {
+        $this->fechaCiudad = $fechaCiudad;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCiudad
+     *
+     * @return string
+     */
+    public function getFechaCiudad()
+    {
+        return $this->fechaCiudad;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Encuesta
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Encuesta
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+    
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+}

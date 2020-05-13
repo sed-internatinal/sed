@@ -1,0 +1,123 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: fernando
+ * Date: 25/10/16
+ * Time: 4:00 PM
+ */
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="area-practica")
+ */
+class AreaPractica2
+{
+
+
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=1000)
+     */
+    protected $descripcion;
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    protected $lista;
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    protected $experiencia;
+
+    /**
+     * AreaPractica constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param mixed $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLista()
+    {
+        return $this->lista;
+    }
+
+    /**
+     * @param mixed $lista
+     */
+    public function setLista($lista)
+    {
+        $this->lista = $lista;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExperiencia()
+    {
+        return $this->experiencia;
+    }
+
+    /**
+     * @param mixed $experiencia
+     */
+    public function setExperiencia($experiencia)
+    {
+        $this->experiencia = $experiencia;
+    }
+
+
+
+}

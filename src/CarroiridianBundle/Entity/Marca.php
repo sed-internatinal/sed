@@ -1,0 +1,338 @@
+<?php
+
+namespace CarroiridianBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
+/**
+ * Marca
+ *
+ * @ORM\Table(name="marca")
+ * @ORM\Entity(repositoryClass="CarroiridianBundle\Repository\MarcaRepository")
+ * @Vich\Uploadable
+ */
+class Marca
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=255)
+     */
+    private $imagen;
+
+    /**
+     * @Vich\UploadableField(mapping="productos", fileNameProperty="imagen")
+     * @var File
+     */
+    private $imagenFile;
+
+    /**
+     * @var Color[]
+     * @ORM\ManyToMany(targetEntity="CarroiridianBundle\Entity\unidadnegocio")
+     */
+    protected $unidades;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcionEs", type="text")
+     */
+    private $descripcionEs;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcionEn", type="text", nullable=true)
+     */
+    private $descripcionEn;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer")
+     */
+    private $orden = 1;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = true;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->unidades = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->updatedAt = new \DateTime();
+    }
+
+    public function gen($campo,$locale){
+        $accessor = PropertyAccess::createPropertyAccessor();
+        return $accessor->getValue($this,$campo.'_'.$locale);
+    }
+
+    public function __toString()
+    {
+        return $this->nombre.' ';
+
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Marca
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     *
+     * @return Marca
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImagenFile()
+    {
+        return $this->imagenFile;
+    }
+
+    /**
+     * @param File $image
+     */
+    public function setImagenFile(File $image = null)
+    {
+        $this->imagenFile = $image;
+        if ($image) {
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Marca
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Add unidade
+     *
+     * @param \CarroiridianBundle\Entity\unidadnegocio $unidade
+     *
+     * @return Marca
+     */
+    public function addUnidade(\CarroiridianBundle\Entity\unidadnegocio $unidade)
+    {
+        $this->unidades[] = $unidade;
+    
+        return $this;
+    }
+
+    /**
+     * Remove unidade
+     *
+     * @param \CarroiridianBundle\Entity\unidadnegocio $unidade
+     */
+    public function removeUnidade(\CarroiridianBundle\Entity\unidadnegocio $unidade)
+    {
+        $this->unidades->removeElement($unidade);
+    }
+
+    /**
+     * Get unidades
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUnidades()
+    {
+        return $this->unidades;
+    }
+
+    /**
+     * Set descripcionEs
+     *
+     * @param string $descripcionEs
+     *
+     * @return Marca
+     */
+    public function setDescripcionEs($descripcionEs)
+    {
+        $this->descripcionEs = $descripcionEs;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcionEs
+     *
+     * @return string
+     */
+    public function getDescripcionEs()
+    {
+        return $this->descripcionEs;
+    }
+
+    /**
+     * Set descripcionEn
+     *
+     * @param string $descripcionEn
+     *
+     * @return Marca
+     */
+    public function setDescripcionEn($descripcionEn)
+    {
+        $this->descripcionEn = $descripcionEn;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcionEn
+     *
+     * @return string
+     */
+    public function getDescripcionEn()
+    {
+        return $this->descripcionEn;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Marca
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return Marca
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+}

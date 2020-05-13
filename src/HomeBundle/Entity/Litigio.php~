@@ -1,0 +1,272 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Litigio
+ *
+ * @ORM\Table(name="litigio")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\LitigioRepository")
+ */
+class Litigio
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cliente", type="string", length=100)
+     */
+    private $cliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client", type="string", length=100)
+     */
+    private $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contraparte", type="string", length=100)
+     */
+    private $contraparte;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="counterpart", type="string", length=100)
+     */
+    private $counterpart;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pretensiones", type="string", length=255)
+     */
+    private $pretensiones;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="claims", type="string", length=255)
+     */
+    private $claims;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resultado", type="string", length=255)
+     */
+    private $resultado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="result", type="string", length=255)
+     */
+    private $result;
+
+
+    public function cliente($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->client : $this->cliente;
+    }
+
+    public function contraparte($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->counterpart : $this->contraparte;
+    }
+
+    public function pretensiones($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->claims : $this->pretensiones;
+    }
+
+    public function resultado($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->result : $this->resultado;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param string $cliente
+     *
+     * @return Litigio
+     */
+    public function setCliente($cliente)
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return string
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * Set contraparte
+     *
+     * @param string $contraparte
+     *
+     * @return Litigio
+     */
+    public function setContraparte($contraparte)
+    {
+        $this->contraparte = $contraparte;
+
+        return $this;
+    }
+
+    /**
+     * Get contraparte
+     *
+     * @return string
+     */
+    public function getContraparte()
+    {
+        return $this->contraparte;
+    }
+
+    /**
+     * Set pretensiones
+     *
+     * @param string $pretensiones
+     *
+     * @return Litigio
+     */
+    public function setPretensiones($pretensiones)
+    {
+        $this->pretensiones = $pretensiones;
+
+        return $this;
+    }
+
+    /**
+     * Get pretensiones
+     *
+     * @return string
+     */
+    public function getPretensiones()
+    {
+        return $this->pretensiones;
+    }
+
+    /**
+     * Set resultado
+     *
+     * @param string $resultado
+     *
+     * @return Litigio
+     */
+    public function setResultado($resultado)
+    {
+        $this->resultado = $resultado;
+
+        return $this;
+    }
+
+    /**
+     * Get resultado
+     *
+     * @return string
+     */
+    public function getResultado()
+    {
+        return $this->resultado;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param string $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCounterpart()
+    {
+        return $this->counterpart;
+    }
+
+    /**
+     * @param string $counterpart
+     */
+    public function setCounterpart($counterpart)
+    {
+        $this->counterpart = $counterpart;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClaims()
+    {
+        return $this->claims;
+    }
+
+    /**
+     * @param string $claims
+     */
+    public function setClaims($claims)
+    {
+        $this->claims = $claims;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param string $result
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+    }
+
+
+}

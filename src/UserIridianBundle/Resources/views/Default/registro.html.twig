@@ -1,0 +1,27 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/registro.css') }}" rel="stylesheet">
+    {#<link href="{{ asset('css/breakpoint.css') }}" rel="stylesheet">#}
+{% endblock %}
+
+{% block content %}
+    <section class="registro">
+
+        <div class="form_registro main" style="background-image: url({{ qi.imagen('back_registro') }})">
+            <div class="main_txt">
+                <div class="cont_title_big">
+                    <h1 class="title_big no_mrg">{{ qi.textoDB('registro_title_main') }}</h1>
+                </div>
+                {{ qi.textoBigDB('registro_txt_main') | raw }} <br>
+                <a href="{{ path('registro-empresa') }}" class="btn_gradient_red">{{ qi.textoDB('soy_empresa') }}</a>
+                <a href="{{ path('registro-persona') }}" class="btn_gradient_red">{{ qi.textoDB('soy_persona') }}</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,39 @@
+<div class="remodal productoInfo" data-remodal-id="productoInfo_{{ item.id }}">
+    <button data-remodal-action="close" class="remodal-close"></button>
+    <div class="fondoAzul"></div>
+    <div class="prodHead">
+        <div class="img2">
+            <img src="{{ item.imagen }}"/>
+        </div>
+        <div class="sello">
+            <img src="/images/logi2.png"/>
+        </div>
+        <div class="txt">
+            <h3 class="ttlHelveGris">{{ item.nombre }}</h3>
+            <h4>{{ qi.textoDB('ingredientes') }}</h4>
+            <p>{{ item.ings | lower }}</p>
+        </div>
+    </div>
+    <div class="infoModal">
+        <p>{{ item.resumen | nl2br }}</p>
+        <h4>{{ qi.textoDB('beneficios') }}</h4>
+        <div class="grisModal">
+            <p>{{ item.beneficios | nl2br }}</p>
+            <h4>{{ qi.textoDB('modos') }}</h4>
+            <p>{{ item.modo | nl2br }}</p>
+            <div>
+                <a href="javascript:void(0)" data-id="{{ item.id }}" data-cant="1" class="add_talla btnGris">
+                    <span>${{ item.precio | number_format }}</span>
+                    <span>
+                        {{ qi.textoDB('agregar') }}
+                        <img src="/images/blueCart.png"/>
+                    </span>
+                </a>
+            </div>
+            {#<a href="javascript:void(0)" data-id="{{ item.id }}" data-cant="1" class="add_talla btnGreen comprarBtn">
+                <span>{{ qi.textoDB('comprar') }}</span>
+            </a>#}
+        </div>
+
+    </div>
+</div>

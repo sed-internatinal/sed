@@ -1,0 +1,10 @@
+name.not_blank: Please enter your name
+last.not_blank: Please enter your last name
+subject.not_blank: Please enter the subject
+email.not_blank: Please enter your email
+email.not_valid: Please enter a valid email
+telefono.not_blank: Please enter your Phone Number
+telefono.min: Please enter at least 7 numbers
+telefono.max: Please enter maximum 10 numbers
+mensaje.not_blank: The message can not be empty
+

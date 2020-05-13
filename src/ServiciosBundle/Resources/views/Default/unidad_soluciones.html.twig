@@ -1,0 +1,53 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="servicios unidad_t">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_unidad1_banner_interna') }})">
+            <img src="{{ qi.imagen('unidad3_banner_interna') }}" alt="SED">
+            <a href="#goto_marcas" class="godown"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <h2 class="title_midle">{{ qi.textoDB('title_middle_servicios') }}</h2>
+        <div class="content_marcas_servicios" id="goto_marcas" style="background-image: url({{ qi.imagen('backg_marcas_cont') }})">
+            {% for item in qi.galeria('unidad3_marcas') %}
+                <div class="marca box_rounded">
+                    <img src="{{ item.imagen }}" alt="SED">
+                    <div class="desc_box">
+
+                        <div class="list_box">
+                            <a href="javascript:void(0)">AIO</a> <br>
+                            <a href="javascript:void(0)">Impresión</a> <br>
+                            <a href="javascript:void(0)">Portatiles</a> <br>
+                            <a href="javascript:void(0)">PC's</a> <br>
+                        </div>
+
+                        <a href="javascript:void(0)" class="ver_producto" data-remodal-target="modal" title="{{ item.titulo }}">
+                            <span>
+                                <img src="/uploads/images/general/ver_mas_eye.png" alt="SED">
+                                {{ qi.textoDB('btn_ver_productos') }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="remodal big_txt modal_marcas" data-remodal-id="modal" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                {{ qi.textoDB('modal_txt_marcas_1') }} <br>
+                <span>o <a href="{{ path('registro') }}">REGISTRATE</a> {{ qi.textoDB('modal_txt_marcas_2') }} </span>
+            </h3>
+            <br>
+            <a href="#login" class="btn_gradient_red open_login" data-remodal-action="cancel">{{ qi.textoDB('iniciar sesión') }}</a>
+        </div>
+
+    </section>
+{% endblock %}

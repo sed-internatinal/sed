@@ -1,0 +1,61 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/nosotros.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <section class="nosotros red_back">
+        <div class="banner_general white_btn" style="background-image: url({{ qi.imagen('backg_marcas_banner') }})">
+            <h1>{{ qi.textoDB('nosotros_title') }}</h1>
+            <h2>{{ qi.textoDB('la_empresa_subtitle') }}</h2>
+            <a href="#goto_empresa" class="godown"><i class="fa fa-angle-down"></i></a>
+
+        </div>
+        <div class="empresa" id="goto_empresa">
+            <img src="{{ qi.imagen('img_main_empresa') }}" alt="SED" class="img_main">
+            <div class="txt_main">
+                {{ qi.textoBigDB('texto_la_empre') | raw }}
+            </div>
+            <div class="acordeon">
+                <ul>
+                    {% for item in qi.galeria('nosotros_mision') %}
+                    <li {% if loop.index == 1 %}class="active"{% endif %}>
+
+                            <div class="section-content" style="background-image: url({{ item.imagen }})">
+                                <h2>{{ item.titulo }}</h2>
+                                <div class="textos">
+                                    {{ item.resumen| raw }}
+                                </div>
+                            </div>
+                            <div class="section-title first">
+                                <h2>{{ item.titulo }}</h2>
+                                <a href="javascript:void(0)">ver más</a>
+                            </div>
+
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+            <div class="valores" style="background-image: url({{ qi.imagen('backg_valores') }})">
+                <h2>{{ qi.textoDB('valores') }}</h2>
+                <div class="cont_valores">
+                    {% for item in qi.galeria('valores') %}
+                        <div class="valor">
+                            <h2>{{ item.titulo }}</h2>
+                            <img src="{{ item.imagen }}" alt="SED ">
+                            <div class="info">
+                                <h2>{{ item.titulo }}</h2>
+                                {{ item.resumen | raw }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,395 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+/**
+ * CasoExito
+ *
+ * @ORM\Table(name="caso_exito")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\CasoExitoRepository")
+ * @Vich\Uploadable
+ */
+class CasoExito
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=100, unique=true)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resumen", type="string")
+     */
+    private $resumen;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="summary", type="string")
+     */
+    private $summary;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="detalle", type="text")
+     */
+    private $detalle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="detail", type="text")
+     */
+    private $detail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="años", type="string", length=100)
+     */
+    private $anios;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="years", type="string", length=100)
+     */
+    private $years;
+
+
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=255)
+     */
+    private $imagen;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="imagen")
+     * @var File
+     */
+    private $imageFile;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="banner", type="string", length=255)
+     */
+    private $banner;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="banner")
+     * @var File
+     */
+    private $bannerFile;
+
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AreaPractica")
+     * @ORM\JoinColumn(name="area_id", referencedColumnName="id")
+     */
+    private $area;
+
+
+    public function nombre($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->name : $this->nombre;
+    }
+
+    public function resumen($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->summary : $this->resumen;
+    }
+
+    public function detalle($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->detail : $this->detalle;
+    }
+
+    public function anios($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->years : $this->anios;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return CasoExito
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set resumen
+     *
+     * @param string $resumen
+     *
+     * @return CasoExito
+     */
+    public function setResumen($resumen)
+    {
+        $this->resumen = $resumen;
+
+        return $this;
+    }
+
+    /**
+     * Get resumen
+     *
+     * @return string
+     */
+    public function getResumen()
+    {
+        return $this->resumen;
+    }
+
+    /**
+     * Set años
+     *
+     * @param string $años
+     *
+     * @return CasoExito
+     */
+    public function setAnios($anios)
+    {
+        $this->anios = $anios;
+
+        return $this;
+    }
+
+    /**
+     * Get años
+     *
+     * @return string
+     */
+    public function getAnios()
+    {
+        return $this->anios;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * @param string $imagen
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File $imageFile
+     */
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param mixed $areas
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetalle()
+    {
+        return $this->detalle;
+    }
+
+    /**
+     * @param string $detalle
+     */
+    public function setDetalle($detalle)
+    {
+        $this->detalle = $detalle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanner()
+    {
+        return $this->banner;
+    }
+
+    /**
+     * @param mixed $banner
+     */
+    public function setBanner($banner)
+    {
+        $this->banner = $banner;
+    }
+
+    /**
+     * @return File
+     */
+    public function getBannerFile()
+    {
+        return $this->bannerFile;
+    }
+
+    /**
+     * @param File $bannerFile
+     */
+    public function setBannerFile($bannerFile)
+    {
+        $this->bannerFile = $bannerFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDetail()
+    {
+        return $this->detail;
+    }
+
+    /**
+     * @param mixed $detail
+     */
+    public function setDetail($detail)
+    {
+        $this->detail = $detail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYears()
+    {
+        return $this->years;
+    }
+
+    /**
+     * @param string $years
+     */
+    public function setYears($years)
+    {
+        $this->years = $years;
+    }
+
+
+
+
+    public function _toString()
+    {
+        return $this->nombre;
+    }
+
+}

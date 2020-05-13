@@ -1,0 +1,12 @@
+<div class="steps">
+    {% for item in qi.galeria('pasos') %}
+        <div class="step">
+            <img src="{{ item.imagen }}"/>
+            <div class="stepTtl">
+                <span>{{ item.titulo }}</span>
+                <hr/>
+            </div>
+            <span>{{ item.resumen | raw }}</span>
+        </div>
+    {% endfor %}
+</div>

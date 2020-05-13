@@ -1,0 +1,129 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/carrito.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="carrito red_back">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_carrito_banner') }})">
+            <h1>{{ qi.textoDB('carrito_title') }}</h1>
+            <h2>{{ qi.textoDB('carrito_subtitle') }}</h2>
+            <a href="#goto_carrito" class="godown"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <div class="carito_cont" id="goto_carrito">
+
+
+
+            <div class="table_prods">
+                <div class="divTable">
+                    <div class="divTableBody">
+                        <div class="divTableRow">
+                            <div class="divTableCell head"><strong>PRODUCTO</strong></div>
+                            <div class="divTableCell head"><strong>PRECIO</strong></div>
+                            <div class="divTableCell head"><strong>CANTIDAD</strong></div>
+                            <div class="divTableCell head"><strong>TOTAL</strong></div>
+                        </div>
+                        {% set total = 0 %}
+                        {% set cant = 0 %}
+                        {% for id,tallas in carrito %}
+                            {% for id_talla, item in tallas %}
+                                {% if item.cantidad > 0 %}
+                                    {% set cant = cant + item.cantidad %}
+                                    {% set producto = ci.productoId(id) %}
+                                    {% set talla = ci.tallaId(id_talla) %}
+                                    <div class="divTableRow" data-id="{{ id }}" data-id-talla="{{ id_talla }}">
+                                        <div class="divTableCell body"><span>{{  attribute(producto,'nombre' ~ cu)  }}</span></div>
+                                        <div class="divTableCell body"><span>${{ qi.precioUser(producto.id,app.user)|number_format }}</span></div>
+                                        <div class="divTableCell body"><span>{{ item.cantidad }}</span> <a href="" class="eliminar" data-id="{{ id }}" data-id-talla="{{ id_talla }}" data-cant="-{{ item.cantidad }}"><img src="/images/canasta.png" class="caneca" /></a> </div>
+                                        <div class="divTableCell body"><span>${{ ( qi.precioUser(producto.id,app.user)*item.cantidad)|number_format }}</span>
+
+                                        </div>
+                                    </div>
+                                    {% set total = total + ( qi.precioUser(producto.id,app.user) * item.cantidad) %}
+                                    
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        <input type="hidden" readonly id="total-carrito" value="{{ total }}" />
+                        {% if(cant == 0) %}
+                            <span id="txt_no_prod" >{{ qi.textoDB("no_productos_car") }}</span>
+                            <a id="a_cont_compr" href="{{ path("productos-main") }}">{{ qi.textoDB("continuar_comprando") }}</a>
+                        {% endif %}
+
+
+						<table class="detalles table">
+                            <thead>
+                            <tr>
+                                <th colspan="4">
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <span><strong>SUBTOTAL: </strong> ({{ cant }} ITEMS)</span>
+                                        <span id="old-subtotal">${{ (total / 1.19) | number_format(0) }}</span>
+                                        <br>
+                                        <span><strong>{{ qi.textoDB('Impuesto') }}: </strong></span>
+                                        <span id="carrito-iva" data-iva="{{ total-(total / 1.19)}}"></span>
+                                        <br>
+                                        <span><strong>{{ qi.textoDB('Envio') }}: </strong></span>
+                                        <span id="costo-envio-span"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <span><strong>TOTAL</strong></span>
+                                        <span id="total-resultado"></span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="venta">
+                <h3 class="ttlAzulMed contact-title">{{ qi.textoDB('Datos de envio') }}</h3>
+                {{ form_start(form,{attr:{id:"form_envio"}}) }}
+                {{ form_errors(form) }}
+                <div class="formPart1">
+                    <label>{{ qi.textoDB('departamento') }}</label>
+                    {{ form_errors(form.departamento) }}
+                    {{ form_widget(form.departamento) }} <br>
+                    <label>{{ qi.textoDB('ciudad') }}</label>
+                    {{ form_errors(form.ciudad) }}
+                    {{ form_widget(form.ciudad) }} <br>
+                    <label>{{ qi.textoDB('dirección') }}</label>
+                    {{ form_errors(form.direccion) }}
+                    {{ form_widget(form.direccion,{ attr:{'data-dir':app.user.direccion} }) }} <br>
+                    <label>{{ qi.textoDB('adicionales') }}</label>
+                    {{ form_errors(form.adicionales) }}
+                    {{ form_widget(form.adicionales) }}<br>
+                    <label>{{ qi.textoDB('costo') }}</label>
+                    <input type="text" class="form-control" readonly id="costo-envio" value=""/>
+                </div>
+                <div class="formPart2">
+
+                    <button class="btn btn-sq btn-lg btn-block btn-red btn" id="comprar">
+                        <span>{{ qi.textoDB('Pagar') }}</span>
+                    </button>
+                    <a class="btnGreen" style="float: right;padding: 13px 4px;" href="{{ path('productos-main') }}">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                        <span>{{ qi.textoDB('volver') }}</span>
+                    </a>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

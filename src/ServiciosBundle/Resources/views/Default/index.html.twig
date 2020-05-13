@@ -1,0 +1,73 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="servicios">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_servicios_banner') }})">
+            <h1>{{ qi.textoDB('servicios_title') }}</h1>
+            <h2>{{ qi.textoDB('servicios_subtitle') }}</h2>
+            <div class="btns_servicios">
+                {% for item in unidades %}
+                    <a href="#unidad_{{ item.id }}" title="{{ item.gen("nombre",lc) }}">
+                        {% if loop.index == 2 %}
+                            <img src="{{ path_productos~"/"~ item.gen("imagen",lc) }}" alt="SED" class="fijas" style="margin-top: -6px;">
+                        {% else %}
+                            <img src="{{ path_productos~"/"~ item.gen("imagen",lc) }}" alt="SED" class="fijas">
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="cont_unidades">
+            {% for item in unidades  %}
+                <div class="unidad" id="unidad_{{ item.id }}">
+                    <div class="col slider">
+                        <div class="swiper-container sw_unidad_{{ item.id }}">
+                            <div class="swiper-wrapper">
+                                {% for item in qi.galeria(item.galeria) %}
+                                    <div class="swiper-slide">
+                                        <img src="{{ item.imagen }}" alt="SED">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col description">
+                       <div class="content_description">
+                           <img src="{{ path_productos~"/"~ item.gen("icono",lc) }}" alt="SED" class="img_title">
+
+                           {{ item.gen("descripcion",lc)| raw }}
+
+                           <a href="{{ path('unidad-marcas',{id:item.id}) }}" class="btn_gradient_red {% if loop.index is even %}white{% endif %}">{{ qi.textoDB('ver_marcas') }}</a>
+                       </div>
+                        <div class="tools">
+                            <div class="options">
+                                {% for op in item.opciones %}
+                                    <a href="javascript:void(0)" title="{{ op.nombre }}">
+                                        <img src="{{ path_productos~"/"~op.imagen }}" alt="SED">
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            <div class="redes share" >
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <div class="swiper-pagination pagnt_unidad_{{ item.id }}"></div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+{% endblock %}
+

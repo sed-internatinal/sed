@@ -1,0 +1,33 @@
+<title>{{ titulo }}</title>
+<meta name="description" content="{{ seo.descripcion }}" />
+<link rel="image_src" href="{{ seo.imagen }}"/>
+{% if qi.getSettingDB('seo_autor') %}
+    <meta name="author" content="{{ qi.getSettingDB('seo_autor') }}">
+{% endif %}
+<!-- Google+ -->
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="{{ seo.descripcion }}">
+{% if qi.getSettingDB('seo_twitter:site') %}
+    <meta name="twitter:site" content="{{ qi.getSettingDB('seo_twitter:site') }}">
+{% endif %}
+<meta name="twitter:title" content="{{ seo.titulo }}">
+<meta name="twitter:description" content="{{ seo.descripcion }}">
+{% if qi.getSettingDB('seo_twitter:creator') %}
+    <meta name="twitter:creator" content="{{ qi.getSettingDB('seo_twitter:creator') }}">
+{% endif %}
+<!-- Twitter Summary card images must be at least 120x120px -->
+<meta name="twitter:image" content="{{ seo.imagen }}">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="{{ seo.titulo }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{{ url }}" />
+<meta property="og:image" content="{{ seo.imagen }}" />
+<meta property="og:description" content="{{ seo.descripcion }}" />
+{% if qi.getSettingDB('seo_og:site_name') %}
+    <meta property="og:site_name" content="{{ qi.getSettingDB('seo_og:site_name') }}" />
+{% endif %}
+{% if qi.getSettingDB('seo_fb:admins') %}
+    <meta property="fb:admins" content="{{ qi.getSettingDB('seo_fb:admins') }}" />
+{% endif %}

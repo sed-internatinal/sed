@@ -1,0 +1,64 @@
+{% set _entity_config = easyadmin_entity('Inventario') %}
+{% trans_default_domain _entity_config.translation_domain %}
+{% set _trans_parameters = { '%entity_name%': _entity_config.name|trans, '%entity_label%': _entity_config.label|trans } %}
+
+{% extends _entity_config.templates.layout %}
+
+{% block body_id 'easyadmin-new-' ~ _entity_config.name %}
+{% block body_class 'new new-' ~ _entity_config.name|lower %}
+
+{% block content_title %}
+    Inventarios
+{% endblock %}
+
+{% block main %}
+    {% block entity_form %}
+        {% set tam = tallas | length %}
+        <a href="{{ path('excel_generador_inventarios') }}" class="btn btn-primary">Descargar formato base</a>
+        <br/><br/>
+        <table class="table table-striped table-bordered" id="inventarios">
+            <tr class="ta_center">
+                <th></th>
+                <th></th>
+                {% for talla in tallas %}
+                    <th {% if precio %}colspan="3"{% else %}colspan="2"{% endif %}>{{ talla.nombreEs | upper }}</th>
+                {% endfor %}
+            </tr>
+            <tr class="ta_center">
+                <th>SKU</th>
+                <th>PRODUCTO</th>
+                {% for talla in tallas %}
+                    {% if precio %}
+                        <th>PRECIO</th>
+                    {% endif %}
+                    <th colspan="2">CANTIDAD</th>
+                {% endfor %}
+            </tr>
+            {% for fila in inventarios %}
+                <tr data-producto-id="{{ fila['producto_id'] }}">
+                    <td>{{ fila['sku'] }}</td>
+                    <td>{{ fila['nombre'] }}</td>
+                    {% for i in 0..(tam-1) %}
+                        {% if precio == 1 %}
+                            <td>
+                                <span class="error"><i class="fa fa-exclamation-circle" aria-hidden="true">Campo inválido</i></span>
+                                <span class="guardando"><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>Guardando</span>
+                                <input data-tipo="precio"   data-talla-id="{{ tallas[i].id }}" class="form-control precio talla_{{ tallas[i].id }}"   type="text" value="{{ fila['precio_'~(i+1)] }}">
+                            </td>
+                        {% endif %}
+                        <td>
+                            <span class="error"><i class="fa fa-exclamation-circle" aria-hidden="true">Campo inválido</i></span>
+                            <span class="guardando"><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>Guardando</span>
+                            <input data-tipo="cantidad" data-talla-id="{{ tallas[i].id }}" class="form-control cantidad talla_{{ tallas[i].id }}" type="text" value="{{ fila['cantidad_'~(i+1)] }}"></td>
+                        <td class="vm" data-talla-id="{{ tallas[i].id }}"><a href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock entity_form %}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    {{ include('@EasyAdmin/default/includes/_select2_widget.html.twig') }}
+{% endblock %}

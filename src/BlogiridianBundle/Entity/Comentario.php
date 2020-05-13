@@ -1,0 +1,262 @@
+<?php
+
+namespace BlogiridianBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Comentario
+ *
+ * @ORM\Table(name="comentario")
+ * @ORM\Entity(repositoryClass="BlogiridianBundle\Repository\ComentarioRepository")
+ */
+class Comentario
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="BlogiridianBundle\Entity\Post")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     */
+    private $post;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message = "name.not_blank")
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank(message = "email.not_blank")
+     * @Assert\Email(message = "email.not_valid")
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mensaje", type="text")
+     * @Assert\NotBlank(message = "mensaje.not_blank")
+     */
+    private $mensaje;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="acepta", type="boolean")
+     */
+    private $acepta = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->visible = false;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Comentario
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set mensaje
+     *
+     * @param string $mensaje
+     *
+     * @return Comentario
+     */
+    public function setMensaje($mensaje)
+    {
+        $this->mensaje = $mensaje;
+    
+        return $this;
+    }
+
+    /**
+     * Get mensaje
+     *
+     * @return string
+     */
+    public function getMensaje()
+    {
+        return $this->mensaje;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Comentario
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return Comentario
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * Set post
+     *
+     * @param \BlogiridianBundle\Entity\Post $post
+     *
+     * @return Comentario
+     */
+    public function setPost(\BlogiridianBundle\Entity\Post $post = null)
+    {
+        $this->post = $post;
+    
+        return $this;
+    }
+
+    /**
+     * Get post
+     *
+     * @return \BlogiridianBundle\Entity\Post
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Comentario
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set acepta
+     *
+     * @param boolean $acepta
+     *
+     * @return Comentario
+     */
+    public function setAcepta($acepta)
+    {
+        $this->acepta = $acepta;
+    
+        return $this;
+    }
+
+    /**
+     * Get acepta
+     *
+     * @return boolean
+     */
+    public function getAcepta()
+    {
+        return $this->acepta;
+    }
+}

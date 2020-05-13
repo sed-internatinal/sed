@@ -1,0 +1,143 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/registro.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="registro empresa">
+
+        <div class="form_registro" style="background-image: url({{ qi.imagen('back_registro') }})">
+            <div class="texto_reg">
+                <div class="cont_title_small">
+                    <h3 class="title_small">{{ qi.textoDB('empresa_title_reg') }}</h3>
+                </div>
+                <div class="cont_title_big">
+                    <h2 class="title_big small">{{ qi.textoDB('registro_title_main') }}</h2>
+                </div>
+                <div class="parg_reg">
+                    {{ qi.textoBigDB('texto_emp_reg') | raw}}
+                </div>
+                <a href="{{ path('actulizar-datos-empresa') }}" class="btn_gradient_red big">{{ qi.textoDB('actualizar_datos') }}</a>
+            </div>
+            {% if registrado %}
+                <div class="registrado" >
+                    {{ qi.textoBigDB("usuario_registrado")|raw }}
+                </div>
+            {% else %}
+            {{ form_start(form, {'method': 'post', 'action': '#forms', 'attr': {'class': 'form_reg registro_empresa'}}) }}
+                <div class="cont_form">
+
+                    {{ form_errors(form.nombre) }}
+                    {{ form_widget(form.nombre,{attr: {placeholder: qi.textoDB('reg-empresa-razon-soc')}}) }}
+                    {{ form_errors(form.nit) }}
+                    {{ form_widget(form.nit,{attr: {placeholder: qi.textoDB('reg-empresa-nit')}}) }}
+                    {{ form_errors(form.dVerificacion) }}
+                    {{ form_widget(form.dVerificacion,{attr: {placeholder: qi.textoDB('reg-empresa-num-verificacion')}}) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email,{attr: {placeholder: qi.textoDB('reg-correo')}}) }}
+                    {{ form_errors(form.telefono) }}
+                    {{ form_widget(form.telefono,{attr: {placeholder: qi.textoDB('reg-telefono')}}) }}
+                    {{ form_errors(form.celular) }}
+                    {{ form_widget(form.celular,{attr: {placeholder: qi.textoDB('reg-celular')}}) }}
+                    {{ form_errors(form.ciudad) }}
+                    {{ form_widget(form.ciudad,{attr: {placeholder: qi.textoDB('reg-ciudad')}}) }}
+                    {{ form_errors(form.plainPassword.first ) }}
+                    {{ form_widget(form.plainPassword.first, {attr: {placeholder: qi.textoDB('reg-contra')}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                    {{ form_widget(form.plainPassword.second, {attr: {placeholder: qi.textoDB('reg-verificar-contra')}}) }}
+                    <div class="cont_label">
+                        <label for="conditions" class="terminos">
+                            {{ form_widget(form.conditions) }}
+                            <a href="javacript:void(0)">{{ qi.textoDB('acepto-terminos') }}</a>
+                        </label>
+                    </div>
+                </div>
+                <div class="docs">
+                    <h4>{{ qi.textoDB('aduntar_title') }}</h4>
+
+                    <label for="app_user_registration_certificadoCamara" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("certificado_camara") }}</p></span>
+                        {{ form_widget(form.certificadoCamara) }}
+                    </label>
+                    <label for="app_user_registration_estadosFinancieros" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("estados_financieros") }}</p></span>
+                        {{ form_widget(form.estadosFinancieros) }}
+                    </label>
+                    <label for="app_user_registration_declaracion1" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("declaracion1") }}</p></span>
+                        {{ form_widget(form.declaracion1) }}
+                    </label>
+                    <label for="app_user_registration_declaracion2" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("declaracion2") }}</p></span>
+                        {{ form_widget(form.declaracion2) }}
+                    </label>
+                    <label for="app_user_registration_cedulaRepresentante" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("cedulaRepresentante") }}</p></span>
+                        {{ form_widget(form.cedulaRepresentante) }}
+                    </label>
+                    <label for="app_user_registration_rut" class="file">
+                        <img src="{{ qi.imagen("file") }}" alt="SED"> <br>
+                        <span><p>{{ qi.textoDB("rut") }}</p></span>
+                        {{ form_widget(form.rut) }}
+                    </label>
+
+
+                </div>
+                {% if captcha %}
+                    <div class="flash-notice">
+                        <p>{{ qi.textoDB("captcha") }}</p>
+                    </div>
+                {% endif %}
+                <div class="g-recaptcha" data-sitekey="6Ld2pdMUAAAAALswGGsMICUc2BlxbS6fjPjKeVgD"></div>
+                <input type="submit" class="btn_gradient_red submit" value="registrarse" >
+            {{ form_end(form) }}
+            {% endif %}
+        </div>
+
+        <div class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                {{ qi.textoDB('reg-agradecemos1') }}<br>
+                <span>{{ qi.textoDB('reg-agradecemos2') }}</span>
+            </h3>
+            <br>
+            <a href="{{ path('homepage') }}" class="btn_gradient_red">{{ qi.textoDB('continuar') }}</a>
+        </div>
+
+
+    </section>
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $('input[type="file"]').change( function(){
+            console.log(this);
+            if($(this).val()!= ""){
+                var idl = $(this).attr("id");
+                var spanid = $("label[for=" + idl + "] span");
+                spanid.addClass("listo");
+
+            }
+            else {
+                var idl = $(this).attr("id");
+                var spanid = $("label[for=" + idl + "] span");
+                spanid.removeClass("listo");
+            }
+        });
+        $("form[name='app_user_registration']").submit(function(){
+            $.LoadingOverlay("show", {zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
+
+        });
+    </script>
+{% endblock %}

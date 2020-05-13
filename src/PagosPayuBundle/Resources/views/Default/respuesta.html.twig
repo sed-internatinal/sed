@@ -1,0 +1,80 @@
+{% extends 'lay_iridian.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/respuesta.css') }}" rel="stylesheet">
+    {#<link href="{{ asset('css/breakpoint.css') }}" rel="stylesheet">#}
+{% endblock %}
+{% block content %}
+
+    <div class="container-cuerpo">
+        <div class="carrito">
+
+            <h1>¡Muchas gracias por tu compra!</h1>
+            <h2>Estos son los datos de tu pedido.</h2>
+
+            <div class="resumen row">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr class="contenedor">
+                        <td>Estado de la transaccion</td>
+                        <td>{{ estadoTx }}</td>
+                    </tr>
+
+                    <tr class="contenedor">
+                        <td>ID de la transaccion</td>
+                        <td>{{ transactionId }}</td>
+                    </tr>
+
+                    <tr class="contenedor">
+                        <td>Referencia de la venta</td>
+                        <td>{{ reference_pol }}</td>
+                    </tr>
+
+                    <tr class="contenedor">
+                        <td>Referencia de la transaccion</td>
+                        <td>{{ referenceCode }}</td>
+                    </tr>
+
+                    {% if pseBank %}
+                        <tr class="contenedor">
+                            <td>cus</td>
+                            <td>{{ cus }}</td>
+                        </tr>
+
+                        <tr class="contenedor">
+                            <td>Banco</td>
+                            <td>{{ pseBank }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr class="contenedor">
+                        <td>Total</td>
+                        <td>{{ TX_VALUE | number_format }}</td>
+                    </tr>
+
+                    <tr class="contenedor">
+                        <td>Entidad</td>
+                        <td>{{ lapPaymentMethod }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <a href="{{ path('homepage') }}" class="btnTarjeta">
+                    <span>Volver al inicio</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        fbq('track', 'Purchase', {
+            value: '{{ TX_VALUE| number_format }}',
+            currency: 'COP'
+        });
+    </script>
+
+{% endblock %}

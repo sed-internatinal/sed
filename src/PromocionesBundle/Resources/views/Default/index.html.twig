@@ -1,0 +1,73 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/promociones.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+   {# <section class="promociones">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_promociones_banner') }})">
+            <h1>{{ qi.textoDB('promociones_title') }}</h1>
+            <h2>{{ qi.textoDB('promociones_subtitle') }}</h2>
+            <a href="#goto_ofertas" class="godown"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <div class="content_promociones" id="goto_ofertas" style="background-image: url({{ qi.imagen('backg_promociones_banner') }})">
+            <div class="swiper-container promociones_swiper_main">
+                <div class="swiper-wrapper">
+                    {% for item in qi.galeria('promociones_main') %}
+                        <div class="swiper-slide">
+                            <img src="{{ item.imagen | imagine_filter('promociones_img') }}" alt="SED" data-remodal-target="modal">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="nav_bar_promos">
+                <div class="swiper-button-prev promo_prev"><i class="fas fa-chevron-left"></i></div>
+                <div class="swiper-button-next promo_next"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+
+        <div class="remodal remodal_promos_home" data-remodal-id="modal">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <img src="{{ qi.imagen('promos_remodal') | imagine_filter('promos_remodal_home') }}" alt="">
+        </div>
+    </section>#}
+<section class="home scroll-section">
+    <div class="promociones">
+        <b class="no-visibilty">Promociones</b>
+        <h2>{{ qi.textoDB('promociones_tl') }}</h2>
+        <h3>{{ qi.textoDB('promociones_tl2') }}</h3>
+        <div class="w_r">
+            <div class="content_promos2" id="carouselC9">
+                {% for item in qi.galeria('promociones') %}
+                    <img class="cloud9-item" src="{{ item.imagen | imagine_filter('promos_img')}}" alt="{{ item.titulo }}" data-remodal-target="modal{{ item.id }}"/>
+                {% endfor %}
+            </div>
+            <a class="flecha prev"><i class="fa fa-chevron-left"></i></a>
+            <a class="flecha next"><i class="fa fa-chevron-right"></i></a>
+
+        </div>
+        {#<a href="{{ path('promociones') }}">ver más</a>#}
+    </div>
+
+    {% for item in qi.galeria('promociones') %}
+        <div class="remodal remodal_promos_home" data-remodal-id="modal{{ item.id }}">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <img src="{{ item.imagen| imagine_filter('promos_remodal_home') }}" alt="">
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $('.promociones').parallax({imageSrc: '{{ qi.imagen('fondo_promociones') }}'});
+    </script>
+{% endblock %}

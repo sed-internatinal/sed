@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2016-10-29T01:03:00Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="2833bbcf7e5817821fe05f9991da947f5b4d9d5e" resname="BPO">
+        <source>BPO</source>
+        <target state="new">BPO</target>
+        <jms:reference-file line="33">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f04bb97f758120fa06047524955f80a942475cd3" resname="Centro de Servicios Compartido">
+        <source>Centro de Servicios Compartido</source>
+        <target state="new">Centro de Servicios Compartido</target>
+        <jms:reference-file line="36">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8b2da8db7a47554ee59110608579a2d787b46a05" resname="Cobranza">
+        <source>Cobranza</source>
+        <target state="new">Cobranza</target>
+        <jms:reference-file line="34">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1ed925a44914aaf5d7a7ea37f0d8b2ee75559cf2" resname="Contact Center">
+        <source>Contact Center</source>
+        <target state="new">Contact Center</target>
+        <jms:reference-file line="37">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="03d2caa23a9227af0ba346552f3ea57dd4aee2ab" resname="Inhouse">
+        <source>Inhouse</source>
+        <target state="new">Inhouse</target>
+        <jms:reference-file line="38">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="816c52fd2bdd94a63cd0944823a6c0aa9384c103" resname="No">
+        <source>No</source>
+        <target state="new">No</target>
+        <jms:reference-file line="86">/../../../../../../.././src/HomeBundle/Form/Type/AdicionalType.php</jms:reference-file>
+        <jms:reference-file line="55">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f1c29dd634a4d6cd61b49c14b1b969ccd7ddb8e7" resname="Otro ¿Cuál?">
+        <source>Otro ¿Cuál?</source>
+        <target state="new">Otro ¿Cuál?</target>
+        <jms:reference-file line="40">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="95941eeb4620806bd8ab46de68b8d4a5f570b01f" resname="Proveedor de Información">
+        <source>Proveedor de Información</source>
+        <target state="new">Proveedor de Información</target>
+        <jms:reference-file line="35">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="86304f9b553c156d7cb4d1295bd8c70f9c3a05d5" resname="Proveedor de Tecnología">
+        <source>Proveedor de Tecnología</source>
+        <target state="new">Proveedor de Tecnología</target>
+        <jms:reference-file line="39">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="79ac298b9fec8bf22325d4a6906b0edb2b4f57b9" resname="Si">
+        <source>Si</source>
+        <target state="new">Si</target>
+        <jms:reference-file line="85">/../../../../../../.././src/HomeBundle/Form/Type/AdicionalType.php</jms:reference-file>
+        <jms:reference-file line="54">/../../../../../../.././src/HomeBundle/Form/Type/EncuestaType.php</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,111 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+/**
+ * GaleriaArea
+ *
+ * @ORM\Table(name="galeria_area")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\GaleriaAreaRepository")
+ * @Vich\Uploadable
+ */
+class GaleriaArea
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+//    /**
+//     * @ORM\ManyToOne(targetEntity="AreaPractica")
+//     * @ORM\JoinColumn(name="area_id", referencedColumnName="id")
+//     */
+//    private $area;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=255)
+     */
+    private $imagen;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="imagen")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+//    /**
+//     * @return mixed
+//     */
+//    public function getArea()
+//    {
+//        return $this->area;
+//    }
+//
+//    /**
+//     * @param mixed $area
+//     */
+//    public function setArea($area)
+//    {
+//        $this->area = $area;
+//    }
+
+    /**
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * @param string $imagen
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File $imageFile
+     */
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+    }
+
+
+    public function __toString()
+    {
+        return $this->imagen.' - '.$this->id;
+    }
+}

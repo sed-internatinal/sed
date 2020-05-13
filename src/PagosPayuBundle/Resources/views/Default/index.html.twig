@@ -1,0 +1,48 @@
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ qi.getPixel() }}'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id={{ qi.getPixel() }}&ev=PageView&noscript=1"
+    /></noscript>
+<!-- DO NOT MODIFY -->
+<!-- End Facebook Pixel Code -->
+{% if(datos_payu.test == 1) %}
+    {% set url = datos_payu.urlPruebas %}
+{% else %}
+    {% set url = datos_payu.urlPruebas %}
+{% endif %}
+
+<form method="post" action="{{ url }}" id="myform" style="display: none;">
+    <input name="merchantId"    type="hidden"  value="{{ datos_payu.merchantId }}"   >
+    <input name="accountId"     type="hidden"  value="{{ datos_payu.accountId }}" >
+    <input name="description"   type="hidden"  value="{{ descripcion_text }}"  >
+    <input name="referenceCode" type="hidden"  value="{{ referenceCode }}" >
+    <input name="amount"        type="hidden"  value="{{ compra.precio }}"   >
+    <input name="tax"           type="hidden"  value="{{ tax }}"  >
+    <input name="taxReturnBase" type="hidden"  value="{{ taxReturnBase }}" >
+    <input name="currency"      type="hidden"  value="{{ datos_payu.currency }}" >
+    <input name="signature"     type="hidden"  value="{{ firma }}"  >
+    <input name="test"          type="hidden"  value="{{ datos_payu.test }}" >
+    <input name="buyerEmail"    type="hidden"  value="{{ compra.direccion.user.email }}" >
+    <input name="responseUrl"    type="hidden"  value="{{ url('pagar_payu_respuesta',{},false) }}" >
+    <input name="confirmationUrl"    type="hidden"  value="{{ url('pagar_payu_confirmacion',{},false) }}" >
+
+    <input name="shippingAddress"    type="hidden"  value="{{ compra.direccion.direccion }}" >
+    <input name="shippingCity"    type="hidden"  value="{{ nombreCiudad }}" >
+    <input name="shippingCountry"    type="hidden"  value="CO" >
+    <input name="Submit"        type="submit"  value="Enviar" id="submit">
+</form>
+<script>
+    var sub = document.getElementById('submit');
+    sub.click();
+
+    fbq('track', 'InitiateCheckout');
+
+</script>

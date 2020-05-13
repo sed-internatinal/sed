@@ -1,0 +1,14 @@
+<div class="producto">
+    <h3>{{ item.nombre }}</h3>
+    <img src="{{ item.imagen }}" alt="SED" class="img_prod">
+    <h4>{{ item.precio }}</h4> <br>
+    <span>
+                                         {{ qi.textoDB('dispo_product') }}<br>
+                                        <img src="{{ qi.imagen('disponible') }}" alt="SED">
+                                        <img src="{{ qi.imagen('no_disponible') }}" alt="SED">
+                                    </span>
+    {{ item.resumen | raw }}
+    <div class="opciones">
+        <a href="{{ path('productos-detail') }}">{{ qi.textoDB('ver_mas_prods') }}</a>
+    </div>
+</div>

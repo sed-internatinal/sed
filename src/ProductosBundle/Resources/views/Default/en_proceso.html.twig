@@ -1,0 +1,19 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/productos.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="productos en_reparacion">
+        <div class="banner_repar">
+            <h2>Pronto tendremos está sección lista, trabajamos en ello. </h2>
+            <h3><i class="fas fa-cog fa-spin"></i></h3>
+        </div>
+    </section>
+{% endblock %}

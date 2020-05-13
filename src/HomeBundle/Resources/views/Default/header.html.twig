@@ -1,0 +1,165 @@
+{% set ruta = app.request.get('_route') %}
+{% set paramsO = app.request.attributes.get('_route_params')  %}
+{% set params = [] %}
+{% set index = 0 %}
+{% set indexu = 0 %}
+{% for key, value in paramsO %}
+    {% if key == "_locale" %}
+        {% set index= loop.index0  %}
+        {% set indexu= loop.index  %}
+    {% endif %}
+
+{% endfor %}
+{% set params = params|merge(paramsO[:index])|merge(paramsO[indexu:]) %}
+{% set lc = app.request.locale %}
+
+<header>
+    <div class="cont_head">
+        <a href="{{ path('homepage') }}" class="logo"><img src="/uploads/images/general/logo_sed.png" alt="logo"></a>
+        <div class="rows">
+            <div class="row1">
+                <div class="clmn username">
+                    {% if app.user %}
+                    <a href="javascript:void(0)" title="{{ app.user.email }}">
+                        <span><strong><i class="fas fa-user-circle"></i></strong>{{ app.user.email }}</span>
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="clmn">
+                    {% if  qi.textoDB("link_pse") != "#"  %}
+                        <a href="{{ qi.textoDB("link_pse") }}" class="pse"  title="Pagos PSE" >
+                            {#<span>{{ qi.textoDB('pagos_pse') }}</span>#}
+                            <img src="{{ qi.imagen('pse_icon') }}" alt="SED">
+                        </a>
+                    {% else %}
+                        <a  href="javascript:void(0)" class="pse" data-remodal-target="modalProximamente" title="Pagos PSE" >
+                            {#<span>{{ qi.textoDB('pagos_pse') }}</span>#}
+                            <img src="{{ qi.imagen('pse_icon') }}" alt="SED">
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="clmn">
+                    <div class="country"> <b>{{ qi.textoDB('Idioma') }}</b> <img src="/uploads/images/general/down.png" alt="down" class="down">
+                        <div class="sub_list">
+                            <a href="{{ path(ruta, {"_locale": "es"} | merge(params)) }}"><img src="/uploads/images/general/flag.png" alt="flag">Español</a>
+                            <a href="{{ path(ruta, {"_locale": "en"} | merge(params)) }}"><img src="/uploads/images/general/ingles.png" alt="flag">English</a>
+                        </div>
+                    </div>
+                    <form action="" class="trm" title="TRM">
+                        <label for="trm">TRM:</label>
+                        <input type="text" value="" disabled="disabled" id="trmcol">
+                    </form>
+                </div>
+            </div>
+
+            <div class="row2">
+                {% if qi.settingDB("mostrar_producto") == 1 %}
+                <form id="buscador_directorio" action="{{ path('productos-main') }}">
+                <div class="searchbar" title="Buscar">
+
+
+
+                        <input type="text" name="query" value="{{ app.request.get("query","") }}">
+                        <a href="javascript:enviarformulario()"><i class="fa fa-search"></i></a>
+
+                </div>
+                </form>
+                {% endif %}
+
+                <div class="tabs">
+
+                    <a href="{{ path('carrito') }}" class="tab">
+                        <span class="main_item">
+                            {{ qi.textoDB('tab_txt1') }}
+                            <strong class="nmb_cart"><i class="fa fa-shopping-cart"></i><span class="n_items">{{ ci.cantCart() }}</span></strong>
+                        </span>
+                    </a>
+                    {% if not app.user %}
+                    <a href="#" class="tab login_btn">
+                        <span class="main_item">
+                            {{ qi.textoDB('tab_txt2') }}
+                        </span>
+                    </a>
+                    {% else %}
+                        <a href="/user/logout" class="tab ">
+                        <span class="main_item">
+                            {{ qi.textoDB('logout') }}
+                        </span>
+                        </a>
+                    {% endif %}
+
+                    <div class="login" id="login">
+                        {{ render(controller('UserIridianBundle:Registration:loginpartial')) }}
+
+                    </div>
+                    <button id="hamburguesa">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="{{ path('homepage') }}" {% if ruta == 'homepage' %} class="activated" {% endif %}>{{ qi.textoDB('menu_1_mobile') }}</a></li>
+                    <li><a href="javascript:void(0)" {% if ruta == 'directorio' %} class="activated" {% elseif ruta == 'programas' %} class="activated" {% elseif ruta == 'empresa' %} class="activated" {% endif %}>{{ qi.textoDB('menu_1') }}</a>
+                        <ul class="sub_menu">
+                            <li {% if ruta == 'directorio' %} class="sub_activated" {% endif %}><a href="{{ path('directorio') }}">{{ qi.textoDB('directorio-menu') }}</a></li>
+                            <li {% if ruta == 'empresa' %} class="sub_activated" {% endif %}><a href="{{ path('empresa') }}">{{ qi.textoDB('empresa-menu') }}</a></li>
+                            <li {% if ruta == 'programas' %} class="sub_activated" {% endif %}>
+                                <a href="{{ path('programas') }}">
+                                    {{ qi.textoDB('programas-menu') }}
+                                    <span>{{ qi.textoDB('afinidad-menu') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {#<li><a href="{{ path('productos-main') }}" {% if ruta == 'productos-main' %} class="activated" {% endif %}>{{ qi.textoDB('menu_2') }}</a></li>#}
+                    {% if qi.settingDB("mostrar_producto") == 1 %}
+                    <li><a href="{{ path('productos-main') }}" {% if ruta starts with 'productos-main' %} class="activated" {% elseif ruta == 'selector-servicios' %} class="activated" {% elseif ruta starts with 'productos-detail' %} class="activated" {% endif %}>{{ qi.textoDB('menu_2') }}</a></li>
+                    {% else %}
+                        <li><a href="javascript:void(0)" data-remodal-target="modalProximamente">{{ qi.textoDB('menu_2') }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ path('servicios') }}" {% if ruta == 'servicios' %} class="activated" {% endif %}>{{ qi.textoDB('menu_3') }}</a></li>
+                    <li><a href="{{ path('marcas') }}" {% if ruta == 'marcas' %} class="activated" {% endif %}>{{ qi.textoDB('menu_4') }}</a></li>
+                    {% if qi.settingDB("mostrar_producto") == 1 %}
+                    <li><a href="{{ path('ofertas') }}" {% if ruta == 'ofertas' %} class="activated" {% endif %}>{{ qi.textoDB('menu_5') }}</a></li>
+                    {% else %}
+                        <li><a href="javascript:void(0)" data-remodal-target="modalProximamente">{{ qi.textoDB('menu_5') }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ path('contacto') }}" {% if ruta == 'contacto' %} class="activated" {% endif %}>{{ qi.textoDB('menu_6') }}</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="remodal big_txt modal_header" data-remodal-id="modal_welc" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+        <h3>
+            Bienvenido <br>
+            <span>Mauricio Caviedes</span>
+        </h3>
+        <br>
+        <a href="{{ path('homepage') }}" class="btn_gradient_red" data-remodal-action="cancel">continuar</a>
+    </div>
+
+
+    <div class="remodal big_txt remodalProximamente" data-remodal-id="modalProximamente" >
+        <button data-remodal-action="close" class="remodal-close"></button>
+        <h2>{{ qi.textoDB('proximamente') }}</h2>
+        <br>
+        <button data-remodal-action="close" class="remodal-confirm">Aceptar</button>
+    </div>
+
+    <script src='https://www.dolar-colombia.com/widget.js?t=1&c=1'></script>
+
+</header>
+{% block javasripts %}
+    <script>
+        var divDolar = document.getElementsByClassName("dolar-colombia-widget");
+        divDolar[0].style.display="none";
+        var linkDolar = divDolar[0].innerHTML;
+        console.log(linkDolar);
+        var sublink = linkDolar.substr(121, 10);
+        console.log(sublink);
+        document.getElementById("trmcol").value= sublink + " COP" ;
+    </script>
+{% endblock %}

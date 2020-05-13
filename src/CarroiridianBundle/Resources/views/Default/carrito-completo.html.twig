@@ -1,0 +1,227 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block content %}
+ 
+    <div class="container">
+    <div class="carrito">
+        {% include 'CarroiridianBundle:Default:pasos.html.twig' %}
+        <div class="row">
+            <div id="no-more-tables">
+                <table class="col-md-12 col-sm-12 col-xs-12 table-bordered table-striped table-condensed cf">
+                    <thead class="cf">
+                    <tr>
+                        <th>{{ qi.textoDB('c_produc') }}</th>
+                        <!--<th>Descripción</th>-->
+                        <th class="numeric">{{ qi.textoDB('c_size') }}</th>
+                        <th class="numeric">{{ qi.textoDB('c_price') }}</th>
+                        <th class="numeric">{{ qi.textoDB('c_quantity') }}</th>
+                        <th class="numeric">{{ qi.textoDB('c_total') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set cu = app.request.locale | capitalize %}
+                    {% set total = 0 %}
+                    {% set discount = (descuento|length == 0) ? 0 : descuento["valor"]  %}
+                    {% for id,tallas in carrito %}
+                        {% for id_talla, item in tallas %}
+                            {% if item.cantidad > 0 %}
+                                {% set producto = ci.productoId(id) %}
+                                {% set talla = ci.tallaId(id_talla) %}
+                                <tr data-id="{{ id }}" data-id-talla="{{ id_talla }}">
+                                    <td data-title="PRODUCTO">
+                                        <img src="{{ (path_productos ~'/'~ producto.imagen) }}"/>
+                                        <div class="desripcion">
+                                            <h4>{{ attribute(producto,'nombre' ~ cu) }}</h4>
+                                            <p>REF.{{ producto.sku }}</p>
+                                        </div>
+                                    </td>
+                                    <!--<td data-title="DESCRIPCIÓN">
+                                                    <h4>{{ attribute(producto,'nombre' ~ cu) }}</h4>
+                                                    <p>REF.{{ producto.sku }}</p>
+                                                </td>-->
+                                    <td data-title="TALLA" class="numeric"><h4>{{ attribute(talla,'nombre' ~ cu) }}</h4></td>
+                                    <td data-title="PRECIO" class="numeric"><h4>${{ item.precio | number_format(0) }}</h4></td>
+                                    <td data-title="CANTIDAD" class="numeric">
+                                        <select class="select-cant">
+                                            {% for i in 1..ci.inventario(id, id_talla).cantidad %}
+                                                <option value="{{ i }}" {% if i == item.cantidad %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td data-title="TOTAL" class="numeric">
+                                        <h4>${{ (item.precio * item.cantidad) | number_format(0) }}</h4>
+                                        <a class="button eliminar" data-id="{{ id }}" data-id-talla="{{ id_talla }}" data-cant="-{{ item.cantidad }}">REMOVER</a>
+                                    </td>
+                                </tr>
+                                {% set total = total + (item.precio * item.cantidad) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% for id,item in bonos %}
+                        <tr data-id="{{ id }}" >
+                            <td data-title="PRODUCTO">
+                                <img src="{{ qi.imagen('back_gift') }}"/>
+                                <div class="desripcion">
+                                    <h4>{{ qi.textoDB('BONO DE REGALO') }}:</h4>
+                                    </br>
+                                    <p>De: {{ item['de'] }}</p>
+                                    <p>Para: {{ item['para'] }}</p>
+                                </div>
+                            </td>
+                            <td data-title="TALLA" class="numeric"><h4>N/A</h4></td>
+                            <td data-title="PRECIO" class="numeric"><h4>${{ item['valor'] | number_format(0) }}</h4></td>
+                            <td data-title="CANTIDAD" class="numeric">
+                                1
+                            </td>
+                            <td data-title="TOTAL" class="numeric">
+                                <h4>${{ (item['valor']) | number_format(0) }}</h4>
+                                <a class="button eliminar_bono" data-id="{{ id }}"  data-cant="-1">{{ qi.textoDB('remove') }}</a>
+                            </td>
+                        </tr>
+
+                        {% set total = total + item['valor'] %}
+                    {% endfor %}
+                    {% set total = total - discount %}
+                    <input type="hidden" readonly id="total-carrito" value="{{ total }}" />
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row direccion2">
+
+            <div class="col-lg-12">
+                <h4>{{ qi.textoDB('address_1')|raw }}</h4>
+            </div>
+            <br>
+            <div class="col-lg-12">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <ul class="list-group">
+                        {% for item in direcciones %}
+                            <li class="list-group-item">
+                                <span>{{ item.departamento }} - {{ item.ciudad }}: {{ item.direccion }}</span>
+                                <a href="{{ path('direccion_sesion',{id:item.id}) }}" class="button">seleccionar</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+
+            <div class="col-lg-12">
+                <h4>{{ qi.textoDB('address_2')|raw }}</h4>
+            </div>
+
+            <div class="col-lg-12">
+                {{ form_start(form,{attr:{id:"form_envio"}}) }}
+                {{ form_errors(form) }}
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-12 form-group">
+                        <label>Departamento</label>
+                        {{ form_errors(form.departamento) }}
+                        {{ form_widget(form.departamento) }}
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <label>Ciudad</label>
+                        {{ form_errors(form.ciudad) }}
+                        {{ form_widget(form.ciudad) }}
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <label>Dirección</label>
+                        {{ form_errors(form.direccion) }}
+                        {{ form_widget(form.direccion) }}
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Datos adicionales</label>
+                        {{ form_errors(form.adicionales) }}
+                        {{ form_widget(form.adicionales,{'attr':{'placeholder':'Conjunto residencial, unidad...'}}) }}
+                    </div>
+                    <div class="form-group">
+                        <label>Costo Envio</label>
+                        <input type="text" readonly id="costo-envio" class="form-control" value=""/>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+
+        <div class="row total">
+
+            <div class="col-lg-8 col-xs-12">
+
+            </div>
+
+            <div class="col-lg-4 col-xs-12">
+
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="col-lg-6">
+                        <h6>SUBTOTAL</h6>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4>${{ total | number_format }}</h4>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        <div class="col-lg-6">
+                            <h6>Shipping Cost</h6>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4><span id="costo-envio-span" >$0.00</span></h4>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        <div class="col-lg-6">
+                            <h6>IVA</h6>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4><span id="carrito-iva">$0.00</span></h4>
+                        </div>
+                    </div>
+
+                    {% if descuento|length == 0 %}
+                        <div class="col-lg-12 col-md-12 col-xs-12">
+                            <div class="col-lg-6">
+                                <input type="text" name="discount" placeholder="{{ qi.textoDB('bonus') }}">
+                            </div>
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary">{{ qi.textoDB('redeem') }}</button>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="col-xs-12 total">
+                        <div class="col-lg-6">
+                            {% if descuento|length == 0 %}
+                                <h6>TOTAL</h6>
+                            {% else %}
+                                <h6>TOTAL ( bono descuento ${{ discount | number_format }} )</h6>
+                            {% endif %}
+                        </div>
+                        <!--<a class="button" style="visibility: hidden;">Vaciar mi carrito</a>-->
+                        <div class="col-lg-6">
+                            <h4 id="total-resultado">${{ total | number_format }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="col-lg-6"></div>
+                        <div class="col-lg-6">
+                            <a href="" class="btn btn-primary" id="comprar">{{ qi.textoDB('buy') }}</a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

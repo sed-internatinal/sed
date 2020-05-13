@@ -1,0 +1,132 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% block content %}
+    {# @var ci \CarroiridianBundle\Service\CI #}
+    {% set categoria = app.request.get('categoria',1) %}
+    {% set subcategoria = app.request.get('subcategoria') %}
+    {% set search = app.request.get('search') %}
+    {% set categorias = ci.categorias() %}
+    {% set lc = app.request.locale() %}
+    {% set productos = ci.productos(categoria, null, search, null, null, null, subcategoria) %}
+    {% set destacados   = ci.productos(categoria,null,null, true, 6) %}
+    {% set lc = app.request.locale %}
+    {% set cu = app.request.locale | capitalize %}
+
+
+    <div class="section-top">
+      <div class="container-md">
+        <div class="row product-header">
+          <div class="col-sm-5">
+            <h2 class="section-title">{{ qi.textoDB('products-title') }}</h2>
+          </div>
+          <div class="col-sm-7 text-right">
+            <ul class="category-tabs">
+              {% for item in categorias %}
+                <li><a href="{{ path('productos_por_categoria', {categoria: item.id, nombre: qi.slugify(item.nombre) }) }}" class="btn btn-lg btn-kamex box-shadow {% if item.id == categoria %}active{% endif %}">{{ item.nombre }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="row product-section">
+          <div class="col-sm-3">
+            <aside class="product-categories">
+              <ul> 
+                {% for item in ci.subcategoriasByCat(categoria) %}
+                  {% set active = '' %}
+                  {% if item.id == subcategoria %}
+                      {% set active = 'active' %}
+                  {% endif %}
+                  <li><a href="{{ path('productos_por_subcategoria', { subcategoria: item.id, nombre: qi.slugify(item.nombre) } ) }}" class="{{ active }}">{{ item.nombre }}</a></li>
+                {% endfor %}
+              </ul>
+            </aside>
+          </div>
+          <div class="col-sm-9">
+            <!-- Product Row -->
+            <div class="row product-row">
+            {% for item in productos %}
+              {% set c_agotado = '' %}
+              {% if item.cantidad == 0 %}
+                  {% set c_agotado = 'agotado' %}
+              {% endif %}
+                
+              {% if loop.index % 3 == 1 %}
+                </div><div class="row product-row">
+              {% endif %}
+                  {% include '@Home/Default/prod.html.twig' with {cols:4} %}
+            {% endfor %}
+            </div>
+            <!-- / Product Row -->
+          </div>
+        </div>
+        
+        <div class="row product-section">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 cross-title">
+                <h2 class="section-title title-center">{{ qi.textoDB('featured-products-title') }}</h2>
+              </div>
+            </div>
+            
+            <!-- Product Row -->
+            <div class="row product-block-home-row">
+                {% for item in productos %}
+                    {% set c_agotado = '' %}
+                    {% if item.cantidad == 0 %}
+                        {% set c_agotado = 'agotado' %}
+                    {% endif %}
+
+                    {% if loop.index % 3 == 1 %}
+                        </div><div class="row product-row">
+                    {% endif %}
+                    {% include '@Home/Default/prod.html.twig' with {cols:4} %}
+                {% endfor %}
+            </div>
+            <!-- / Product Row -->
+          </div>
+        </div>
+        <div class="row product-section">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 cross-title">
+                <h2 class="section-title title-center">{{ qi.textoDB('best-selling') }}</h2>
+              </div>
+            </div>
+            
+              <div class="row product-showcase-display">
+                <div class="col-sm-12">
+                  <div class="row product-block-home-row">
+                    {% set mas_vendidos   = ci.productos(null,null,null, null, 8, true) %}
+                    {% for item in mas_vendidos %}
+                      {% set c_agotado = '' %}
+                      {% if item.cantidad == 0 %}
+                          {% set c_agotado = 'agotado' %}
+                      {% endif %}
+                      {% if loop.index % 4 == 1 %}
+                        </div><div class="row product-block-home-row">
+                      {% endif %}
+                      {% include '@Home/Default/prod.html.twig' %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    
+  <script>
+
+    $(".display-social").click(function() {
+      $(this).closest(".product-info-wrap").next(".share-icons-display").toggle("slow");
+        $(this).closest(".action-buttons-v").prev(".share-icons-display").toggle("slow");
+    });
+    
+  </script>
+
+{% endblock %}

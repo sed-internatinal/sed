@@ -1,0 +1,44 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% block content %}
+    {% set lc = app.request.locale() %}
+    
+<div class="section-top">
+  <div class="container-md">
+    <!-- Post Row -->
+    <div class="row product-row">
+      {# LOOP START #}
+      {% for item in ultimos %}
+          {% set ruta = path('post', {'id': item.id, 'name':qi.slugify(item.titulo)} ) %}
+      <!-- Post -->
+      <div class="col-sm-6">
+        <div class="blog-post">
+          <p class="post-date"><span></span>&nbsp;{{ item.fecha |localizeddate('long', 'none', lc) }}</p>
+          <h2 class="post-title"><a href="{{ ruta }}">{{ item.titulo }}</a></h2>
+          <p class="post-image">
+            <a href="{{ ruta }}"><img src="{{ item.imagen }}" alt="" class="post-img box-shadow"></a>
+          </p>
+          {#<p class="post-actions text-center">
+            <a href="#"><img src="{{ qi.imagen('post-reply') }}" alt="Reply"></a>&nbsp;
+            <a href="#"><img src="{{ qi.imagen('post-comment') }}" alt="Comment"></a>&nbsp;
+            <a href="#"><img src="{{ qi.imagen('post-like') }}" alt="Like"></a>&nbsp;
+            <a href="#"><img src="{{ qi.imagen('post-share') }}" alt="Share"></a>
+          </p>#}
+        </div>
+      </div>
+      {% if loop.index0 % 2 == 1 %}
+        </div><div class="row product-row">
+      {% endif %}
+      <!-- / Post -->
+      {% endfor %}
+      {# LOOP END #}
+    </div>
+    <!-- / Post Row -->
+  </div>
+</div>
+
+
+s
+{% endblock %}
+
+

@@ -1,0 +1,63 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/nosotros.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="nosotros">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_marcas_banner') }})">
+            <h1>{{ qi.textoDB('nosotros_title') }}</h1>
+            <h2>{{ qi.textoDB('programas_subtitle') }}</h2>
+            <a href="#goto_programas" class="godown"><i class="fa fa-angle-down"></i></a>
+
+        </div>
+        <div class="programas" id="goto_programas" style="background-image: url({{ qi.imagen('back_programas') }})">
+            <div class="cont_items">
+                {% for item in qi.galeria('programas_nosotros') %}
+                    <div class="item">
+                        <h2>{{ item.titulo }}</h2>
+                        <div class="item_col">
+                            <div class="texto txt_hg">
+                                {{ item.resumen | raw }} <br>
+                            </div>
+                            <br>
+                            {% if item.titulo == "iQuote" and app.user and app.user.esempresa %}
+
+                                <form action="https://live.hpiquote.net/aspx/GateKeeper.aspx" target="_blank" method="post">
+                                    <input type="hidden" name="host" value="DSECOBO7320">
+                                    <input type="hidden" name="token" value="a6017ee311626fd109c745199c1f064c">
+                                    <input type="hidden" name="clearSession" value="Y">
+
+                                    <input type="hidden" name="uEmail" value="{{ app.user.email }}">
+                                    <input type="hidden" name="uName" value="{{ app.user.nombre }}">
+                                    <input type="hidden" name="cName" value="{{ app.user.nombre }}">
+                                    <input type="hidden" name="cAccountNum" value="{{ app.user.id }}">
+                                    <input type="hidden" name="SessionID" value="{{ session }}">
+                                    <input type="hidden" name="cPCode" value="{{ app.user.id }}">
+                                    <input type="hidden" name="ref" value="http://www.sed.international">
+                                    <input type="hidden" name="mfr" value="HPE">
+                                    <input class="btn_gradient_red" type="submit" value="ingresar">
+                                </form>
+
+                            {% endif %}
+                            {% if item.titulo != "iQuote"  %}
+                            <a href="{{ item.link }}" target="_blank" class="btn_gradient_red">{{ qi.textoDB('login') }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="item_col">
+                            <div class="pic pic_hg">
+                                <img src="{{ item.imagen }}" alt="SED">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

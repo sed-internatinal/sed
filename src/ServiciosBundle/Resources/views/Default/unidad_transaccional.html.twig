@@ -1,0 +1,97 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="servicios unidad_t">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_unidad1_banner_interna') }})">
+            <img src="{{ path_productos~"/"~ unidad.gen('imagen',lc) }}" alt="SED">
+            <a href="#goto_marcas" class="godown"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <h2 class="title_midle">{{ qi.textoDB('title_middle_servicios') }}</h2>
+        <div class="content_marcas_servicios" id="goto_marcas" style="background-image: url({{ qi.imagen('backg_marcas_cont') }})">
+
+
+            <ul>
+            {% for item in marcas %}
+                <li>
+                    {% if qi.settingDB("mostrar_producto") == 1 %}
+                        <a href="{{ path("productos-main",{"marca":item.id}) }}">
+                    {% else %}
+                        <a href="#">
+                    {% endif %}
+                    <div class='normal'>
+                        <img src="{{ path_productos~"/"~ item.imagen }}" alt="SED">
+                    </div>
+                    <div class='info'>
+                        <div class="list_box">
+                            {{ item.gen("descripcion",lc)|replace({'</p>':'</p><br>'}) |raw }}
+                        </div>
+                        <a href="#" class="ver_producto" title="{{ item.nombre }}" >
+                                <span>
+                                    <img src="/uploads/images/general/ver_mas_eye.png" alt="SED">
+                                    {{ qi.textoDB('btn_ver_productos') }}
+                                </span>
+                        </a>
+                    </div>
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+
+        </div>
+
+        <div class="remodal big_txt modal_marcas" data-remodal-id="modal_video" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                {{ qi.textoDB('modal_txt_marcas_1') }} <br>
+                <span>o <a href="{{ path('registro') }}">REGISTRATE</a> {{ qi.textoDB('modal_txt_marcas_2') }} </span>
+            </h3>
+            <br>
+            <a href="#login" class="btn_gradient_red open_login" data-remodal-action="cancel">{{ qi.textoDB('iniciar sesión') }}</a>
+        </div>
+
+    </section>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+
+        // - Noel Delgado | @pixelia_me
+
+        const nodes = [].slice.call(document.querySelectorAll('li'), 0);
+        const directions  = { 0: 'top', 1: 'right', 2: 'bottom', 3: 'left' };
+        const classNames = ['in', 'out'].map((p) => Object.values(directions).map((d) => `${p}-${d}`)).reduce((a, b) => a.concat(b));
+
+        const getDirectionKey = (ev, node) => {
+            const { width, height, top, left } = node.getBoundingClientRect();
+            const l = ev.pageX - (left + window.pageXOffset);
+            const t = ev.pageY - (top + window.pageYOffset);
+            const x = (l - (width/2) * (width > height ? (height/width) : 1));
+            const y = (t - (height/2) * (height > width ? (width/height) : 1));
+            return Math.round(Math.atan2(y, x) / 1.57079633 + 5) % 4;
+        }
+
+        class Item {
+            constructor(element) {
+                this.element = element;
+                this.element.addEventListener('mouseover', (ev) => this.update(ev, 'in'));
+                this.element.addEventListener('mouseout', (ev) => this.update(ev, 'out'));
+            }
+
+            update(ev, prefix) {
+                this.element.classList.remove(...classNames);
+                this.element.classList.add(`${prefix}-${directions[getDirectionKey(ev, this.element)]}`);
+            }
+        }
+
+        nodes.forEach(node => new Item(node));
+    </script>
+{% endblock %}

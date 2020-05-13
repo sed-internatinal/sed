@@ -1,0 +1,239 @@
+<?php
+
+namespace HomeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+/**
+ * AreaIcono
+ *
+ * @ORM\Table(name="area_icono")
+ * @ORM\Entity(repositoryClass="HomeBundle\Repository\AreaIconoRepository")
+ * @Vich\Uploadable
+ */
+class AreaIcono
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=255)
+     */
+    private $imagen;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="imagen")
+     * @var File
+     */
+    private $imagenFile;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fondo", type="string", length=255)
+     */
+    private $fondo;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="fondo")
+     * @var File
+     */
+    private $fondoFile;
+
+    /**
+     * @var String
+     * @ORM\Column(name="titulo", type="string", length=100)
+     */
+    private $titulo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resumen", type="string", length=255)
+     */
+    private $resumen;
+
+    /**
+     * @var String
+     * @ORM\Column(name="tittle", type="string", length=100)
+     */
+    private $tittle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="summary", type="string", length=255)
+     */
+    private $summary;
+
+
+
+    public function titulo($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->tittle : $this->titulo;
+    }
+
+    public function resumen($locale)
+    {
+        return strtoupper($locale) == 'EN' ? $this->summary : $this->resumen;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * @param string $imagen
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImagenFile()
+    {
+        return $this->imagenFile;
+    }
+
+    /**
+     * @param File $imagenFile
+     */
+    public function setImagenFile($imagenFile)
+    {
+        $this->imagenFile = $imagenFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFondo()
+    {
+        return $this->fondo;
+    }
+
+    /**
+     * @param string $fondo
+     */
+    public function setFondo($fondo)
+    {
+        $this->fondo = $fondo;
+    }
+
+    /**
+     * @return File
+     */
+    public function getFondoFile()
+    {
+        return $this->fondoFile;
+    }
+
+    /**
+     * @param File $fondoFile
+     */
+    public function setFondoFile($fondoFile)
+    {
+        $this->fondoFile = $fondoFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * @param mixed $titulo
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResumen()
+    {
+        return $this->resumen;
+    }
+
+    /**
+     * @param mixed $resumen
+     */
+    public function setResumen($resumen)
+    {
+        $this->resumen = $resumen;
+    }
+
+    /**
+     * @return String
+     */
+    public function getTittle()
+    {
+        return $this->tittle;
+    }
+
+    /**
+     * @param String $tittle
+     */
+    public function setTittle($tittle)
+    {
+        $this->tittle = $tittle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+    }
+
+
+
+
+    public function __toString()
+    {
+        return $this->titulo.' ';
+    }
+
+}

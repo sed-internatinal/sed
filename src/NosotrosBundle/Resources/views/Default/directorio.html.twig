@@ -1,0 +1,75 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/nosotros.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="nosotros">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_marcas_banner') }})">
+            <h1>{{ qi.textoDB('nosotros_title') }}</h1>
+            <h2>{{ qi.textoDB('directorio_subtitle') }}</h2>
+            <a href="#goto_directorio" class="godown"><i class="fa fa-angle-down"></i></a>
+
+        </div>
+        {#<div class="directorio" id="goto_directorio" style="background-image: url({{ qi.imagen('backg_directorio_cont') }})">#}
+        <div class="directorio" id="goto_directorio">
+            <h2>{{ qi.textoDB('mercadeo_title') }}</h2>
+            <div class="cont_directorio">
+                <div class="barra_filtro">
+                    <div class="filtro">
+                        <span>{{ qi.textoDB('filtrar') }}</span>
+                        <select name="filtro1" id="filtro1" onchange="filtrarDepto(this)">
+                            <option value="0" selected>{{ qi.textoDB("departamento") }}</option>
+                            {% for depto in departamentos %}
+                                <option value="{{ depto.id }}" >{{ depto.gen("nombre",lc) }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="filtro">
+                        <form id="buscador_directorio">
+                            <span>{{ qi.textoDb("buscar-directorio") }}</span>
+                            <input type="text" name="query" value="{{ query }}">
+                            <a href="javascript:enviarformulario()"><i class="fas fa-search"></i></a>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="cont_personas">
+                    <h3 class="nopersonas" {% if personas|length != 0 %}style="display: none;" {% endif %}>{{ qi.textoDB("no-resultados") }}</h3>
+                    {% for user in personas %}
+                        <div class="user userDeptos depto_{{ user.departamento.id }}">
+                            <img src="{{ qi.imagen('logo_user') }}" alt="SED" class="logo_user">
+                            <img src="{{path_images~"/"~user.imagen }}" alt="SED" class="user">
+                            <div class="data first">
+                                <h3>{{ user.nombre }}</h3>
+                                <h4>{{ user.cargo }}</h4>
+                            </div>
+                            <div class="data">
+                                <h5>{{ user.departamento.gen("nombre",lc)|upper }}</h5>
+                                <span><i class="fas fa-envelope"></i><a href="mailto:{{ user.email }}">{{ user.email }}</a></span>
+                                <span><i class="fas fa-phone"></i><strong>TEL:</strong> <a href="tel:{{ user.tel }}">{{ user.tel }}</a> {% if user.ext != null and user.ext != "" %}<strong >EXT:</strong> {{ user.ext }}</span>{% endif %} <br>
+                                <span><i class="fas fa-mobile"></i><strong>CEL:</strong><a href="tel:{{ user.cel }}">{{ user.cel }}</a></span>
+                                <span><i class="fab fa-skype"></i>{{ user.skype }}</span>
+
+                                <!--
+                                <div class="ext">
+                                    <a href="javascript:void(0)" title="Skype"><i class="fab fa-skype"></i></a>
+                                    <a href="javascript:void(0)" title="Teléfono Fijo"><i class="fas fa-phone"></i></a>
+                                    <a href="javascript:void(0)" title="Teléfono Movil"><i class="fas fa-mobile"></i></a>
+                                    <a href="javascript:void(0)" title="E-Mail"><i class="fas fa-envelope"></i></a>
+                                </div>-->
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

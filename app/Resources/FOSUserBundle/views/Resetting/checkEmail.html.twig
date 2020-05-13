@@ -1,0 +1,18 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block content %}
+    <div class="container forgot_pass">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <p>
+                    {{ 'resetting.check_email'|trans({'%email%': email}) }}
+                </p>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+
+    </div>
+{% endblock %}

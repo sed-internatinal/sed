@@ -1,0 +1,42 @@
+{% extends 'lay_iridian.html.twig' %}
+
+
+{% block content %}
+
+    <div class="container add_card">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <h2 class="aviso">
+                    {% if error %}
+                        {{ error }}
+                    {% else %}
+                        {{ qi.textoDB("gracias_payu") }}
+                    {% endif %}
+                </h2>
+                {% if error %}
+                    <button class="boton_g" onclick="location.href='{{ path('tarjetas') }}';">
+                        <img class="sbx sbx1" src="/images/search-L.png"/>
+                        <img class="sbx sbx2" src="/images/search-T.png"/>
+                        <img class="sbx sbx3" src="/images/search-R.png"/>
+                        <img class="sbx sbx4" src="/images/search-B.png"/>
+                        <span>Volver</span>
+                    </button>
+                {% endif %}
+
+                <button class="boton_g" onclick="location.href='{{ path('homepage') }}';">
+                    <img class="sbx sbx1" src="/images/search-L.png"/>
+                    <img class="sbx sbx2" src="/images/search-T.png"/>
+                    <img class="sbx sbx3" src="/images/search-R.png"/>
+                    <img class="sbx sbx4" src="/images/search-B.png"/>
+                    <span>Aceptar</span>
+                </button>
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

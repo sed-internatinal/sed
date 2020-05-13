@@ -1,0 +1,218 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/datos.css') }}" rel="stylesheet">
+    {#<link href="{{ asset('css/breakpoint.css') }}" rel="stylesheet">#}
+{% endblock %}
+
+{% block content %}
+    
+<div class="section-top">
+  <div class="contenedor-grid">
+
+        <p id="obligatorio">*Campos obligatorios</p>
+        {#<p><input type="checkbox"> *Acepto términos y condiciones <input type="checkbox"> *Acepto política de datos <input type="checkbox"> Recordar mis datos</p>#}
+
+   <div class="loginya">
+        <h2>Iniciar sesión</h2>
+
+
+      <form action="{{ path("fos_user_security_check") }}" method="post" role="form">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+              <p>
+                <label for="">*Nombre de usuario</label>
+                <input type="text" name="_username" class="form-control site-forms box-shadow">
+              </p>
+              <p>
+                <label for="">*Contraseña</label>
+                <input type="password" name="_password" class="form-control site-forms box-shadow">
+              </p>
+              <p class="text-right"><button class="btn btn-kamex btn-md btn-first uppercase">Entrar</button></p>
+
+      </form>
+
+   </div>
+      <div class="registroya">
+          <h2>Registrarme</h2>
+
+      {{ form_start(form, {'method': 'post', 'action': '#forms', 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+          <p>
+            <label for="">*Nombre(s):</label>
+              {{ form_errors(form.nombre) }}
+              {{ form_widget(form.nombre) }}
+          </p>
+          <p>
+            <label for="">*Apellido(s)</label>
+              {{ form_errors(form.apellidos) }}
+              {{ form_widget(form.apellidos) }}
+          </p>
+          <p>
+            <label for="">*Número de teléfono móvil</label>
+              {{ form_errors(form.telefono) }}
+              {{ form_widget(form.telefono) }}
+          </p>
+
+          <p>
+            <label for="">*Contraseña</label>
+              {{ form_errors(form.plainPassword.first ) }}
+              {{ form_widget(form.plainPassword.first, {attr: {class:'form-control site-forms box-shadow'}}) }}
+          </p>
+          <p>
+            <label for="">*Verificar contraseña</label>
+              {{ form_errors(form.plainPassword.second) }}
+              {{ form_widget(form.plainPassword.second, {attr: {class:'form-control site-forms box-shadow'}}) }}
+          </p>
+
+          <p>
+            <label for="">*Dirección</label>
+              {{ form_errors(form.direccion) }}
+              {{ form_widget(form.direccion) }}
+          </p>
+          <p>
+            <label for="">*Género</label>
+              {{ form_errors(form.genero) }}
+              {{ form_widget(form.genero) }}
+          </p>
+          <p>
+              <label for="">*Tipo de documento</label>
+              {{ form_errors(form.tipodoc) }}
+              {{ form_widget(form.tipodoc) }}
+          </p>
+          <p>
+            <label for="">*Correo electrónico</label>
+              {{ form_errors(form.email) }}
+              {{ form_widget(form.email) }}
+          </p>
+          <p>
+            <label for="">*Nro. de documento identidad:</label>
+              {{ form_errors(form.documento) }}
+              {{ form_widget(form.documento) }}
+          </p>
+          <p>
+            <label for="">*País:</label>
+              {{ form_errors(form.pais) }}
+              {{ form_widget(form.pais) }}
+          </p>
+            <p><input type="checkbox" required> *Acepto términos y condiciones</p>
+            <p><input type="checkbox" required> *Acepto política de datos</p>
+            <p class="text-right"><button class="btn btn-kamex btn-md btn-first uppercase">Aceptar</button></p>
+          {#<p>
+            <label for="">¿Te gustaría recibir notificaciones?</label>
+            <input type="text" class="form-control site-forms box-shadow">
+          </p>
+          <p class="text-right"><button class="btn btn-kamex btn-md btn-first uppercase">Suscribirse</button></p>#}
+
+    {{ form_end(form) }}
+      </div>
+  </div>
+</div>
+    
+    <!--  
+    
+    <!-- <div class="bannerGeneral" style="background-image: url('{{ qi.imagen('banner-login') }}')">
+        
+        
+        <img s
+        rc="/images/nosotros-pie.png"/>
+    </div> --
+    <div class="container">
+        <div class="row">
+            <div class="descripcionPag">
+                <h1 class="ttlGrandGris">{{ qi.textoDB('login_btn') }}</h1>
+                <hr class="ttlLine"/>
+            </div>
+        </div>
+        <div class="row cont_reg" id="forms">
+            <div class="col-md-4 col-xs-12 signIn">
+                <form action="{{ path("fos_user_security_check") }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    <h4 class="ttlAzulMed">{{ qi.textoDB('cliente-soy') }}</h4>
+                    <p>{{ qi.textoDB('cliente-txt') }}</p>
+                    <div>
+                        {% for flashMessage in app.session.flashbag.get('error') %}
+                            {{ flashMessage }}
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <label>{{ qi.textoDB('correo') }}</label>
+                        <input id="username" name="_username" required/>
+                    </div>
+                    <div>
+                        <label>{{ qi.textoDB('contrasena') }}</label>
+                        <input id="password" name="_password"  type="password" required/>
+                    </div>
+                    <div class="formGroup2">
+                        <div class="customCheck">
+                            <input type="checkbox" class="styled-checkbox" id="remember_me" name="_remember_me" value="on">
+                            <label for="remember_me">{{ qi.textoDB('recordar') }}</label>
+                        </div>
+                    </div>
+                    <div class="formGroup2">
+                        <a href="{{ path('fos_user_resetting_request') }}" class="forgot">{{ qi.textoDB('login_forgot') }}</a>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)" class="faceBtn">
+                            <span><i class="fa fa-facebook" aria-hidden="true"></i></span>
+                            <span>{{ qi.textoDB('facebook-log') }}</span>
+                        </a>
+                    </div>
+                    <input class="btnGreen" type="submit" value="{{ qi.textoDB('login_btn') }}"/>
+                </form>
+            </div>
+            <div class="col-md-offset-2 col-md-6 col-xs-12 signUp">
+                {{ form_start(form, {'method': 'post', 'action': '#forms', 'attr': {'class': 'fos_user_registration_register'}}) }}
+                    <h4 class="ttlAzulMed">{{ qi.textoDB('nuevo-cliente') }}</h4>
+                    <p>{{ qi.textoDB('nuevo-cliente-txt') }}</p>
+                    {{ form_errors(form) }}
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('nombre') }}</label>
+                        {{ form_errors(form.nombre) }}
+                        {{ form_widget(form.nombre, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('apellido') }}</label>
+                        {{ form_errors(form.apellidos) }}
+                        {{ form_widget(form.apellidos, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('correo') }}</label>
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('telefono') }}</label>
+                        {{ form_errors(form.telefono) }}
+                        {{ form_widget(form.telefono, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('direccion-la') }}</label>
+                        {{ form_errors(form.direccion) }}
+                        {{ form_widget(form.direccion, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('contrasena') }}</label>
+                        {{ form_errors(form.plainPassword.first) }}
+                        {{ form_widget(form.plainPassword.first, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="formGroup">
+                        <label>{{ qi.textoDB('repetir-cont') }}</label>
+                        {{ form_errors(form.plainPassword.second) }}
+                        {{ form_widget(form.plainPassword.second, { attr: {'class':''} } ) }}
+                    </div>
+                    <div class="customCheck">
+                        <input type="checkbox" class="styled-checkbox" id="terminos-tarjeta" required>
+                        <label for="terminos-tarjeta">{{ qi.textoDB('check-terms-tarjeta') }}<a href="{{ path('tarjeta-omnitural') }}" class="forgot">{{ qi.textoDB('terminos-condiciones') }}</a></label>
+                    </div>
+                     <input class="btnGreen" type="submit" value="{{ qi.textoDB('login_create') }}"/>
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+-->
+
+{% endblock %}

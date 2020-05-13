@@ -1,0 +1,20 @@
+<form action="{{ path('fos_user_security_check') }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    <p><input type="text" placeholder="Usuario" id="username" name="_username" required/></p>
+    <p><input id="password" name="_password"  placeholder="Contraseña" type="password" required/></p>
+    <!--<label for="convenio">
+        {{ qi.textoDB('convenios_check') }}
+        <input type="checkbox" id="convenio">
+    </label>-->
+    <label for="terminos">
+        {{ qi.textoDB('acepto-terminos') }}
+        <input type="checkbox" id="terminos">
+    </label>
+
+    <p><a href="{{ path('fos_user_resetting_request') }}" class="red-link" >{{ qi.textoDB('recuperar-contrasena') }}</a></p>
+    <input type="submit" value="{{ qi.textoDB('iniciar-sesion') }}" >
+
+    <p><a href="{{ path('registro') }}" class="button_login">{{ qi.textoDB('registro') }}</a></p>
+
+</form>
+

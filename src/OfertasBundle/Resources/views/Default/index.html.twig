@@ -1,0 +1,46 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/ofertas.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="ofertas">
+        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_ofertas_banner') }})">
+            <h1>{{ qi.textoDB('ofertas_title') }}</h1>
+            <h2>{{ qi.textoDB('ofertas_subtitle') }}</h2>
+            <a href="#goto_ofertas" class="godown"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <div class="content_ofertas" id="goto_ofertas" style="background-image: url({{ qi.imagen('backg_marcas_cont') }})">
+            <div class="cont_ofertas">
+                {% for item in qi.galeria('ofertas') %}
+                    <div class="oferta">
+                        <div class="aspec_r">
+                            <div class="wr">
+                                <a href="{{ item.link }}"></a>
+                                <img src="{{ item.imagen }}" alt="SED">
+                                <h2>{{ item.titulo }}</h2>
+                                {{ item.resumen | raw }}
+
+                                <div class="oferta_desc">
+                                    <img class="back" src="/images/hover_circulo.png"/>
+                                    <div class="text">
+                                        {{ item.resumen | raw }}
+                                    </div>
+                                    <div class="descuento">
+                                        <span>{{ item.subtitulo }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

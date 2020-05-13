@@ -1,0 +1,135 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set lc = app.request.locale() %}
+{% set lc = app.request.locale %}
+{% set cu = app.request.locale | capitalize %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/registro.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="registro persona">
+
+        <div class="form_registro" style="background-image: url({{ qi.imagen('back_registro') }})">
+            <div class="texto_reg">
+                <div class="cont_title_small">
+                    <h3 class="title_small">{{ qi.textoDB('persona_title_reg') }}</h3>
+                </div>
+                <div class="cont_title_big">
+                    <h2 class="title_big small">{{ qi.textoDB('registro_title_main') }}</h2>
+                </div>
+                <div class="parg_reg">
+                    {{ qi.textoBigDB('texto_emp_reg') | raw}}
+                </div>
+                <a href="{{ path('actulizar-datos-persona') }}" class="btn_gradient_red big">{{ qi.textoDB('actualizar_datos') }}</a>
+            </div>
+            {% if registrado %}
+                <div class="registrado" >
+                    {{ qi.textoBigDB("usuario_registrado")|raw }}
+                </div>
+            {% else %}
+            {{ form_start(form, {'method': 'post', 'action': '#forms', 'attr': {'class': 'form_reg registro_empresa'}}) }}
+                <div class="cont_form">
+
+                    {{ form_errors(form.nombre) }}
+                    {{ form_widget(form.nombre,{attr: {placeholder: qi.textoDB('reg-nombre')}}) }}
+                    {{ form_errors(form.apellidos) }}
+                    {{ form_widget(form.apellidos,{attr: {placeholder: qi.textoDB('reg-apellido')}}) }}
+                    {{ form_errors(form.tipodoc) }}
+                    {{ form_widget(form.tipodoc,{attr: {placeholder: qi.textoDB('reg-tipo')}}) }}
+                    {{ form_errors(form.documento) }}
+                    {{ form_widget(form.documento,{attr: {placeholder: qi.textoDB('reg-documento')}}) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email,{attr: {placeholder: qi.textoDB('reg-correo')}}) }}
+                    {{ form_errors(form.telefono) }}
+                    {{ form_widget(form.telefono,{attr: {placeholder: qi.textoDB('reg-telefono')}}) }}
+                    {{ form_errors(form.celular) }}
+                    {{ form_widget(form.celular,{attr: {placeholder: qi.textoDB('reg-celular')}}) }}
+                    <div class="cont_convenio">
+                        <input type="text" id="convenio_input" name="convenio" placeholder="{{ qi.textoDB('reg-convenio') }}">
+                        {{ form_errors(form.convenio) }}
+                        <a href="javascript:checkConvenio()">{{ qi.textoDB('reg-verificar-convenio') }}</a>
+                        <div style="display: none;">
+                            {{ form_widget(form.convenio) }}
+                        </div>
+                    </div>
+                    {{ form_errors(form.plainPassword.first ) }}
+                    {{ form_widget(form.plainPassword.first, {attr: {placeholder: qi.textoDB('reg-contra')}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                    {{ form_widget(form.plainPassword.second, {attr: {placeholder: qi.textoDB('reg-verificar-contra')}}) }}
+                    <div class="cont_label">
+                        <label for="conditions" class="terminos">
+                            {{ form_widget(form.conditions) }}
+
+                            <a href="javacript:void(0)">{{ qi.textoDB('acepto-terminos') }}</a>
+                        </label>
+                    </div>
+                </div>
+                {#<div class="docs person">#}
+                    {#<h4>{{ qi.textoDB('aduntar_title') }}</h4>#}
+                    {#{% for item in qi.galeria('docs_upload') %}#}
+                        {#<label for="{{ item.titulo }}" class="file">#}
+                            {#<img src="{{ item.imagen }}" alt="SED"> <br>#}
+                            {#<span>{{ item.resumen | raw }}</span>#}
+                            {#<input type="file" id="{{ item.titulo }}">#}
+                        {#</label>#}
+                    {#{% endfor %}#}
+                {#</div>#}
+            {% if captcha %}
+                <div class="flash-notice">
+                    <p>{{ qi.textoDB("captcha") }}</p>
+                </div>
+            {% endif %}
+                <div class="g-recaptcha" data-sitekey="6Ld2pdMUAAAAALswGGsMICUc2BlxbS6fjPjKeVgD"></div>
+                <input type="submit" class="btn_gradient_red submit" value="registrarse"  >
+            {{ form_end(form) }}
+            {% endif %}
+        </div>
+
+        <div class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking: false, closeOnOutsideClick: false">
+            <h3>
+                {{ qi.textoDB('reg-agradecemos1') }}<br>
+                <span>{{ qi.textoDB('reg-agradecemos2') }}</span>
+            </h3>
+            <br>
+            <a href="{{ path('homepage') }}" class="btn_gradient_red">{{ qi.textoDB('continuar') }}</a>
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function checkConvenio(){
+
+            var conv =  $("#convenio_input").val();
+            if(conv != "") {
+                $.LoadingOverlay("show", {zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
+                $.ajax({
+                    url: $raiz + "/convenios/" + conv,
+                    dataType: "json"
+                }).done(function (data) {
+                    $.LoadingOverlay("hide");
+                    console.log(data);
+                    if (data.ok) {
+                        $('#fos_user_registration_form_convenio').val(data.data);
+                        alertify.success("Convenio " + conv + " valido");
+                    } else {
+                        $('#fos_user_registration_form_convenio').val("");
+                        alertify.error("Convenio " + conv + " no valido");
+                    }
+                });
+            }else{
+                alertify.error("Convenio no valido");
+            }
+        }
+
+        $("form[name='fos_user_registration_form']").submit(function(){
+                $.LoadingOverlay("show", {zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
+
+        });
+
+
+    </script>
+{% endblock %}

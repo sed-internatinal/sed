@@ -1,0 +1,186 @@
+{% extends 'lay_iridian.html.twig' %}
+
+{% block content %}
+    {% set lc = app.request.locale %}
+    {% set cu = app.request.locale | capitalize %}
+    {% set imagen = path_productos ~'/'~ producto.imagen %}
+
+   
+<div class="section-top">
+  <div class="container-md">
+    <div class="row product-row site-breadcrumbs">
+      <div class="col-sm-12">
+          <a href="{{ path('homepage') }}">{{ qi.textoDB('Inicio') }}</a>
+          /
+          <a href="{{ path('productos') }}">{{ qi.textoDB('Productos') }}</a>
+          /
+          <a href="{{ path('productos') }}">{{ producto.categoria.gen('nombre',lc) }}</a>
+           /
+          <span class="current-crumb">{{ producto.gen('nombre',lc) }}</span></div>
+    </div>
+    <div class="row product-row">
+      <div class="col-sm-4">
+        <div class="main-product-img">
+          <img id="zoom_01" src="{{ imagen }}" data-zoom-image="{{ imagen }}" class="img-responsive">
+        </div>
+        <div class="main-product-img">
+          {% for item in imagenes %}
+            <img src="{{ item }}" class="sm-img">
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-sm-offset-1 col-sm-7">
+        <div class="row product-row">
+          <div class="col-sm-6">
+            <div class="product-description">
+              <h1 class="uppercase">{{ producto.gen('nombre',lc) }}</h1>
+              <p class="product-code">{{ qi.textoDB('item-code') }}: {{ producto.sku }}</p>
+              <p class="price-tag">${{ producto.precio | number_format }}</p>
+              <p class="product-quantity">{{ qi.textoDB('quantity') }}
+                  <select name="" id="cant">
+                      {% for item in 1..qi.settingDB('max_productos') %}
+                        <option value="{{ item }}">{{ item }}</option>
+                      {% endfor %}
+                  </select>
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="product-buttons">
+                <a href="#"><img src="{{ qi.imagen('product-btn-cart') }}" id="btn_add" class="img-responsive add_talla" data-id="{{ producto.id }}" data-cant="1"></a>
+              <a href="#"><img src="{{ qi.imagen('product-btn-like') }}" alt="" class="img-responsive"></a>
+              <img src="{{ qi.imagen('product-btn-share') }}" alt="" class="img-responsive">
+              <div class="share-item text-center"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row product-row">
+          <div class="col-sm-12">
+            <div class="product-description">
+              <h4 class="uppercase">{{ qi.textoDB('product-description') }}</h4>
+              {{ producto.gen('descripcion',lc)|raw }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row product-row">
+      <div class="col-sm-12 cross-title">
+        <h2 class="section-title title-center">{{ qi.textoDB('product-uses') }}</h2>
+      </div>
+    </div>
+    <div class="row product-row">
+      <div class="col-sm-12">
+        <ul class="product-uses">
+            {% for item in producto.usos %}
+                <li class="box-shadow">{{ item.gen('nombre',lc) }}</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="row product-row">
+      <div class="col-sm-12">
+        <h2 class="section-title text-center">{{ qi.textoDB('product-features') }}</h2>
+      </div>
+    </div>
+    <div class="row product-row">
+      <div class="col-sm-12 text-center">
+        <div class="product-description-text">
+            {{ producto.gen('caracteristicas',lc)|raw }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+    <!--<div class="container">
+        <div class="row">
+
+                <div class="col-lg-4">
+
+                        <h2>{{ producto.gen('nombre',lc) }}</h2>
+                        {{ producto.gen('descripcion',lc)|raw }}
+                        <div class="desp">
+                            <a class="button">{{ qi.textoDB('product_size_fit') }}</a>
+                        </div>
+                        <hr>
+                        <h3>${{ producto.precio | number_format }}</h3>
+                        {% set cant = 0 %}
+                        {% for item in producto.inventarios %}
+                            {% set cant = item.cantidad + cant %}
+                        {% endfor %}
+                        {% set tallas = ci.tallasProducto(producto.id) %}
+                        {% if tallas | length > 0 %}
+                            <div class="contenedor talla">
+                                <h4>{{ qi.textoDB('product_size') }}</h4>
+                                <form>
+                                    <input type="hidden" id="select-talla" value="{{ (tallas|first).id }}">
+                                </form>
+                            </div>
+                            <ul class="size">
+                                {% for item in tallas %}
+                                    {% set active = '' %}
+                                    {% if loop.index == 1 %}
+                                        {% set active = 'active' %}
+                                    {% endif %}
+                                    <li><a data-value="{{ item.id }}" class="{{ active }}">{{ item.nombre }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if cant > 0 %}
+                        <a data-id="{{ producto.id }}" data-cant="1" class="add_talla">
+                                <span>{{ qi.textoDB('producto_agregar') }}</span>
+                        </a>
+                        {% endif %}
+                        {% if in_wish is defined %}
+                                {% if in_wish == false %}
+                                        <a href="{{ path("add_wish", {"id" : producto.id}) }}" class="button button2 button3 add_wishlist"><span>{{ qi.textoDB('product_wish') }}</span><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                    {% else %}
+                                        <a href="{{ path("wishlist") }}" class="button button2 button3 add_wishlist"><span>{{ qi.textoDB('product_in_wish') }}</span><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                {% endif %}
+                        {% endif %}
+
+                        <div class="solcial_product">
+                            <h4>{{ qi.textoDB('product_share_this') }}</h4>
+                            {% for item in qi.galeria('social_product') %}
+                                <a href=""><img alt="" src="{{ item.imagen }}"/></a>
+                            {% endfor %}
+                        </div>
+
+                </div>
+
+                <div class="col-lg-8">
+                    {% for item in imagenes %}
+                        <div class="item">
+                            <img src="{{ item }}"/>
+                        </div>
+                    {% endfor %}
+                </div>
+
+        </div>
+    </div>-->
+
+{#{{ include('@Zapatos/Default/interesting_products.html.twig', { 'producto': producto } ) }}#}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      $("#zoom_01").elevateZoom();
+      
+      fbq('track', 'ViewContent', {
+          content_ids: ['{{ producto.id }}'],
+          content_type: 'product',
+          value: '{{ producto.precio }}',
+          currency: 'COP'
+      });
+      
+      $(".share-item").jsSocials({
+        showLabel: false,
+        showCount: false,
+        shares: ["twitter", "facebook", "pinterest"]
+      });
+    </script>
+
+
+{% endblock %}

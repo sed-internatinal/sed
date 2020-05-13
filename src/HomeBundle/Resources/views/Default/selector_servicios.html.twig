@@ -1,0 +1,67 @@
+{% extends 'lay_iridian.html.twig' %}
+{% set categorias = ci.categorias() %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/select-serv.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="buttons_categories">
+        <ul>
+            {% for cat in categorias %}
+                <li>
+                    <a href="{% if cat.id == 7 %}{{ path('selector-servicios')}} {% else %}{{ path('productos-main',{"categoria":cat.id}) }} {% endif %}">{{ cat.nombre }}</a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+<main>
+    <div class="nav-servicios">
+        {% for item in qi.galeria('lista_servicios') %}
+            <a name="{{ item.llave | raw}}" class="link_servicio" onclick="cambiarInfo(this)" id="defaultOpen">
+                {{ item.titulo | raw}}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="descripcion-servicio">
+        {% for item in qi.galeria('lista_servicios') %}
+        <div class="infoServ" id="{{ item.llave | raw }}" >
+            <h2>{{ item.titulo | raw}}</h2>
+
+         <p>
+             <img src="{{item.imagen }}">
+             {{ qi.textoBigDB(item.llave)|raw }}
+
+         </p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+
+</main>
+    <aside class="contactoEq">
+            <h2> {{ qi.textoDB('contacta-equipo') }}</h2>
+            <a href="{{ path('contacto') }}"> Unidad estrategica de soluciones y servicios</a>
+    </aside>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+function cambiarInfo(elmnt) {
+    var nombre = elmnt.getAttribute("name");
+    console.log(nombre);
+    var parrafos = document.getElementsByClassName("infoServ");
+    for (i = 0; i < parrafos.length; i++) {
+        parrafos[i].style.display = "none";
+    }
+    document.getElementById(nombre).style.display = "block";
+    }
+        document.getElementById("defaultOpen").click();
+    </script>
+
+{% endblock %}
