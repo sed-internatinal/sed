@@ -314,6 +314,36 @@ class Producto
      */
     private $updatedAt;
 
+    // Fields for delivering
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="peso", type="float")
+     */
+
+    private $peso;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="alto", type="float")
+     */
+    private $alto;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="largo", type="float")
+     */
+    private $largo;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="ancho", type="float")
+     */
+    private $ancho;
+
 
 
     public function __toString()
@@ -1636,5 +1666,135 @@ class Producto
     public function getGarantiaEn()
     {
         return $this->garantiaEn;
+    }
+
+    // Getters and setters for delivering
+
+    // Peso get and set
+
+    /**
+     * Set peso
+     *
+     * @param float $peso
+     *
+     * @return Producto
+     */
+    public function setPeso($peso)
+    {
+        $this->peso = $peso;
+
+        return $this;
+    }
+
+    /**
+     * Get peso
+     *
+     * @return float
+     */
+    public function getPeso()
+    {
+        return $this->peso;
+    }
+
+    // Alto get and set
+
+    /**
+     * Set alto
+     *
+     * @param float $alto
+     *
+     * @return Producto
+     */
+    public function setAlto($alto)
+    {
+        $this->peso = $alto;
+
+        return $this;
+    }
+
+    /**
+     * Get alto
+     *
+     * @return float
+     */
+    public function getAlto()
+    {
+        return $this->alto;
+    }
+
+    // Largo get and set
+
+    /**
+     * Set largo
+     *
+     * @param float $largo
+     *
+     * @return Producto
+     */
+    public function setLargo($largo)
+    {
+        $this->peso = $largo;
+
+        return $this;
+    }
+
+    /**
+     * Get largo
+     *
+     * @return float
+     */
+    public function getLargo()
+    {
+        return $this->largo;
+    }
+
+    // Ancho get and set
+
+    /**
+     * Set ancho
+     *
+     * @param float $ancho
+     *
+     * @return Producto
+     */
+    public function setAncho($ancho)
+    {
+        $this->peso = $ancho;
+
+        return $this;
+    }
+
+    /**
+     * Get ancho
+     *
+     * @return float
+     */
+    public function getAncho()
+    {
+        return $this->ancho;
+    }
+
+    /**
+     * Set nose
+     *
+     * @param string $nose
+     *
+     * @return Producto
+     */
+    public function setNose($nose)
+    {
+        $this->nose = $nose;
+
+        return $this;
+    }
+
+    /**
+     * Get nose
+     *
+     * @return string
+     */
+    public function getNose()
+    {
+        return $this->nose;
     }
 }
