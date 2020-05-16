@@ -1773,28 +1773,4 @@ class Producto
     {
         return $this->ancho;
     }
-
-    /**
-     * Set nose
-     *
-     * @param string $nose
-     *
-     * @return Producto
-     */
-    public function setNose($nose)
-    {
-        $this->nose = $nose;
-
-        return $this;
-    }
-
-    /**
-     * Get nose
-     *
-     * @return string
-     */
-    public function getNose()
-    {
-        return $this->nose;
-    }
 }
