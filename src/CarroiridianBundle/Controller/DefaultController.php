@@ -15,55 +15,56 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-
-
     /**
      * @Route("/carrito-de-compras", name="carrito")
      */
     public function indexAction(Request $request)
     {
-        $productos = $this->getDoctrine()->getRepository('CarroiridianBundle:Producto')->findBy(array('visible'=>true));
+        $productos = $this->getDoctrine()->getRepository('CarroiridianBundle:Producto')->findBy(array('visible' => true));
         shuffle($productos);
         $productos = array_slice($productos, 0, 4);
-       $session = new Session();
+        $session = new Session();
         $carrito = $session->get('carrito', array());
         $bonos = $session->get('bonos', array());
         $descuento = $session->get('descuento', array());
-        if(count($carrito) == 0){
+        if (count($carrito) == 0) {
             return $this->redirectToRoute('homepage');
         }
+
         /*
-        if($request->get("discount") && count($descuento) == 0){
-            $bono = $this->getDoctrine()->getRepository('CarroiridianBundle:Bono')->findBy(array('codigo'=>$request->get("discount"), "reclama" => 0));
-            if(count($bono) > 0){
-                $session->set('descuento', array("id" => $bono[0]->getId() , "codigo" => $bono[0]->getCodigo(), "de" => $bono[0]->getDe(), "valor" => $bono[0]->getValorbono()->getValor()));
-            }
-        }
-        $descuento = $session->get('descuento', array());
-        */
+          if($request->get("discount") && count($descuento) == 0){
+          $bono = $this->getDoctrine()->getRepository('CarroiridianBundle:Bono')->findBy(array('codigo'=>$request->get("discount"), "reclama" => 0));
+          if(count($bono) > 0){
+          $session->set('descuento', array("id" => $bono[0]->getId() , "codigo" => $bono[0]->getCodigo(), "de" => $bono[0]->getDe(), "valor" => $bono[0]->getValorbono()->getValor()));
+          }
+          }
+          $descuento = $session->get('descuento', array());
+         */
+
         $securityContext = $this->container->get('security.authorization_checker');
         if (!$securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->redirectToRoute('registro_login');
         }
-        /** @var  $user User */
+
+        /** @var $user User */
         $user = $this->getUser();
         $direcciones = $user->getDirecciones();
         $envio = new Envio();
-
         $user_dir_check = '';
-        if($request->isMethod('GET')) {
+
+        if ($request->isMethod('GET')) {
             $user_dir_check = 'checked';
-            if($user->getDepartamento()){
+            if ($user->getDepartamento()) {
                 $envio->setDepartamento($user->getDepartamento());
                 $envio->setCiudad($user->getCiudad());
                 $envio->setDireccion($user->getDireccion());
-            }else{
+            } else {
                 $departamento = $this->getDoctrine()->getRepository('CarroiridianBundle:Departamento')->find(2);
                 $envio->setDepartamento($departamento);
             }
             $envio->setUser($user);
-
         }
+
         $form = $this->createForm(EnvioType::class, $envio);
         $form->handleRequest($request);
 
@@ -72,25 +73,28 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($envio);
             $em->flush();
-
-           $session = new Session();
+            $session = new Session();
             $session->set('direccion_id', $envio->getId());
-            if($this->container->getParameter("pagos_payu.api_payu")){
-                return $this->redirectToRoute('tarjetas');
-            }else{
-                return $this->redirectToRoute('pagar_payu');
-            }
-            //
-        }else{
+
+            return $this->redirectToRoute('pagar_zona_virtual');
+
+        /* if($this->container->getParameter("pagos_payu.api_payu")){
+          return $this->redirectToRoute('tarjetas');
+          }else{
+          return $this->redirectToRoute('pagar_payu');
+          } */
+        } else {
             $checked = $request->request->get('direccion');
-            if($checked);
+            if ($checked)
+                ;
             $user_dir_check = 'checked';
         }
-        return $this->render('CarroiridianBundle:Default:index.html.twig', array('carrito'=>$carrito,'bonos'=>$bonos, "descuento" => $descuento,
-            "direcciones" => $direcciones,
-            "form" => $form->createView(),
-            "user_dir_check" => $user_dir_check,
-            "productos"=>$productos
+
+        return $this->render('CarroiridianBundle:Default:index.html.twig', array('carrito' => $carrito, 'bonos' => $bonos, 'descuento' => $descuento,
+                    'direcciones' => $direcciones,
+                    'form' => $form->createView(),
+                    'user_dir_check' => $user_dir_check,
+                    'productos' => $productos,
         ));
     }
 
@@ -101,6 +105,7 @@ class DefaultController extends Controller
     {
         return $this->render('CarroiridianBundle:Default:home.html.twig');
     }
+
     /**
      * @Route("/datos", name="datos")
      */
@@ -119,12 +124,13 @@ class DefaultController extends Controller
         if (!$securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $url = $this->generateUrl('homepage');
             $response = new RedirectResponse($url);
+
             return $response;
         }
         $user = $this->getUser();
         $direcciones = $user->getDirecciones();
         $envio = new Envio();
-        if($request->isMethod('GET')) {
+        if ($request->isMethod('GET')) {
             $departamento = $this->getDoctrine()->getRepository('CarroiridianBundle:Departamento')->find(2);
             $envio->setUser($user);
             $envio->setDepartamento($departamento);
@@ -138,24 +144,27 @@ class DefaultController extends Controller
             $em->persist($envio);
             $em->flush();
 
-           $session = new Session();
+            $session = new Session();
             $session->set('direccion_id', $envio->getId());
 
             return $this->redirectToRoute('pagar_payu');
         }
-        return $this->render('CarroiridianBundle:Default:direccion.html.twig', array('form'=>$form->createView(),'direcciones'=>$direcciones));
+
+        return $this->render('CarroiridianBundle:Default:direccion.html.twig', array('form' => $form->createView(), 'direcciones' => $direcciones));
     }
 
     /**
      * @Route("/direccion-sesion/{id}", name="direccion_sesion")
      */
-    public function direccionSesionAction(Request $request,$id)
+    public function direccionSesionAction(Request $request, $id)
     {
         $envio = $this->getDoctrine()->getRepository('CarroiridianBundle:Envio')->find($id);
-       $session = new Session();
+        $session = new Session();
         $session->set('direccion_id', $envio->getId());
+
         return $this->redirectToRoute('pagar_payu');
     }
+
     /**
      * @Route("/mensaje", name="mensaje")
      */
@@ -167,9 +176,9 @@ class DefaultController extends Controller
     /**
      * @Route("/add-carrito/{id}/{cant}", name="add_carrito")
      */
-    public function addCarritoAction($id,$cant)
+    public function addCarritoAction($id, $cant)
     {
-       $session = new Session();
+        $session = new Session();
 
         $carrito = $session->get('carrito', array());
 
@@ -177,36 +186,38 @@ class DefaultController extends Controller
         $producto = $repo->find($id);
 
         try {
-            if(array_key_exists($producto->getId(),$carrito))
-                $prod_carrito = $carrito[$producto->getId()]["cantidad"];
-            else
+            if (array_key_exists($producto->getId(), $carrito)) {
+                $prod_carrito = $carrito[$producto->getId()]['cantidad'];
+            } else {
                 $prod_carrito = 0;
+            }
         } catch (Exception $e) {
             $prod_carrito = 0;
         }
-        $qi=$this->get("qi");
-        if(!is_numeric($prod_carrito))
+        $qi = $this->get('qi');
+        if (!is_numeric($prod_carrito)) {
             $prod_carrito = 0;
+        }
         $prod_carrito += $cant;
-        if($prod_carrito < 0)
+        if ($prod_carrito < 0) {
             $prod_carrito = 0;
-        $carrito[$producto->getId()] = array("cantidad"=>$prod_carrito,"nombre"=>$producto->getNombreEs(),"precio"=> $qi->getPrecioUser($producto->getId(),$this->getUser()));
-        if($prod_carrito < 1){
+        }
+        $carrito[$producto->getId()] = array('cantidad' => $prod_carrito, 'nombre' => $producto->getNombreEs(), 'precio' => $qi->getPrecioUser($producto->getId(), $this->getUser()));
+        if ($prod_carrito < 1) {
             unset($carrito[$producto->getId()]);
         }
 
+        $session->set('carrito', $carrito);
 
-        $session->set('carrito',$carrito);
-
-        return new JsonResponse(array("cantidad"=>$prod_carrito));
+        return new JsonResponse(array('cantidad' => $prod_carrito));
     }
 
     /**
      * @Route("/add-carrito-talla/{id}/{cant}/{id_talla}", name="add_carrito_talla")
      */
-    public function addCarritoTallaAction($id,$cant,$id_talla)
+    public function addCarritoTallaAction($id, $cant, $id_talla)
     {
-       $session = new Session();
+        $session = new Session();
 
         $carrito = $session->get('carrito', array());
 
@@ -214,31 +225,34 @@ class DefaultController extends Controller
         $producto = $repo->find($id);
 
         try {
-            if(array_key_exists($producto->getId(),$carrito))
-                if(array_key_exists($id_talla,$carrito[$producto->getId()]))
-                    $prod_carrito = $carrito[$producto->getId()][$id_talla]["cantidad"];
-                else
+            if (array_key_exists($producto->getId(), $carrito)) {
+                if (array_key_exists($id_talla, $carrito[$producto->getId()])) {
+                    $prod_carrito = $carrito[$producto->getId()][$id_talla]['cantidad'];
+                } else {
                     $prod_carrito = 0;
-            else
+                }
+            } else {
                 $prod_carrito = 0;
+            }
         } catch (Exception $e) {
             $prod_carrito = 0;
         }
 
-        if(!is_numeric($prod_carrito))
+        if (!is_numeric($prod_carrito)) {
             $prod_carrito = 0;
+        }
         $prod_carrito += $cant;
-        if($prod_carrito < 0)
+        if ($prod_carrito < 0) {
             $prod_carrito = 0;
-        $carrito[$producto->getId()][$id_talla] = array("cantidad"=>$prod_carrito,"nombre"=>$producto->getNombreEs(),"precio"=>$producto->getPrecio());
-        if($prod_carrito < 1){
+        }
+        $carrito[$producto->getId()][$id_talla] = array('cantidad' => $prod_carrito, 'nombre' => $producto->getNombreEs(), 'precio' => $producto->getPrecio());
+        if ($prod_carrito < 1) {
             unset($carrito[$producto->getId()][$id_talla]);
         }
 
+        $session->set('carrito', $carrito);
 
-        $session->set('carrito',$carrito);
-
-        return new JsonResponse(array("cantidad"=>$prod_carrito));
+        return new JsonResponse(array('cantidad' => $prod_carrito));
     }
 
     /**
@@ -246,24 +260,23 @@ class DefaultController extends Controller
      */
     public function removeCarritoBonoAction($id)
     {
-       $session = new Session();
+        $session = new Session();
 
         $bonos = $session->get('bonos', array());
-        if(array_key_exists($id,$bonos)){
+        if (array_key_exists($id, $bonos)) {
             unset($bonos[$id]);
         }
-        $session->set('bonos',$bonos);
+        $session->set('bonos', $bonos);
 
-        return new JsonResponse(array("cantidad"=>0));
+        return new JsonResponse(array('cantidad' => 0));
     }
-
 
     /**
      * @Route("/set-carrito-talla/{id}/{cant}/{id_talla}", name="set_carrito_talla")
      */
-    public function setCarritoTallaAction($id,$cant,$id_talla)
+    public function setCarritoTallaAction($id, $cant, $id_talla)
     {
-       $session = new Session();
+        $session = new Session();
 
         $carrito = $session->get('carrito', array());
 
@@ -271,50 +284,56 @@ class DefaultController extends Controller
         $producto = $repo->find($id);
 
         try {
-            if(array_key_exists($producto->getId(),$carrito))
-                if(array_key_exists($id_talla,$carrito[$producto->getId()]))
-                    $prod_carrito = $carrito[$producto->getId()][$id_talla]["cantidad"];
-                else
+            if (array_key_exists($producto->getId(), $carrito)) {
+                if (array_key_exists($id_talla, $carrito[$producto->getId()])) {
+                    $prod_carrito = $carrito[$producto->getId()][$id_talla]['cantidad'];
+                } else {
                     $prod_carrito = 0;
-            else
+                }
+            } else {
                 $prod_carrito = 0;
+            }
         } catch (Exception $e) {
             $prod_carrito = 0;
         }
 
-        if(!is_numeric($prod_carrito))
+        if (!is_numeric($prod_carrito)) {
             $prod_carrito = 0;
+        }
         $prod_carrito = $cant;
-        if($prod_carrito < 0)
+        if ($prod_carrito < 0) {
             $prod_carrito = 0;
-        $carrito[$producto->getId()][$id_talla] = array("cantidad"=>$prod_carrito,"nombre"=>$producto->getNombreEs(),"precio"=>$producto->getPrecio());
-        if($prod_carrito < 1){
+        }
+        $carrito[$producto->getId()][$id_talla] = array('cantidad' => $prod_carrito, 'nombre' => $producto->getNombreEs(), 'precio' => $producto->getPrecio());
+        if ($prod_carrito < 1) {
             unset($carrito[$producto->getId()][$id_talla]);
         }
 
+        $session->set('carrito', $carrito);
 
-        $session->set('carrito',$carrito);
-
-        return new JsonResponse(array("cantidad"=>$prod_carrito));
+        return new JsonResponse(array('cantidad' => $prod_carrito));
     }
 
     /**
      * @Route("/ciudades-dept/{id}/{id_ciudad}", name="ciudadesByDept", defaults={"id_ciudad":"a"})
      */
-    public function ciudadesByDeptAction($id,$id_ciudad)
+    public function ciudadesByDeptAction($id, $id_ciudad)
     {
         $ciudad_id = 0;
-        if(is_numeric($id_ciudad))
+        if (is_numeric($id_ciudad)) {
             $ciudad_id = $id_ciudad;
-        $ciudades = $this->getDoctrine()->getRepository('CarroiridianBundle:Ciudad')->findBy(array('departamento'=>$id,"visible"=>true),array('nombre'=>'asc'));
-        return $this->render('CarroiridianBundle:Default:ciudades.html.twig', array('ciudades'=>$ciudades,'ciudad_id'=>$ciudad_id));
+        }
+        $ciudades = $this->getDoctrine()->getRepository('CarroiridianBundle:Ciudad')->findBy(array('departamento' => $id, 'visible' => true), array('nombre' => 'asc'));
+
+        return $this->render('CarroiridianBundle:Default:ciudades.html.twig', array('ciudades' => $ciudades, 'ciudad_id' => $ciudad_id));
     }
+
     /**
      * @Route("/productos", name="productos")
      */
     public function productosAction()
     {
-        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos'=>array()));
+        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos' => array()));
     }
 
     /**
@@ -322,9 +341,10 @@ class DefaultController extends Controller
      */
     public function wishlistAction()
     {
-       $session = new Session();
+        $session = new Session();
         $productos = $session->get('wish', array());
-        return $this->render('CarroiridianBundle:Default:wishlist.html.twig', array('productos'=>$productos));
+
+        return $this->render('CarroiridianBundle:Default:wishlist.html.twig', array('productos' => $productos));
     }
 
     /**
@@ -332,17 +352,17 @@ class DefaultController extends Controller
      */
     public function wishAction($id)
     {
-       $session = new Session();
+        $session = new Session();
         $productos = $session->get('wish', array());
         $ci = $this->get('ci');
         $producto = $ci->getProductoById($id);
-        if($producto != null){
+        if ($producto != null) {
             $productos[$id] = $producto[0];
-            $session->set("wish", $productos);
+            $session->set('wish', $productos);
         }
+
         return $this->redirectToRoute('wishlist');
     }
-
 
     /**
      * @Route("/productos_por_categoria/{categoria}/{nombre}", name="productos_por_categoria")
@@ -351,7 +371,8 @@ class DefaultController extends Controller
     {
         $ci = $this->get('ci');
         $productos = $ci->getProductos($categoria);
-        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos'=>$productos,'categoria'=>$categoria));
+
+        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos' => $productos, 'categoria' => $categoria));
     }
 
     /**
@@ -361,7 +382,8 @@ class DefaultController extends Controller
     {
         $ci = $this->get('ci');
         $productos = $ci->getProductos(null, $genero);
-        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos'=>$productos, 'genero' => $genero));
+
+        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos' => $productos, 'genero' => $genero));
     }
 
     /**
@@ -371,19 +393,22 @@ class DefaultController extends Controller
     {
         $ci = $this->get('ci');
         $productos = $ci->getProductos($categoria, $genero);
-        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos'=>$productos, 'genero' => $genero));
+
+        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('productos' => $productos, 'genero' => $genero));
     }
 
-
-    public function generateRandomString($length = 10) {
+    public function generateRandomString($length = 10)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
+
         return $randomString;
     }
+
     /**
      * @Route("/product/{id}/{nombre}", name="product")
      */
@@ -392,13 +417,14 @@ class DefaultController extends Controller
         $path = $this->container->getParameter('app.path.productos');
         $producto = $this->getDoctrine()->getRepository('CarroiridianBundle:Producto')->find($id);
         $imagenes = array();
-        array_push($imagenes,$path.'/'.$producto->getImagen());
-        foreach ($producto->getGalerias() as $galeria){
-            array_push($imagenes,$path.'/'.$galeria->getImagen());
+        array_push($imagenes, $path.'/'.$producto->getImagen());
+        foreach ($producto->getGalerias() as $galeria) {
+            array_push($imagenes, $path.'/'.$galeria->getImagen());
         }
-       $session = new Session();
+        $session = new Session();
         $wish_list = $session->get('wish', array());
-        return $this->render('CarroiridianBundle:Default:producto.html.twig',array('producto'=>$producto,'imagenes'=>$imagenes, "in_wish" => isset($wish_list[$id])));
+
+        return $this->render('CarroiridianBundle:Default:producto.html.twig', array('producto' => $producto, 'imagenes' => $imagenes, 'in_wish' => isset($wish_list[$id])));
     }
 
     /**
@@ -418,16 +444,17 @@ class DefaultController extends Controller
             $em->persist($bono);
             $em->flush();
 
-           $session = new Session();
-            $bonos = $session->get('bonos',array());
+            $session = new Session();
+            $bonos = $session->get('bonos', array());
             //$bono = new Bono();
-            $bono_s = array('id'=>$bono->getId(),'de'=>$bono->getDe(),'para'=>$bono->getPara(),'valor'=>$bono->getValorbono()->getValor(),'mensaje'=>$bono->getMensaje());
-            array_push($bonos,$bono_s);
+            $bono_s = array('id' => $bono->getId(), 'de' => $bono->getDe(), 'para' => $bono->getPara(), 'valor' => $bono->getValorbono()->getValor(), 'mensaje' => $bono->getMensaje());
+            array_push($bonos, $bono_s);
             $session->set('bonos', $bonos);
 
             return $this->redirectToRoute('carrito');
         }
-        return $this->render('HomeBundle:Default:gift.html.twig', array('form'=>$form->createView()));
+
+        return $this->render('HomeBundle:Default:gift.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -435,7 +462,7 @@ class DefaultController extends Controller
      */
     public function buscadorAction(Request $request)
     {
-        return $this->render('CarroiridianBundle:Default:productos.html.twig', array( "search" => $request->query->get('search')));
+        return $this->render('CarroiridianBundle:Default:productos.html.twig', array('search' => $request->query->get('search')));
     }
 
     /**

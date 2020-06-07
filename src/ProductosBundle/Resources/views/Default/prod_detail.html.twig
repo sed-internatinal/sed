@@ -6,159 +6,210 @@
 {% set precio = qi.precioUser(producto.id,app.user) %}
 
 {% block stylesheets %}
-    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
-    {{ parent() }}
-    <link href="{{ asset('css/productos.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+	{{ parent() }}
+	<link href="{{ asset('css/productos.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <section class="productos">
-        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_productos_banner') }})">
-            <h1>{{ qi.textoDB('productos_title') }}</h1>
-            <h2>{{ qi.textoDB('productos_subtitle') }}</h2>
-            <a href="#goto_productos" class="godown"><i class="fa fa-angle-down"></i></a>
-            <a href="{{ qi.textoDB("link_asesor") }}" class="contac_asesor" style="background-image: url({{ qi.imagen('back_asesor') }})"><img src="{{ qi.imagen('contactar_asesor') }}" alt="SED">Contactar un asesor</a>
-        </div>
-        <div class="content_productos_detail" id="goto_productos">
-            <div class="buttons_categories">
-                <ul>
-                    {% for cat in categorias %}
-                        <li>
-                            <a href="{% if cat.id == 7 %}{{ path('selector-servicios')}} {% else %}{{ path('productos-main',{"categoria":cat.id}) }} {% endif %}">{{ cat.nombre }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="cont_products_detail">
-                <div class="nav_prods">
-                    <a href="{{ path('productos-main',{"categoria":producto.categoria.id}) }}">{{ producto.categoria.gen("nombre",lc) }} </a> <strong><i class="fas fa-chevron-right"></i></strong>
-                    <a href="{{ path("productos-main",{"marca":producto.marca.id}) }}">{{ producto.marca.nombre }}</a> <strong><i class="fas fa-chevron-right"></i></strong>
+	<section class="productos">
+		<div class="banner_general" style="background-image: url({{ qi.imagen('backg_productos_banner') }})">
+			<h1>{{ qi.textoDB('productos_title') }}</h1>
+			<h2>{{ qi.textoDB('productos_subtitle') }}</h2>
+			<a href="#goto_productos" class="godown">
+				<i class="fa fa-angle-down"></i>
+			</a>
+			<a href="{{ qi.textoDB("link_asesor") }}" class="contac_asesor" style="background-image: url({{ qi.imagen('back_asesor') }})"><img src="{{ qi.imagen('contactar_asesor') }}" alt="SED">Contactar un asesor</a>
+		</div>
+		<div class="content_productos_detail" id="goto_productos">
+			<div class="buttons_categories">
+				<ul>
+					{% for cat in categorias %}
+						<li>
+							<a href="{% if cat.id == 7 %}{{ path('selector-servicios')}} {% else %}{{ path('productos-main',{"categoria":cat.id}) }} {% endif %}">{{ cat.nombre }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="cont_products_detail">
+				<div class="nav_prods">
+					<a href="{{ path('productos-main',{"categoria":producto.categoria.id}) }}">{{ producto.categoria.gen("nombre",lc) }}
+					</a>
+					<strong>
+						<i class="fas fa-chevron-right"></i>
+					</strong>
+					<a href="{{ path("productos-main",{"marca":producto.marca.id}) }}">{{ producto.marca.nombre }}</a>
+					<strong>
+						<i class="fas fa-chevron-right"></i>
+					</strong>
 
-                </div>
-                <div class="prod_detail">
-                    <div class="col pic">
-                        {% if precio != producto.precio and app.user %}
-                            <div class="prod_convenio">
-                                <img src="{{ qi.imagen('descuento_convenio') }}"/>
-                            </div>
-                        {% endif %}
-                        <div class="swiper-container gallery-top sw_detail_prod">
-                            <div class="swiper-wrapper">
-                                {% for item in producto.galerias %}
-                                    <div class="swiper-slide">
-                                        <img src="{{ path_productos~"/"~item.imagen }}" alt="SED">
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="swiper-container gallery-thumbs sw_detail_prod_thumbs">
-                            <div class="swiper-wrapper">
-                                {% for item in producto.galerias %}
-                                    <div class="swiper-slide">
-                                        <img src="{{ path_productos~"/"~item.imagen }}" alt="SED" align="left">
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col desc">
-                            <h3>{{ producto.gen("nombre",lc) }}</h3>
-                            <h2>{{ qi.textoDB("sku") }} {{ producto.sku }}</h2>
+				</div>
+				<div class="prod_detail">
+					<div class="col pic">
+						{% if precio != producto.precio and app.user %}
+							<div class="prod_convenio">
+								<img src="{{ qi.imagen('descuento_convenio') }}"/>
+							</div>
+						{% endif %}
+						<div class="swiper-container gallery-top sw_detail_prod">
+							<div class="swiper-wrapper">
+								{% for item in producto.galerias %}
+									<div class="swiper-slide">
+										<img src="{{ path_productos~"/"~item.imagen }}" alt="SED">
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="swiper-container gallery-thumbs sw_detail_prod_thumbs">
+							<div class="swiper-wrapper">
+								{% for item in producto.galerias %}
+									<div class="swiper-slide">
+										<img src="{{ path_productos~"/"~item.imagen }}" alt="SED" align="left">
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="col desc">
+						<h3>{{ producto.gen("nombre",lc) }}</h3>
+						<h2>{{ qi.textoDB("sku") }}
+							{{ producto.sku }}</h2>
 
-                            {{ producto.gen("descripcion",lc) | raw }}
-                        <a href="javascript:void(0)" class="btn_ficha">{{ qi.textoDB("ficha_tecnica") }} </a>
-                        <a href="javascript:void(0)" class="btn_garantia">{{ qi.textoDB("garantia") }}  </a>
+						{{ producto.gen("descripcion",lc) | raw }}
+						<a href="javascript:void(0)" class="btn_ficha">{{ qi.textoDB("ficha_tecnica") }}
+						</a>
+						<a href="javascript:void(0)" class="btn_garantia">{{ qi.textoDB("garantia") }}
+						</a>
 
-                        <!--<a href="javascript:void(0)">GARANTÍA </a>-->
-                    </div>
-                    <div class="col comprar">
-                        {% set ob= ci.inventario(producto.id,1) %}
-                        {% set cantidad= ob!= null? ob.cantidad:0 %}
-                        {% set disponibilidad = cantidad > 0?"disponible":"no_disponible" %}
+						<!--<a href="javascript:void(0)">GARANTÍA </a>-->
+					</div>
+					<div class="col comprar">
+						{% set ob= ci.inventario(producto.id,1) %}
+						{% set cantidad= ob!= null? ob.cantidad:0 %}
+						{% set disponibilidad = cantidad > 0?"disponible":"no_disponible" %}
 
-                        {% if app.user %}
-                        <strong style="color:black"> ${{ precio|number_format }} <span>{{ qi.textoDB('precio_normal') }} ${{ producto.precioFecha|number_format }}</span> </strong>
-                        {% endif %}
-                        <span class="disp">{{ qi.textoDB("disponibilidad") }} <img src="{{ qi.imagen(disponibilidad) }}" alt="SED"> </span>
-                        <span class="cant">{{ qi.textoDB('cantidad') }} <input id="cantidad" type="number" min="1" max="{{ cantidad }}" value="1"> </span>
-                        <input type="hidden" id="select-talla" value="1">
-                        {% if app.user %}
-                            {% if cantidad > 0 %}
-                            <a data-id="{{ producto.id }}" data-cant="1" class="add_talla" href="javascript:void(0)">{{ qi.textoDB("AGREGAR_AL_CARRITO") }}<i class="fas fa-cart-plus"></i></a>
-                            {% endif %}
-                        {% else %}
-                            <a href="{{ path('registro') }}">{{ qi.textoDB("Registrate") }}</a>
-                        {% endif %}
-                    </div>
+						{% if app.user %}
+							<strong style="color:black">
+								${{ precio|number_format }}
+								<span>{{ qi.textoDB('precio_normal') }}
+									<!--dware-->
+									{% if app.user.getEsEmpresa() %}
+										${{ producto.precioFecha|number_format }}</span>
+								{% else %}
+									${{ producto.precioFechaUsuario|number_format }}
 
-                    <div class="ficha_t" id="fichatec">
-                        {{ producto.gen("caracteristicas",lc) | raw }}
-                    </div>
-                    <div class="garant" id="fichatec2">
-                        {{ producto.gen("garantia",lc) | raw }}
-                    </div>
-                </div>
-            </div>
-            <div class="prods_relacionados">
-                <h2>{{ qi.textoDB('productos_relacionados') }}</h2>
-                <div class="swiper-container productos_relacionados">
-                    <div class="swiper-wrapper">
-                        {% for item in ci.productosRelacionados(producto.id,4) %}
-                            {% set precio = qi.precioUser(item.id,app.user) %}
-                            <div class="swiper-slide">
+								{% endif %}
 
-                                <div class="producto item grid-item prod_relacionado small">
-                                    {% if precio != item.precio and app.user %}
-                                        <div class="prod_convenio"><img src="{{ qi.imagen('descuento_convenio') }}"/></div>
-                                    {% endif %}
-                                    <div id="img_marca">
-                                        <img src="{{ item.imagenMarca }}" id="marcachiqui"/>
-                                    </div>
-                                    <h3 class="titulo">{{ item.nombre }}</h3>
-                                    <h6><strong>{{ qi.textoDB("sku") }}</strong> {{ item.sku }}<br>
-                                        <strong class="parrafo" >{{ item.resumen|raw }}</strong></h6>
-                                    <div class="imagen">
-                                        <img src="{{ item.imagen }}" alt="SED" class="img_prod">
-                                    </div>
-                                    {% if app.user %}
-                                    <h5><em>{{ qi.textoDB('precio_normal') }}</em> ${{ item.precioFecha|number_format }}</h5>
-                                    <h4><strong>{{ qi.textoDB('hoy') }}</strong>{{ precio|number_format }}</h4> <br>
-                                    {% endif %}
+							</strong>
+							{% if producto.getIva() == 0 %}
 
-                                    <div class="opciones">
-                                        <a href="{{ path('productos-detail',{"id":item.id,"nombre":qi.slugify(item.nombre)}) }}">{{ qi.textoDB('ver_mas_prods') }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <img src="{{ qi.imagen('public_prods') }}" alt="SED" class="publicidad_pic">
-    </section>
+
+								<span class="text_detail_negrilla" style="">{{ qi.textoDB('exento_iva') }}</span>
+
+
+							{% endif %}
+
+
+						{% endif %}
+						<span class="disp">{{ qi.textoDB("disponibilidad") }}
+							<img src="{{ qi.imagen(disponibilidad) }}" alt="SED">
+						</span>
+						<span class="cant">{{ qi.textoDB('cantidad') }}
+							<input id="cantidad" type="number" min="1" max="{{ cantidad }}" value="1">
+						</span>
+						<input type="hidden" id="select-talla" value="1">
+						{% if app.user %}
+							{% if cantidad > 0 %}
+								<a data-id="{{ producto.id }}" data-cant="1" class="add_talla" href="javascript:void(0)">{{ qi.textoDB("AGREGAR_AL_CARRITO") }}<i class="fas fa-cart-plus"></i>
+								</a>
+							{% endif %}
+						{% else %}
+							<a href="{{ path('registro') }}">{{ qi.textoDB("Registrate") }}</a>
+						{% endif %}
+					</div>
+
+					<div class="ficha_t" id="fichatec">
+						{{ producto.gen("caracteristicas",lc) | raw }}
+					</div>
+					<div class="garant" id="fichatec2">
+						{{ producto.gen("garantia",lc) | raw }}
+					</div>
+				</div>
+			</div>
+			<div class="prods_relacionados">
+				<h2>{{ qi.textoDB('productos_relacionados') }}</h2>
+				<div class="swiper-container productos_relacionados">
+					<div class="swiper-wrapper">
+						{% for item in ci.productosRelacionados(producto.id,4) %}
+							{% set precio = qi.precioUser(item.id,app.user) %}
+							<div class="swiper-slide">
+
+								<div class="producto item grid-item prod_relacionado small">
+									{% if precio != qi.getPrecioUserSinDescuento(item.id,app.user) and app.user %}
+
+										<div class="prod_convenio"><img src="{{ qi.imagen('descuento_convenio') }}"/></div>
+									{% endif %}
+									<div id="img_marca">
+										<img src="{{ item.imagenMarca }}" id="marcachiqui"/>
+									</div>
+									<h3 class="titulo">{{ item.nombre }}</h3>
+									<h6>
+										<strong>{{ qi.textoDB("sku") }}</strong>
+										{{ item.sku }}<br>
+										<strong class="parrafo">{{ item.resumen|raw }}</strong>
+									</h6>
+									<div class="imagen">
+										<img src="{{ item.imagen }}" alt="SED" class="img_prod">
+									</div>
+									{% if app.user %}
+										<h5>
+											<em>{{ qi.textoDB('precio_normal') }}</em>
+											{% if app.user.getEsEmpresa() %}
+												${{ item.precioFecha|number_format }}
+											{% else %}
+												${{ item.precioFechaUsuario|number_format }}
+											{% endif %}
+
+										</h5>
+										<h4>
+											<strong>{{ qi.textoDB('hoy') }}</strong>
+											{{ precio|number_format }}</h4>
+										<br>
+									{% endif %}
+
+									<div class="opciones">
+										<a href="{{ path('productos-detail',{"id":item.id,"nombre":qi.slugify(item.nombre)}) }}">{{ qi.textoDB('ver_mas_prods') }}</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<img src="{{ qi.imagen('public_prods') }}" alt="SED" class="publicidad_pic">
+	</section>
 {% endblock %}
 {% block javascripts %}
-<script>
+	<script>
 
 
-    //Slider Productos Main | Productos
-    var swiper9 = new Swiper('.sw_detail_prod', {
-        speed: 1200,
-        spaceBetween: 10
-    });
+		// Slider Productos Main | Productos
+var swiper9 = new Swiper('.sw_detail_prod', {
+speed: 1200,
+spaceBetween: 10
+});
 
 
-    var swiper10 = new Swiper('.sw_detail_prod_thumbs', {
-        spaceBetween: 10,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        touchRatio: 0.2,
-        slideToClickedSlide: true
-    });
+var swiper10 = new Swiper('.sw_detail_prod_thumbs', {
+spaceBetween: 10,
+centeredSlides: true,
+slidesPerView: 'auto',
+touchRatio: 0.2,
+slideToClickedSlide: true
+});
 
-    swiper9.controller.control = swiper10;
-    swiper10.controller.control = swiper9;
-</script>
+swiper9.controller.control = swiper10;
+swiper10.controller.control = swiper9;
+	</script>
 {% endblock %}
-

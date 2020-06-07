@@ -10,7 +10,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * Producto
+ * Producto.
  *
  * @ORM\Table(name="producto")
  * @ORM\Entity(repositoryClass="CarroiridianBundle\Repository\ProductoRepository")
@@ -48,7 +48,6 @@ class Producto
      * @ORM\ManyToMany(targetEntity="CarroiridianBundle\Entity\Color")
      */
     protected $colores;
-
 
     /**
      * @var Producto[]
@@ -128,6 +127,7 @@ class Producto
 
     /**
      * @Vich\UploadableField(mapping="productos", fileNameProperty="imagen")
+     *
      * @var File
      */
     private $imageFile;
@@ -141,6 +141,7 @@ class Producto
 
     /**
      * @Vich\UploadableField(mapping="productos", fileNameProperty="imagenaux")
+     *
      * @var File
      */
     private $imageauxFile;
@@ -151,6 +152,20 @@ class Producto
      * @ORM\Column(name="precio", type="float")
      */
     private $precio;
+    /**dware */
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio_usuario", type="float")
+     */
+    private $precioUsuario;
+    /**dware */
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="iva", type="float")
+     */
+    private $iva;
 
     /**
      * @var \float
@@ -158,6 +173,12 @@ class Producto
      * @ORM\Column(name="precio_fecha", type="float", nullable=true)
      */
     private $precioFecha;
+    /**
+     * @var \float
+     *
+     * @ORM\Column(name="precio_fecha_usuario", type="float", nullable=true)
+     */
+    private $precioFechaUsuario;
 
     /**
      * @var \DateTime
@@ -264,7 +285,6 @@ class Producto
     protected $estilos;
 
     /**
-     *
      * @var array
      * @ORM\Column(name="caracteristicas",type="array")
      */
@@ -277,7 +297,6 @@ class Producto
      * @ORM\Column(name="tags", type="array")
      */
     private $tags = array();
-
 
     /**
      * @var string
@@ -292,7 +311,6 @@ class Producto
      * @ORM\Column(name="nuevo", type="boolean")
      */
     private $nuevo = false;
-
 
     /**
      * @var integer
@@ -310,52 +328,22 @@ class Producto
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @var \DateTime
      */
     private $updatedAt;
-
-    // Fields for delivering
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="peso", type="float")
-     */
-
-    private $peso;
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="alto", type="float")
-     */
-    private $alto;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="largo", type="float")
-     */
-    private $largo;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="ancho", type="float")
-     */
-    private $ancho;
-
-
 
     public function __toString()
     {
         return $this->nombreEs.' ';
     }
 
-    public function gen($campo,$locale){
+    public function gen($campo, $locale)
+    {
         $accessor = PropertyAccess::createPropertyAccessor();
-        return $accessor->getValue($this,$campo.'_'.$locale);
-    }
 
+        return $accessor->getValue($this, $campo.'_'.$locale);
+    }
 
     public function __construct()
     {
@@ -367,7 +355,7 @@ class Producto
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -377,7 +365,7 @@ class Producto
     }
 
     /**
-     * Set sku
+     * Set sku.
      *
      * @param string $sku
      *
@@ -391,7 +379,7 @@ class Producto
     }
 
     /**
-     * Get sku
+     * Get sku.
      *
      * @return string
      */
@@ -401,7 +389,7 @@ class Producto
     }
 
     /**
-     * Set nombreEs
+     * Set nombreEs.
      *
      * @param string $nombreEs
      *
@@ -415,7 +403,7 @@ class Producto
     }
 
     /**
-     * Get nombreEs
+     * Get nombreEs.
      *
      * @return string
      */
@@ -425,7 +413,7 @@ class Producto
     }
 
     /**
-     * Set nombreEn
+     * Set nombreEn.
      *
      * @param string $nombreEn
      *
@@ -439,7 +427,7 @@ class Producto
     }
 
     /**
-     * Get nombreEn
+     * Get nombreEn.
      *
      * @return string
      */
@@ -449,7 +437,7 @@ class Producto
     }
 
     /**
-     * Set imagen
+     * Set imagen.
      *
      * @param string $imagen
      *
@@ -463,7 +451,7 @@ class Producto
     }
 
     /**
-     * Get imagen
+     * Get imagen.
      *
      * @return string
      */
@@ -473,7 +461,7 @@ class Producto
     }
 
     /**
-     * Set precio
+     * Set precio.
      *
      * @param float $precio
      *
@@ -487,7 +475,7 @@ class Producto
     }
 
     /**
-     * Get precio
+     * Get precio.
      *
      * @return float
      */
@@ -496,9 +484,58 @@ class Producto
         return $this->precio;
     }
 
+    /**
+     * Set precioUsuario.
+     *
+     * @param float $precioUsuario
+     *
+     * @return Producto
+     */
+    public function setPrecioUsuario($precioUsuario)
+    {
+        $this->precioUsuario = $precioUsuario;
+
+        return $this;
+    }
+
+    /**dware */
 
     /**
-     * Set fechaIni
+     * Get precioUsuario.
+     *
+     * @return float
+     */
+    public function getPrecioUsuario()
+    {
+        return $this->precioUsuario;
+    }
+
+    /**
+     * Set iva.
+     *
+     * @param float $iva
+     *
+     * @return Producto
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva.
+     *
+     * @return float
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
+     * Set fechaIni.
      *
      * @param \DateTime $fechaIni
      *
@@ -512,7 +549,7 @@ class Producto
     }
 
     /**
-     * Get fechaIni
+     * Get fechaIni.
      *
      * @return \DateTime
      */
@@ -522,7 +559,7 @@ class Producto
     }
 
     /**
-     * Set fechaFin
+     * Set fechaFin.
      *
      * @param \DateTime $fechaFin
      *
@@ -536,7 +573,7 @@ class Producto
     }
 
     /**
-     * Get fechaFin
+     * Get fechaFin.
      *
      * @return \DateTime
      */
@@ -546,9 +583,9 @@ class Producto
     }
 
     /**
-     * Set destacado
+     * Set destacado.
      *
-     * @param boolean $destacado
+     * @param bool $destacado
      *
      * @return Producto
      */
@@ -560,7 +597,7 @@ class Producto
     }
 
     /**
-     * Get destacado
+     * Get destacado.
      *
      * @return bool
      */
@@ -570,9 +607,9 @@ class Producto
     }
 
     /**
-     * Set unidades
+     * Set unidades.
      *
-     * @param integer $unidades
+     * @param int $unidades
      *
      * @return Producto
      */
@@ -584,7 +621,7 @@ class Producto
     }
 
     /**
-     * Get unidades
+     * Get unidades.
      *
      * @return int
      */
@@ -594,9 +631,9 @@ class Producto
     }
 
     /**
-     * Set minUnidades
+     * Set minUnidades.
      *
-     * @param integer $minUnidades
+     * @param int $minUnidades
      *
      * @return Producto
      */
@@ -608,7 +645,7 @@ class Producto
     }
 
     /**
-     * Get minUnidades
+     * Get minUnidades.
      *
      * @return int
      */
@@ -618,7 +655,7 @@ class Producto
     }
 
     /**
-     * Set descripcionEs
+     * Set descripcionEs.
      *
      * @param string $descripcionEs
      *
@@ -632,7 +669,7 @@ class Producto
     }
 
     /**
-     * Get descripcionEs
+     * Get descripcionEs.
      *
      * @return string
      */
@@ -642,7 +679,7 @@ class Producto
     }
 
     /**
-     * Set descripcionEn
+     * Set descripcionEn.
      *
      * @param string $descripcionEn
      *
@@ -656,7 +693,7 @@ class Producto
     }
 
     /**
-     * Get descripcionEn
+     * Get descripcionEn.
      *
      * @return string
      */
@@ -666,7 +703,7 @@ class Producto
     }
 
     /**
-     * Set precioFecha
+     * Set precioFecha.
      *
      * @param float $precioFecha
      *
@@ -680,7 +717,7 @@ class Producto
     }
 
     /**
-     * Get precioFecha
+     * Get precioFecha.
      *
      * @return float
      */
@@ -689,8 +726,34 @@ class Producto
         return $this->precioFecha;
     }
 
+    /**dware */
+
     /**
-     * Add estilo
+     * Set precioFechaUsuario.
+     *
+     * @param float $precioFechaUsuario
+     *
+     * @return Producto
+     */
+    public function setPrecioFechaUsuario($precioFechaUsuario)
+    {
+        $this->precioFechaUsuario = $precioFechaUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get precioFechaUsuario.
+     *
+     * @return float
+     */
+    public function getPrecioFechaUsuario()
+    {
+        return $this->precioFechaUsuario;
+    }
+
+    /**
+     * Add estilo.
      *
      * @param \CarroiridianBundle\Entity\Estilo $estilo
      *
@@ -704,7 +767,7 @@ class Producto
     }
 
     /**
-     * Remove estilo
+     * Remove estilo.
      *
      * @param \CarroiridianBundle\Entity\Estilo $estilo
      */
@@ -714,7 +777,7 @@ class Producto
     }
 
     /**
-     * Get estilos
+     * Get estilos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -723,9 +786,8 @@ class Producto
         return $this->estilos;
     }
 
-
     /**
-     * Set alt
+     * Set alt.
      *
      * @param string $alt
      *
@@ -734,12 +796,12 @@ class Producto
     public function setAlt($alt)
     {
         $this->alt = $alt;
-    
+
         return $this;
     }
 
     /**
-     * Get alt
+     * Get alt.
      *
      * @return string
      */
@@ -749,21 +811,21 @@ class Producto
     }
 
     /**
-     * Set orden
+     * Set orden.
      *
-     * @param integer $orden
+     * @param int $orden
      *
      * @return Producto
      */
     public function setOrden($orden)
     {
         $this->orden = $orden;
-    
+
         return $this;
     }
 
     /**
-     * Get orden
+     * Get orden.
      *
      * @return integer
      */
@@ -773,21 +835,21 @@ class Producto
     }
 
     /**
-     * Set visible
+     * Set visible.
      *
-     * @param boolean $visible
+     * @param bool $visible
      *
      * @return Producto
      */
     public function setVisible($visible)
     {
         $this->visible = $visible;
-    
+
         return $this;
     }
 
     /**
-     * Get visible
+     * Get visible.
      *
      * @return boolean
      */
@@ -797,7 +859,7 @@ class Producto
     }
 
     /**
-     * Add galeria
+     * Add galeria.
      *
      * @param \CarroiridianBundle\Entity\Galeriaproducto $galeria
      *
@@ -806,12 +868,12 @@ class Producto
     public function addGaleria(\CarroiridianBundle\Entity\Galeriaproducto $galeria)
     {
         $this->galerias[] = $galeria;
-    
+
         return $this;
     }
 
     /**
-     * Remove galeria
+     * Remove galeria.
      *
      * @param \CarroiridianBundle\Entity\Galeriaproducto $galeria
      */
@@ -821,7 +883,7 @@ class Producto
     }
 
     /**
-     * Get galerias
+     * Get galerias.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -831,7 +893,7 @@ class Producto
     }
 
     /**
-     * Set categoria
+     * Set categoria.
      *
      * @param \CarroiridianBundle\Entity\Categoria $categoria
      *
@@ -840,12 +902,12 @@ class Producto
     public function setCategoria(\CarroiridianBundle\Entity\Categoria $categoria = null)
     {
         $this->categoria = $categoria;
-    
+
         return $this;
     }
 
     /**
-     * Get categoria
+     * Get categoria.
      *
      * @return \CarroiridianBundle\Entity\Categoria
      */
@@ -874,7 +936,7 @@ class Producto
     }
 
     /**
-     * Add inventario
+     * Add inventario.
      *
      * @param \CarroiridianBundle\Entity\Inventario $inventario
      *
@@ -883,12 +945,12 @@ class Producto
     public function addInventario(\CarroiridianBundle\Entity\Inventario $inventario)
     {
         $this->inventarios[] = $inventario;
-    
+
         return $this;
     }
 
     /**
-     * Remove inventario
+     * Remove inventario.
      *
      * @param \CarroiridianBundle\Entity\Inventario $inventario
      */
@@ -898,7 +960,7 @@ class Producto
     }
 
     /**
-     * Get inventarios
+     * Get inventarios.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -908,7 +970,7 @@ class Producto
     }
 
     /**
-     * Set color
+     * Set color.
      *
      * @param \CarroiridianBundle\Entity\Color $color
      *
@@ -917,12 +979,12 @@ class Producto
     public function setColor(\CarroiridianBundle\Entity\Color $color = null)
     {
         $this->color = $color;
-    
+
         return $this;
     }
 
     /**
-     * Get color
+     * Get color.
      *
      * @return \CarroiridianBundle\Entity\Color
      */
@@ -932,7 +994,7 @@ class Producto
     }
 
     /**
-     * Set caracteristicas
+     * Set caracteristicas.
      *
      * @param array $caracteristicas
      *
@@ -941,12 +1003,12 @@ class Producto
     public function setCaracteristicas($caracteristicas)
     {
         $this->caracteristicas = $caracteristicas;
-    
+
         return $this;
     }
 
     /**
-     * Get caracteristicas
+     * Get caracteristicas.
      *
      * @return array
      */
@@ -956,7 +1018,7 @@ class Producto
     }
 
     /**
-     * Set tags
+     * Set tags.
      *
      * @param array $tags
      *
@@ -965,12 +1027,12 @@ class Producto
     public function setTags($tags)
     {
         $this->tags = $tags;
-    
+
         return $this;
     }
 
     /**
-     * Get tags
+     * Get tags.
      *
      * @return array
      */
@@ -980,7 +1042,7 @@ class Producto
     }
 
     /**
-     * Add colore
+     * Add colore.
      *
      * @param \CarroiridianBundle\Entity\Color $colore
      *
@@ -989,12 +1051,12 @@ class Producto
     public function addColore(\CarroiridianBundle\Entity\Color $colore)
     {
         $this->colores[] = $colore;
-    
+
         return $this;
     }
 
     /**
-     * Remove colore
+     * Remove colore.
      *
      * @param \CarroiridianBundle\Entity\Color $colore
      */
@@ -1004,7 +1066,7 @@ class Producto
     }
 
     /**
-     * Get colores
+     * Get colores.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1014,21 +1076,21 @@ class Producto
     }
 
     /**
-     * Set nuevo
+     * Set nuevo.
      *
-     * @param boolean $nuevo
+     * @param bool $nuevo
      *
      * @return Producto
      */
     public function setNuevo($nuevo)
     {
         $this->nuevo = $nuevo;
-    
+
         return $this;
     }
 
     /**
-     * Get nuevo
+     * Get nuevo.
      *
      * @return boolean
      */
@@ -1037,10 +1099,8 @@ class Producto
         return $this->nuevo;
     }
 
-
-
     /**
-     * Set imagenaux
+     * Set imagenaux.
      *
      * @param string $imagenaux
      *
@@ -1049,12 +1109,12 @@ class Producto
     public function setImagenaux($imagenaux)
     {
         $this->imagenaux = $imagenaux;
-    
+
         return $this;
     }
 
     /**
-     * Get imagenaux
+     * Get imagenaux.
      *
      * @return string
      */
@@ -1082,10 +1142,8 @@ class Producto
         return $this->imageauxFile;
     }
 
-    
-
     /**
-     * Set modelo
+     * Set modelo.
      *
      * @param \CarroiridianBundle\Entity\Modelo $modelo
      *
@@ -1099,7 +1157,7 @@ class Producto
     }
 
     /**
-     * Get modelo
+     * Get modelo.
      *
      * @return \CarroiridianBundle\Entity\Modelo
      */
@@ -1108,9 +1166,8 @@ class Producto
         return $this->modelo;
     }
 
-
     /**
-     * Add genero
+     * Add genero.
      *
      * @param \CarroiridianBundle\Entity\Genero $genero
      *
@@ -1124,7 +1181,7 @@ class Producto
     }
 
     /**
-     * Remove genero
+     * Remove genero.
      *
      * @param \CarroiridianBundle\Entity\Genero $genero
      */
@@ -1134,7 +1191,7 @@ class Producto
     }
 
     /**
-     * Get generos
+     * Get generos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1153,7 +1210,7 @@ class Producto
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
-    
+
         return $this;
     }
 
@@ -1168,7 +1225,7 @@ class Producto
     }
 
     /**
-     * Set resumenEs
+     * Set resumenEs.
      *
      * @param string $resumenEs
      *
@@ -1177,12 +1234,12 @@ class Producto
     public function setResumenEs($resumenEs)
     {
         $this->resumenEs = $resumenEs;
-    
+
         return $this;
     }
 
     /**
-     * Get resumenEs
+     * Get resumenEs.
      *
      * @return string
      */
@@ -1192,7 +1249,7 @@ class Producto
     }
 
     /**
-     * Set resumenEn
+     * Set resumenEn.
      *
      * @param string $resumenEn
      *
@@ -1201,12 +1258,12 @@ class Producto
     public function setResumenEn($resumenEn)
     {
         $this->resumenEn = $resumenEn;
-    
+
         return $this;
     }
 
     /**
-     * Get resumenEn
+     * Get resumenEn.
      *
      * @return string
      */
@@ -1216,7 +1273,7 @@ class Producto
     }
 
     /**
-     * Set ingredientesEs
+     * Set ingredientesEs.
      *
      * @param string $ingredientesEs
      *
@@ -1225,12 +1282,12 @@ class Producto
     public function setIngredientesEs($ingredientesEs)
     {
         $this->ingredientesEs = $ingredientesEs;
-    
+
         return $this;
     }
 
     /**
-     * Get ingredientesEs
+     * Get ingredientesEs.
      *
      * @return string
      */
@@ -1240,7 +1297,7 @@ class Producto
     }
 
     /**
-     * Set ingredientesEn
+     * Set ingredientesEn.
      *
      * @param string $ingredientesEn
      *
@@ -1249,12 +1306,12 @@ class Producto
     public function setIngredientesEn($ingredientesEn)
     {
         $this->ingredientesEn = $ingredientesEn;
-    
+
         return $this;
     }
 
     /**
-     * Get ingredientesEn
+     * Get ingredientesEn.
      *
      * @return string
      */
@@ -1264,7 +1321,7 @@ class Producto
     }
 
     /**
-     * Set beneficiosEs
+     * Set beneficiosEs.
      *
      * @param string $beneficiosEs
      *
@@ -1273,12 +1330,12 @@ class Producto
     public function setBeneficiosEs($beneficiosEs)
     {
         $this->beneficiosEs = $beneficiosEs;
-    
+
         return $this;
     }
 
     /**
-     * Get beneficiosEs
+     * Get beneficiosEs.
      *
      * @return string
      */
@@ -1288,7 +1345,7 @@ class Producto
     }
 
     /**
-     * Set beneficiosEn
+     * Set beneficiosEn.
      *
      * @param string $beneficiosEn
      *
@@ -1297,12 +1354,12 @@ class Producto
     public function setBeneficiosEn($beneficiosEn)
     {
         $this->beneficiosEn = $beneficiosEn;
-    
+
         return $this;
     }
 
     /**
-     * Get beneficiosEn
+     * Get beneficiosEn.
      *
      * @return string
      */
@@ -1312,7 +1369,7 @@ class Producto
     }
 
     /**
-     * Set modoEs
+     * Set modoEs.
      *
      * @param string $modoEs
      *
@@ -1321,12 +1378,12 @@ class Producto
     public function setModoEs($modoEs)
     {
         $this->modoEs = $modoEs;
-    
+
         return $this;
     }
 
     /**
-     * Get modoEs
+     * Get modoEs.
      *
      * @return string
      */
@@ -1336,7 +1393,7 @@ class Producto
     }
 
     /**
-     * Set modoEn
+     * Set modoEn.
      *
      * @param string $modoEn
      *
@@ -1345,12 +1402,12 @@ class Producto
     public function setModoEn($modoEn)
     {
         $this->modoEn = $modoEn;
-    
+
         return $this;
     }
 
     /**
-     * Get modoEn
+     * Get modoEn.
      *
      * @return string
      */
@@ -1360,7 +1417,7 @@ class Producto
     }
 
     /**
-     * Add ingrediente
+     * Add ingrediente.
      *
      * @param \HomeBundle\Entity\Ingrediente $ingrediente
      *
@@ -1369,12 +1426,12 @@ class Producto
     public function addIngrediente(\HomeBundle\Entity\Ingrediente $ingrediente)
     {
         $this->ingredientes[] = $ingrediente;
-    
+
         return $this;
     }
 
     /**
-     * Remove ingrediente
+     * Remove ingrediente.
      *
      * @param \HomeBundle\Entity\Ingrediente $ingrediente
      */
@@ -1384,7 +1441,7 @@ class Producto
     }
 
     /**
-     * Get ingredientes
+     * Get ingredientes.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1394,21 +1451,21 @@ class Producto
     }
 
     /**
-     * Set vendido
+     * Set vendido.
      *
-     * @param boolean $vendido
+     * @param bool $vendido
      *
      * @return Producto
      */
     public function setVendido($vendido)
     {
         $this->vendido = $vendido;
-    
+
         return $this;
     }
 
     /**
-     * Get vendido
+     * Get vendido.
      *
      * @return boolean
      */
@@ -1418,7 +1475,7 @@ class Producto
     }
 
     /**
-     * Set subcategoria
+     * Set subcategoria.
      *
      * @param \CarroiridianBundle\Entity\SubCategoria $subcategoria
      *
@@ -1427,12 +1484,12 @@ class Producto
     public function setSubcategoria(\CarroiridianBundle\Entity\SubCategoria $subcategoria = null)
     {
         $this->subcategoria = $subcategoria;
-    
+
         return $this;
     }
 
     /**
-     * Get subcategoria
+     * Get subcategoria.
      *
      * @return \CarroiridianBundle\Entity\SubCategoria
      */
@@ -1442,7 +1499,7 @@ class Producto
     }
 
     /**
-     * Set caracteristicasEs
+     * Set caracteristicasEs.
      *
      * @param string $caracteristicasEs
      *
@@ -1451,12 +1508,12 @@ class Producto
     public function setCaracteristicasEs($caracteristicasEs)
     {
         $this->caracteristicasEs = $caracteristicasEs;
-    
+
         return $this;
     }
 
     /**
-     * Get caracteristicasEs
+     * Get caracteristicasEs.
      *
      * @return string
      */
@@ -1466,7 +1523,7 @@ class Producto
     }
 
     /**
-     * Set caracteristicasEn
+     * Set caracteristicasEn.
      *
      * @param string $caracteristicasEn
      *
@@ -1475,12 +1532,12 @@ class Producto
     public function setCaracteristicasEn($caracteristicasEn)
     {
         $this->caracteristicasEn = $caracteristicasEn;
-    
+
         return $this;
     }
 
     /**
-     * Get caracteristicasEn
+     * Get caracteristicasEn.
      *
      * @return string
      */
@@ -1490,7 +1547,7 @@ class Producto
     }
 
     /**
-     * Add uso
+     * Add uso.
      *
      * @param \CarroiridianBundle\Entity\Uso $uso
      *
@@ -1499,12 +1556,12 @@ class Producto
     public function addUso(\CarroiridianBundle\Entity\Uso $uso)
     {
         $this->usos[] = $uso;
-    
+
         return $this;
     }
 
     /**
-     * Remove uso
+     * Remove uso.
      *
      * @param \CarroiridianBundle\Entity\Uso $uso
      */
@@ -1514,7 +1571,7 @@ class Producto
     }
 
     /**
-     * Get usos
+     * Get usos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1524,7 +1581,7 @@ class Producto
     }
 
     /**
-     * Add filtro
+     * Add filtro.
      *
      * @param \CarroiridianBundle\Entity\Filtro $filtro
      *
@@ -1533,12 +1590,12 @@ class Producto
     public function addFiltro(\CarroiridianBundle\Entity\Filtro $filtro)
     {
         $this->filtros[] = $filtro;
-    
+
         return $this;
     }
 
     /**
-     * Remove filtro
+     * Remove filtro.
      *
      * @param \CarroiridianBundle\Entity\Filtro $filtro
      */
@@ -1548,7 +1605,7 @@ class Producto
     }
 
     /**
-     * Get filtros
+     * Get filtros.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1558,7 +1615,7 @@ class Producto
     }
 
     /**
-     * Set marca
+     * Set marca.
      *
      * @param \CarroiridianBundle\Entity\Marca $marca
      *
@@ -1567,12 +1624,12 @@ class Producto
     public function setMarca(\CarroiridianBundle\Entity\Marca $marca = null)
     {
         $this->marca = $marca;
-    
+
         return $this;
     }
 
     /**
-     * Get marca
+     * Get marca.
      *
      * @return \CarroiridianBundle\Entity\Marca
      */
@@ -1587,7 +1644,7 @@ class Producto
     }
 
     /**
-     * Add relacionado
+     * Add relacionado.
      *
      * @param \CarroiridianBundle\Entity\Producto $relacionado
      *
@@ -1596,12 +1653,12 @@ class Producto
     public function addRelacionado(\CarroiridianBundle\Entity\Producto $relacionado)
     {
         $this->relacionados[] = $relacionado;
-    
+
         return $this;
     }
 
     /**
-     * Remove relacionado
+     * Remove relacionado.
      *
      * @param \CarroiridianBundle\Entity\Producto $relacionado
      */
@@ -1611,7 +1668,7 @@ class Producto
     }
 
     /**
-     * Get relacionados
+     * Get relacionados.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1621,7 +1678,7 @@ class Producto
     }
 
     /**
-     * Set garantiaEs
+     * Set garantiaEs.
      *
      * @param string $garantiaEs
      *
@@ -1630,12 +1687,12 @@ class Producto
     public function setGarantiaEs($garantiaEs)
     {
         $this->garantiaEs = $garantiaEs;
-    
+
         return $this;
     }
 
     /**
-     * Get garantiaEs
+     * Get garantiaEs.
      *
      * @return string
      */
@@ -1645,7 +1702,7 @@ class Producto
     }
 
     /**
-     * Set garantiaEn
+     * Set garantiaEn.
      *
      * @param string $garantiaEn
      *
@@ -1654,123 +1711,17 @@ class Producto
     public function setGarantiaEn($garantiaEn)
     {
         $this->garantiaEn = $garantiaEn;
-    
+
         return $this;
     }
 
     /**
-     * Get garantiaEn
+     * Get garantiaEn.
      *
      * @return string
      */
     public function getGarantiaEn()
     {
         return $this->garantiaEn;
-    }
-
-    // Getters and setters for delivering
-
-    // Peso get and set
-
-    /**
-     * Set peso
-     *
-     * @param float $peso
-     *
-     * @return Producto
-     */
-    public function setPeso($peso)
-    {
-        $this->peso = $peso;
-
-        return $this;
-    }
-
-    /**
-     * Get peso
-     *
-     * @return float
-     */
-    public function getPeso()
-    {
-        return $this->peso;
-    }
-
-    // Alto get and set
-
-    /**
-     * Set alto
-     *
-     * @param float $alto
-     *
-     * @return Producto
-     */
-    public function setAlto($alto)
-    {
-        $this->peso = $alto;
-
-        return $this;
-    }
-
-    /**
-     * Get alto
-     *
-     * @return float
-     */
-    public function getAlto()
-    {
-        return $this->alto;
-    }
-
-    // Largo get and set
-
-    /**
-     * Set largo
-     *
-     * @param float $largo
-     *
-     * @return Producto
-     */
-    public function setLargo($largo)
-    {
-        $this->peso = $largo;
-
-        return $this;
-    }
-
-    /**
-     * Get largo
-     *
-     * @return float
-     */
-    public function getLargo()
-    {
-        return $this->largo;
-    }
-
-    // Ancho get and set
-
-    /**
-     * Set ancho
-     *
-     * @param float $ancho
-     *
-     * @return Producto
-     */
-    public function setAncho($ancho)
-    {
-        $this->peso = $ancho;
-
-        return $this;
-    }
-
-    /**
-     * Get ancho
-     *
-     * @return float
-     */
-    public function getAncho()
-    {
-        return $this->ancho;
     }
 }

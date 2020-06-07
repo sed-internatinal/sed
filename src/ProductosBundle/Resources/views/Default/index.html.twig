@@ -12,157 +12,177 @@
 {% set categorias = ci.categorias() %}
 {% set catobj = qi.nombremarca(marca) %}
 {% set catobj = catobj==""? qi.nombrecat(categoria):catobj %}
-
 {% block stylesheets %}
-    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
-    {{ parent() }}
-    <link href="{{ asset('css/productos.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+	{{ parent() }}
+	<link href="{{ asset('css/productos.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <section class="productos">
-        <div class="banner_general" style="background-image: url({{ qi.imagen('backg_productos_banner') }})">
-            <h1>{{ qi.textoDB('productos_title') }}</h1>
-            <h2>{{ qi.textoDB('productos_subtitle') }}</h2>
-            <a href="#goto_productos" class="godown"><i class="fa fa-angle-down"></i></a>
-            <a href="{{ qi.textoDB("link_asesor") }}" class="contac_asesor" style="background-image: url({{ qi.imagen('back_asesor') }})"><img src="{{ qi.imagen('contactar_asesor') }}" alt="SED">{{ qi.textoDB('contactar-asesor') }}</a>
-        </div>
-        <div class="content_productos" id="goto_productos">
-            <div class="buttons_categories">
-                <ul>
-                    {% for cat in categorias %}
-                    <li>
-                        <a href="{% if cat.id == 7 %}{{ path('selector-servicios')}} {% else %}{{ path('productos-main',{"categoria":cat.id}) }} {% endif %}">{{ cat.nombre }}</a>
-                    </li>
-                    {% endfor %}
+	<section class="productos">
+		<div class="banner_general" style="background-image: url({{ qi.imagen('backg_productos_banner') }})">
+			<h1>{{ qi.textoDB('productos_title') }}</h1>
+			<h2>{{ qi.textoDB('productos_subtitle') }}</h2>
+			<a href="#goto_productos" class="godown">
+				<i class="fa fa-angle-down"></i>
+			</a>
+			<a href="{{ qi.textoDB("link_asesor") }}" class="contac_asesor" style="background-image: url({{ qi.imagen('back_asesor') }})"><img src="{{ qi.imagen('contactar_asesor') }}" alt="SED">{{ qi.textoDB('contactar-asesor') }}</a>
+		</div>
+		<div class="content_productos" id="goto_productos">
+			<div class="buttons_categories">
+				<ul>
+					{% for cat in categorias %}
+						<li>
+							<a href="{% if cat.id == 7 %}{{ path('selector-servicios')}} {% else %}{{ path('productos-main',{"categoria":cat.id}) }} {% endif %}">{{ cat.nombre }}</a>
+						</li>
+					{% endfor %}
 
-                </ul>
-            </div>
-            <div class="cont_products">
-                <div class="col aside">
+				</ul>
+			</div>
+			<div class="cont_products">
+				<div class="col aside">
 
-                    <div class="filtro">
+					<div class="filtro">
 
-                        <div class="h_filtro">
-                            <h2>{{ qi.textoDB('filter_cat') }}</h2>
-                            <a href="javascript:limpiarfiltros()">{{ qi.textoDB('limpiar') }}</a>
-                        </div>
-                        <ul class="filter scroll">
-                            {% set tipo_id = 0 %}
-                            {% for item in filtros %}
-                            {% set add_tipo = tipo_id != item.tipo_id %}
-                            {% if tipo_id != 0 and add_tipo %}
-                                </ul>
-                                </li>
-                            {% endif %}
-                        {% if add_tipo %}
-                            <li class="padre_categoria">
-                                <a class=" categoria" data-despliega="0" >
-                                    <span>{{ item.tipo }}</span>
-                                    <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
-                                </a>
-                            <ul class="sub" style="display:none">
-                        {% endif %}
-                        <li>
-                            <a href="javascript:" class=" filtro_a" data-class="f_{{ item.filtro_id }}">
-                                <span>{{ item.filtro }}</span>
-                                <input type="checkbox">
-                            </a>
-                        </li>
-                        {% if loop.index == filtros | length %}
-                            </ul>
-                        </li>
-                        {% endif %}
-                        {% set tipo_id = item.tipo_id %}
-                        {% endfor %}
-                        </ul>
-                    </div>
+						<div class="h_filtro">
+							<h2>{{ qi.textoDB('filter_cat') }}</h2>
+							<a href="javascript:limpiarfiltros()">{{ qi.textoDB('limpiar') }}</a>
+						</div>
+						<ul class="filter scroll">
+							{% set tipo_id = 0 %}
+							{% for item in filtros %}
+								{% set add_tipo = tipo_id != item.tipo_id %}
+								{% if tipo_id != 0 and add_tipo %}
+								</ul>
+							</li>
+						{% endif %}
+						{% if add_tipo %}
+							<li class="padre_categoria">
+								<a class=" categoria" data-despliega="0">
+									<span>{{ item.tipo }}</span>
+									<i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+								</a>
+								<ul class="sub" style="display:none">
+								{% endif %}
+							</li>
+							<li>
+								<a href="javascript:" class=" filtro_a" data-class="f_{{ item.filtro_id }}">
+									<span>{{ item.filtro }}</span>
+									<input type="checkbox">
+								</a>
+							</li>
+							{% if loop.index == filtros | length %}
+							</ul>
+						</li>
+					{% endif %}
+					{% set tipo_id = item.tipo_id %}
+				{% endfor %}
+			</ul>
+		</div>
 
-                </div>
-                <div class="col main">
-                    <div class="filtro_cont">
-                        <h3>{{ catobj }}</h3>
-                        <div class="filtro">
-                            <span>{{ qi.textoDB('title_filter2_product') }}</span>
-                            <select name="" id="orderFiltro" onchange="orderBy()">
-                                <option value="" selected disabled >{{ qi.textoDB("seleccionar") }}</option>
-                                <option value="precio" data-type="asc" >{{ qi.textoDB("precio_asc") }}</option>
-                                <option value="precio" data-type="desc" >{{ qi.textoDB("precio_desc") }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="productos_main list lista">
+	</div>
+	<div class="col main">
+		<div class="filtro_cont">
+			<h3>{{ catobj }}</h3>
+			<div class="filtro">
+				<span>{{ qi.textoDB('title_filter2_product') }}</span>
+				<select name="" id="orderFiltro" onchange="orderBy()">
+					<option value="" selected disabled>{{ qi.textoDB("seleccionar") }}</option>
+					<option value="precio" data-type="asc">{{ qi.textoDB("precio_asc") }}</option>
+					<option value="precio" data-type="desc">{{ qi.textoDB("precio_desc") }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="productos_main list lista">
 
-                            {% for item in productos %}
-                                {% set precio = qi.precioUser(item.id,app.user) %}
-                                <div class="producto item grid-item f_{{ item.filtros | replace({' ':' f_'}) }} ca_{{ item.categoria }} ">
-                                    {% if precio != item.precio and app.user %}
-                                        <div class="prod_convenio"><h2>{{ qi.textoDB('convenio') }}</h2></div>
-                                    {% endif %}
-                                    <div id="img_marca">
-                                        <img src="{{ item.imagenMarca }}" />
-                                    </div>
-                                    <h3 class="titulo">{{ item.nombre }}</h3>
+			{% for item in productos %}
+				{% set precio = qi.precioUser(item.id,app.user) %}
+				<div
+					class="producto item grid-item f_{{ item.filtros | replace({' ':' f_'}) }} ca_{{ item.categoria }} ">
+					<!--DWARE-->
+					{% if precio != qi.getPrecioUserSinDescuento(item.id,app.user)  and app.user %}
+						<div class="prod_convenio">
+							<h2>{{ qi.textoDB('convenio') }}</h2>
+						</div>
+					{% endif %}
+					<div id="img_marca">
+						<img src="{{ item.imagenMarca }}"/>
+					</div>
+					<h3 class="titulo">{{ item.nombre }}</h3>
 
-                                    <h6><strong>{{ qi.textoDB("sku") }}</strong> {{ item.sku }}<br>
-                                        <strong class="parrafo" >{{ item.resumen|raw }}</strong></h6>
-                                    <div class="imagen">
-                                        <img src="{{ item.imagen }}" alt="SED" class="img_prod">
-                                    </div>
+					<h6>
+						<strong>{{ qi.textoDB("sku") }}</strong>
+						{{ item.sku }}<br>
+						<strong class="parrafo">{{ item.resumen|raw }}</strong>
+					</h6>
+					<div class="imagen">
+						<img src="{{ item.imagen }}" alt="SED" class="img_prod">
+					</div>
 
-                                    {% if app.user %}
-                                    <h5><em>{{ qi.textoDB('precio_normal') }}</em> ${{ item.precioFecha|number_format }}</h5>
-                                    <h4><strong>{{ qi.textoDB('hoy') }}</strong>{{ precio|number_format }}</h4> <br>
-                                    {% else %}
-                                        <div>{{ qi.textoDB("debe_registro") }}</div>
-                                    {% endif %}
-                                    <div class="opciones">
-                                        <a href="{{ path('productos-detail',{"id":item.id,"nombre":qi.slugify(item.nombre)}) }}">{{ qi.textoDB('ver_mas_prods') }}</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endblock %}
+					{% if app.user %}
+						<h5>
+							<em>{{ qi.textoDB('precio_normal') }}</em>
+							{% if app.user.getEsEmpresa() %}
+								${{ item.precioFecha|number_format }}
+							{% else %}
+								${{ item.precioFechaUsuario|number_format }}
 
-{% block javascripts %}
-    <script>
-        window.addEventListener('load', function() {
+							{% endif %}
+						</h5>
+						<h4>
+							<strong>{{ qi.textoDB('hoy') }}</strong>
+							{{ precio|number_format }}
+							<em class="texto_negrilla">
+								&nbsp;
+								{% if item.iva == 0 %}
+									{{ qi.textoDB('exento_iva') }}
+								{% endif %}
+							</em>
 
-            console.log("alturas");
 
-            var max_p =0;
-            $(".titulo").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".titulo").height( max_p);
+						</h4>
+						<br>
+					{% else %}
+						<div>{{ qi.textoDB("debe_registro") }}</div>
+					{% endif %}
+					<div class="opciones">
+						<a href="{{ path('productos-detail',{"id":item.id,"nombre":qi.slugify(item.nombre)}) }}">{{ qi.textoDB('ver_mas_prods') }}</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div></div></section>{% endblock %}{% block javascripts %}<script>window.addEventListener('load', function () {
 
-            var max_p =0;
-            $(".parrafo").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".parrafo").height( max_p);
-            var max_p =0;
-            $("h6").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $("h6").height( max_p);
+console.log("alturas");
 
-            var max_p =0;
-            $(".img_prod").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".imagen").height( max_p);
+var max_p = 0;
+$(".titulo").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".titulo").height(max_p);
 
-            var max_p =0;
-            $(".producto").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".producto").height( max_p);
-            console.log("max_he",max_p);
-        });
-    </script>
-{% endblock %}
+var max_p = 0;
+$(".parrafo").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".parrafo").height(max_p);
+var max_p = 0;
+$("h6").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$("h6").height(max_p);
+
+var max_p = 0;
+$(".img_prod").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".imagen").height(max_p);
+
+var max_p = 0;
+$(".producto").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".producto").height(max_p);
+console.log("max_he", max_p);
+});</script>{% endblock %}

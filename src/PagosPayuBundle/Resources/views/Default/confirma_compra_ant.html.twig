@@ -7,25 +7,31 @@
 	<body
 		bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<!-- Save for Web Slices (Mailings-2) -->
-		<table id="Table_01" width="600" border="0" cellpadding="0" cellspacing="0" >
+		<table id="Table_01" width="600" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>
 
-					<img style="display: inline-block; margin: 2% 0;" src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ '/images/logo_correo.png' }}"  alt="">
+					<img style="display: inline-block; margin: 2% 0;" src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ '/images/logo_sed.png' }}" width="600" height="191" alt="">
 				</td>
-			
+			</tr>
+			<tr>
 				<td>
-					<h2 style="display: inline-block; width: 90%; color: #FC241C; background-color: #FFF; padding: 2% 5%; 'Roboto Black'; text-align: center; font: 1.800em 'Arial'; ">
-						!Muchas gracias por tu compra¡<br>
-                        Estos son los datos de tu pedido
+					<h2 style="display: inline-block; width: 90%; color: #ffffff; background-color: #000; padding: 2% 5%; 'Times New Roman'; text-align: center; font: 1.800em 'Times New Roman'; letter-spacing: 4px;">
+						{{ qi.textoDB('mb_thanks') }}
 					</h2>
 				</td>
 			</tr>
-			
 			<tr>
-				<td colspan="2">
+				<td>
+					<p style="display: inline-block; width: 80%; color: #58595B; padding: 2% 5%; margin: 2% 5%; 'Times New Roman'; border: 1px solid #58595B; text-align: center; font: 1.200em sans-serif; letter-spacing: 4px; line-height: 33px;">
+						{{ qi.textoBigDB('gracias-compra') | raw }}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<!--dware-->
-					<table style="border: 1px solid #ddd ; width: 96%; margin: 2%; text-align: center; font-family:Arial;">
+					<table style="border-top: 2px solid #000; width: 96%; margin: 2%; text-align: center;">
 						<thead>
 							<th style="text-align: left;">{{ qi.textoDB('c_produc') }}</th>
 							<th>{{ qi.textoDB('c_quantity') }}</th>
@@ -33,7 +39,6 @@
 							<th>{{ qi.textoDB('c_iva') }}</th>
 							<th>{{ qi.textoDB('c_total') }}</th>
 						</thead>
-                        <tbody style="background-color:#f9f9f9">
 
 						{% set total = 0 %}
 						{% set totalIva = 0 %}
@@ -41,7 +46,7 @@
 						{% for item in summary %}
 							<tr>
 								<td>
-									
+									<img style="width: 30%; display: inline-block; vertical-align: middle;" alt="Omnitural" src="{{ (path_productos ~'/'~ item.producto.imagen) | imagine_filter('producto') }}"/>
 									<p style="width: 50%; display: inline-block; vertical-align: middle;">
 										<span style="width: 100%; display: inline-block;">{{ attribute(item.producto,'nombre' ~ cu) }}</span>
 									</p>
@@ -62,7 +67,6 @@
 						<tr>
 							<td></td>
 							<td></td>
-                            <td></td>
 							<td>{{ qi.textoDB('c_total_iva') }}</td>
 							<td>{{ totalIva | number_format }}</td>
 
@@ -70,7 +74,6 @@
 
 						<tr>
 							<td></td>
-                            <td></td>
 							<td></td>
 							<td>{{ qi.textoDB('c_total_envio') }}</td>
 							<td>{{ 3400 | number_format }}</td>
@@ -78,13 +81,11 @@
 						</tr>
 
 						<tr>
-                        	<td></td>
 							<td></td>
 							<td></td>
 							<td>{{ qi.textoDB('c_total') }}</td>
 							<td>{{ (total+3400) | number_format }}</td>
 						</tr>
-                        </tbody>
 					</table>
 				</td>
 			</tr>

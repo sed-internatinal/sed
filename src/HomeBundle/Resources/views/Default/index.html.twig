@@ -4,323 +4,352 @@
 {% set cu = app.request.locale | capitalize %}
 
 {% block stylesheets %}
-    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
-    {{ parent() }}
-    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+	{{ parent() }}
+	<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <section class="home scroll-section">
-        <div id="scroll-indicator-bullets"></div>
-        <div class="slider_main scroll-section">
+	<section class="home scroll-section">
+		<div id="scroll-indicator-bullets"></div>
+		<div class="slider_main scroll-section">
 
-            {% if app.user and app.user.esempresa %}
-            <div class="btns_download_file">
-                {% for item in qi.galeria('inventarios') %}
-                    <a target="_blank" href="{{ qi.archivo(item.link) }}">
-                        <img src="{{ item.imagen }}" alt="SED">
-                    </a>
-                {% endfor %}
-{#                <a target="_blank" href="{{ qi.archivo('precios_transaccional') }}">#}
-{#                    <img src="{{ qi.imagen('btn_download_files1') }}" alt="SED">#}
-{#                </a>#}
-{#                <a target="_blank" href="{{ qi.archivo('precios_valor') }}">#}
-{#                    <img src="{{ qi.imagen('btn_download_files2') }}" alt="SED">#}
-{#                </a>#}
-            </div>
-            {% endif %}
-            <div class="swiper-container home_swiper" id="">
-                <div class="swiper-wrapper">
-                    {% for item in qi.galeria('home_swiper') %}
-                        <div class="swiper-slide" style="background-image: url({{ item.imagen  }})">
-                            <div class="texto_banner">
-                                {% if item.titulo != "" %}
-                                <h2 style="color: {{ item.color }}">{{ item.titulo }}</h2>
-                                <h3>{{ item.subtitulo }}</h3>
-                                {% endif %}
-                                <p>{{ item.resumen | raw }}</p>
-                            </div>
-                            <div class="pics_slide">
-                                <div><img data-estado="0" src="{{ item.docEs }}" alt=""></div>
-                                <div><img data-estado="0" src="{{ item.docEn }}" alt=""></div>
-                                <a href="#Goto_1" class="godown"><i class="fa fa-angle-down"></i></a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div class="marcas scroll-section" id="" style="background-image: url({{ qi.imagen('background_marcas') }})">
-            <b class="no-visibilty">Marcas</b>
-            <h2>{{ qi.textoDB('marcas_tl1') }}</h2>
-            <h3>{{ qi.textoDB('marcas_tl2') }}</h3>
-            <h4>{{ qi.textoDB('marcas_tl3') }}</h4>
-            <div class="cont_marcas">
-                <div class="swiper-container marcas_swiper">
-                    <div class="swiper-wrapper">
-                        {% for item in qi.galeria('marcas') %}
-                            <div class="swiper-slide">
-                                {#<img src="{{ item.imagen | imagine_filter('marcas_slider_home')}}" alt="{{ item.titulo }}"> <!-- 400 x 185 -->#}
-                                <img src="{{ item.imagen }}" alt="{{ item.titulo }}"> <!-- 400 x 185 -->
-                            </div>
-                        {%  endfor %}
-                    </div>
-                </div>
-                <a href="javascript:void(0)" class="swiper_arrow next"><i class="fa fa-chevron-right"></i></a>
-                <a href="javascript:void(0)" class="swiper_arrow prev"><i class="fa fa-chevron-left"></i></a>
-            </div>
-        </div>
-        <div class="banner_promo_home">
-            {% for item in qi.galeria('banner_promo_home') %}
-                <a href="{{ item.link }}" target="_blank"><img src="{{ item.imagen  }}" alt="SED"></a>
-            {% endfor %}
-        </div>
+			{% if app.user and app.user.esempresa %}
+				<div class="btns_download_file">
+					{% for item in qi.galeria('inventarios') %}
+						<a target="_blank" href="{{ qi.archivo(item.link) }}">
+							<img src="{{ item.imagen }}" alt="SED">
+						</a>
+					{% endfor %}
+					{#                <a target="_blank" href="{{ qi.archivo('precios_transaccional') }}">#}
+				{#                    <img src="{{ qi.imagen('btn_download_files1') }}" alt="SED">#}
+					{#                </a>#}
+					{#                <a target="_blank" href="{{ qi.archivo('precios_valor') }}">#}
+					{#                    <img src="{{ qi.imagen('btn_download_files2') }}" alt="SED">#}
+					{#                </a>#}
+				</div>
+			{% endif %}
+			<div class="swiper-container home_swiper" id="">
+				<div class="swiper-wrapper">
+					{% for item in qi.galeria('home_swiper') %}
 
-        {% if qi.settingDB("mostrar_producto") == 1 %}
-            <div class="promociones">
-                <b class="no-visibilty">Promociones</b>
-                <h2>{{ qi.textoDB('promociones_tl') }}</h2>
-                <h3>{{ qi.textoDB('promociones_tl2') }}</h3>
-                <div class="banner_promo_mob">
-                    <div class="swiper-container swiper-promos-mob">
-                        <div class="swiper-wrapper">
-                            {% for item in qi.galeria('promociones') %}
-                                <div class="swiper-slide">
-                                    <img src="{{ item.imagen }}" alt="{{ item.titulo }}" data-remodal-target="modal{{ item.id }}">
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <a href="javascript:void(0)" class="flecha prev"><i class="fa fa-chevron-left"></i></a>
-                        <a href="javascript:void(0)" class="flecha next"><i class="fa fa-chevron-right"></i></a>
-                    </div>
-                </div>
-                <div class="w_r">
-                    <div class="content_promos2" id="carouselC9">
-                        {% for item in qi.galeria('promociones') %}
-                            <img class="cloud9-item" src="{{ item.imagen }}" alt="{{ item.titulo }}" data-remodal-target="modal{{ item.id }}"/>
-                        {% endfor %}
-                    </div>
-                    <a class="flecha prev"><i class="fa fa-chevron-left"></i></a>
-                    <a class="flecha next"><i class="fa fa-chevron-right"></i></a>
+						<div
+							class="swiper-slide" style="background-image: url({{ item.imagen  }})">
+							<!--dware-->
+							<a target="{{ item.target }}" style="display: block;position:absolute;	height: 100%; left: 0; top: 0; width: 100%;" href="{{ item.link }}"></a>
 
-                </div>
-                <a href="{{ path('promociones') }}">{{ qi.textoDB("ver-detalles") }}</a>
-            </div>
+							<div class="texto_banner">
+								{% if item.titulo != "" %}
+									<h2 style="color: {{ item.color }}">{{ item.titulo }}</h2>
+									<h3>{{ item.subtitulo }}</h3>
+								{% endif %}
+								<p>{{ item.resumen | raw }}</p>
+							</div>
+							<div class="pics_slide">
+								<div><img data-estado="0" src="{{ item.docEs }}" alt=""></div>
+								<div><img data-estado="0" src="{{ item.docEn }}" alt=""></div>
+								<a href="#Goto_1" class="godown">
+									<i class="fa fa-angle-down"></i>
+								</a>
+							</div>
 
-            <div class="productos_destacados scroll-section" id="Goto_1">
-                <b class="no-visibilty">Destacados</b>
-                <h2>{{ qi.textoDB('productos_tl1') }}</h2>
-                <h3>{{ qi.textoDB('productos_tl2') }}</h3>
-                <p>{{ qi.textoBigDB('productos_txt') | raw}}</p>
-                <div class="content_products">
-                    <div class="swiper-container productos_swiper">
-                        <div class="swiper-wrapper">
-                            {% for item in ci.productos(null,null,"",true,null,null,null) %}
-                                {% set precio = qi.precioUser(item.id,app.user) %}
-                                <div class="swiper-slide">
-                                    <div class="product">
-                                        {% if precio != item.precio and app.user %}
-                                        <div class="prod_convenio">
-                                            <h2>{{ qi.textoDB('convenio') }}</h2>
-                                        </div>
-                                        {% endif %}
-                                        {% if item.precioFecha != 0 and item.precioFecha != "" %}
-                                        <div class="desc">
-                                            <span>{{ (100-((item.precio/item.precioFecha)*100))|number_format(0) }}%</span>
-                                        </div>
-                                        {% endif %}
-                                            <img src="{{ item.imagen }}" alt="{{ item.nombre }}">
-                                        <h5>{{ item.nombre }}</h5>
-                                        <div class="resumen"><p>{{ item.resumen | raw }}</p></div>
-                                        {% if app.user %}
-                                        <span>${{ precio|number_format }}</span>
-                                        {% endif %}
-                                        <a href="{{ path('productos-detail',{id:item.id, nombre: qi.slugify(item.nombre)}) }}">{{ qi.textoDB("ver-detalles") }}</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <a href="javascript:void(0)" class="swiper_arrow next"><i class="fa fa-chevron-right"></i></a>
-                    <a href="javascript:void(0)" class="swiper_arrow prev"><i class="fa fa-chevron-left"></i></a>
-                </div>
-            </div>
-        {% endif %}
-        <div class="banner_video">
-            <div class="video_player" id="player"></div>
-            <div class="wr_video">
-                <img src="{{ qi.imagen('back_video') }}" alt="SED" style="background-color: rgba(0, 0, 0, 0.4);">
-                <div class="txt">
-                    <div class="wr_txt">
-                        <h2>{{ qi.textoDB("titulo-video-home") }} </h2>
-                        <p>{{ qi.textoDB("descripcion-video-home") }}</p>
-                        <br>
-                        <a onclick="reproducir();">
-                            <i class="fas fa-play"></i>
-                            <span>{{ qi.textoDB("reproducir") }}</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="servicios scroll-section" id="">
-            <b class="no-visibilty">Servicios</b>
-            <div class="title_servicios" style="background-image: url({{ qi.imagen('servicios_imagen') }})">
-                <h2>{{ qi.textoDB('servicios_tl1') }}</h2>
-                <h3>{{ qi.textoDB('servicios_tl2') }}</h3>
-                <h4>{{ qi.textoDB('servicios_tl3') }}</h4>
-            </div>
-            {% for item in qi.galeria('servicios') %}
-                <div class="wrap_servicios">
-                    <div class="col">
-                        <div class="img" style="background-image: url({{ qi.imagen('servicios_back') }})">
-                            <div class="wr_center">
-                                <img src="{{ item.imagen  }}" alt="imagen">
-                                <h5>{{ item.titulo | raw}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="txt">
-                            <div class="wr_center">
-                                {{ item.resumen | raw }} <br>
-                                <a href="{{ path('unidad-marcas',{id:item.llave})  }}">{{ qi.textoDB("ver-detalles") }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {%  endfor %}
-        </div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="marcas scroll-section" id="" style="background-image: url({{ qi.imagen('background_marcas') }})">
+			<b class="no-visibilty">Marcas</b>
+			<h2>{{ qi.textoDB('marcas_tl1') }}</h2>
+			<h3>{{ qi.textoDB('marcas_tl2') }}</h3>
+			<h4>{{ qi.textoDB('marcas_tl3') }}</h4>
+			<div class="cont_marcas">
+				<div class="swiper-container marcas_swiper">
+					<div class="swiper-wrapper">
+						{% for item in qi.galeria('marcas') %}
+							<div
+								class="swiper-slide">
+								{#<img src="{{ item.imagen | imagine_filter('marcas_slider_home')}}" alt="{{ item.titulo }}"> <!-- 400 x 185 -->#}
+								<img
+								src="{{ item.imagen }}" alt="{{ item.titulo }}">
+							<!-- 400 x 185 -->
+							</div>
+						{%  endfor %}
+					</div>
+				</div>
+				<a href="javascript:void(0)" class="swiper_arrow next">
+					<i class="fa fa-chevron-right"></i>
+				</a>
+				<a href="javascript:void(0)" class="swiper_arrow prev">
+					<i class="fa fa-chevron-left"></i>
+				</a>
+			</div>
+		</div>
+		<div class="banner_promo_home">
+			{% for item in qi.galeria('banner_promo_home') %}
+				<a href="{{ item.link }}" target="_blank"><img src="{{ item.imagen }}" alt="SED"></a>
+			{% endfor %}
+		</div>
 
-        {#<div class="promociones scroll-section" id="">
-            <b class="no-visibilty">Promociones</b>
-            <h2>{{ qi.textoDB('promociones_tl') }}</h2>
-            <h3>{{ qi.textoDB('promociones_tl2') }}</h3>
-            <div class="content_promos">
-                <div class="swiper-container promos_swiper">
-                    <div class="swiper-wrapper">
-                        {% for item in qi.galeria('promociones') %}
-                            <div class="swiper-slide">
-                                <img src="{{ item.imagen | imagine_filter('promos_img')}}" alt="{{ item.titulo }}" data-remodal-target="modal">
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <a href="javascript:void(0)" class="swiper_arrow next"><i class="fa fa-chevron-right"></i></a>
-                <a href="javascript:void(0)" class="swiper_arrow prev"><i class="fa fa-chevron-left"></i></a>
-            </div>
-            <a href="{{ path('promociones') }}">ver más</a>
-        </div>#}
-        {% for item in qi.galeria('promociones') %}
-        <div class="remodal remodal_promos_home" data-remodal-id="modal{{ item.id }}">
-            <button data-remodal-action="close" class="remodal-close"></button>
-            <img src="{{ item.imagen }}" alt="">
-        </div>
-        {% endfor %}
+		{% if qi.settingDB("mostrar_producto") == 1 %}
+			<div class="promociones">
+				<b class="no-visibilty">Promociones</b>
+				<h2>{{ qi.textoDB('promociones_tl') }}</h2>
+				<h3>{{ qi.textoDB('promociones_tl2') }}</h3>
+				<div class="banner_promo_mob">
+					<div class="swiper-container swiper-promos-mob">
+						<div class="swiper-wrapper">
+							{% for item in qi.galeria('promociones') %}
+								<div class="swiper-slide">
+									<img src="{{ item.imagen }}" alt="{{ item.titulo }}" data-remodal-target="modal{{ item.id }}">
+								</div>
+							{% endfor %}
+						</div>
+						<a href="javascript:void(0)" class="flecha prev">
+							<i class="fa fa-chevron-left"></i>
+						</a>
+						<a href="javascript:void(0)" class="flecha next">
+							<i class="fa fa-chevron-right"></i>
+						</a>
+					</div>
+				</div>
+				<div class="w_r">
+					<div class="content_promos2" id="carouselC9">
+						{% for item in qi.galeria('promociones') %}
+							<img class="cloud9-item" src="{{ item.imagen }}" alt="{{ item.titulo }}" data-remodal-target="modal{{ item.id }}"/>
+						{% endfor %}
+					</div>
+					<a class="flecha prev">
+						<i class="fa fa-chevron-left"></i>
+					</a>
+					<a class="flecha next">
+						<i class="fa fa-chevron-right"></i>
+					</a>
 
-    </section>
+				</div>
+				<a href="{{ path('promociones') }}">{{ qi.textoDB("ver-detalles") }}</a>
+			</div>
+
+			<div class="productos_destacados scroll-section" id="Goto_1">
+				<b class="no-visibilty">Destacados</b>
+				<h2>{{ qi.textoDB('productos_tl1') }}</h2>
+				<h3>{{ qi.textoDB('productos_tl2') }}</h3>
+				<p>{{ qi.textoBigDB('productos_txt') | raw}}</p>
+				<div class="content_products">
+					<div class="swiper-container productos_swiper">
+						<div class="swiper-wrapper">
+							{% for item in ci.productos(null,null,"",true,null,null,null) %}
+								{% set precio = qi.precioUser(item.id,app.user) %}
+								<div class="swiper-slide">
+									<div class="product">
+										{% if precio != item.precio and app.user %}
+											<div class="prod_convenio">
+												<h2>{{ qi.textoDB('convenio') }}</h2>
+											</div>
+										{% endif %}
+										{% if item.precioFecha != 0 and item.precioFecha != "" %}
+											<div class="desc">
+												<span>{{ (100-((item.precio/item.precioFecha)*100))|number_format(0) }}%</span>
+											</div>
+										{% endif %}
+										<img src="{{ item.imagen }}" alt="{{ item.nombre }}">
+										<h5>{{ item.nombre }}</h5>
+										<div class="resumen">
+											<p>{{ item.resumen | raw }}</p>
+										</div>
+										{% if app.user %}
+											<span>${{ precio|number_format }}</span>
+										{% endif %}
+										<a href="{{ path('productos-detail',{id:item.id, nombre: qi.slugify(item.nombre)}) }}">{{ qi.textoDB("ver-detalles") }}</a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<a href="javascript:void(0)" class="swiper_arrow next">
+						<i class="fa fa-chevron-right"></i>
+					</a>
+					<a href="javascript:void(0)" class="swiper_arrow prev">
+						<i class="fa fa-chevron-left"></i>
+					</a>
+				</div>
+			</div>
+		{% endif %}
+		<div class="banner_video">
+			<div class="video_player" id="player"></div>
+			<div class="wr_video">
+				<img src="{{ qi.imagen('back_video') }}" alt="SED" style="background-color: rgba(0, 0, 0, 0.4);">
+				<div class="txt">
+					<div class="wr_txt">
+						<h2>{{ qi.textoDB("titulo-video-home") }}
+						</h2>
+						<p>{{ qi.textoDB("descripcion-video-home") }}</p>
+						<br>
+						<a onclick="reproducir();">
+							<i class="fas fa-play"></i>
+							<span>{{ qi.textoDB("reproducir") }}</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="servicios scroll-section" id="">
+			<b class="no-visibilty">Servicios</b>
+			<div class="title_servicios" style="background-image: url({{ qi.imagen('servicios_imagen') }})">
+				<h2>{{ qi.textoDB('servicios_tl1') }}</h2>
+				<h3>{{ qi.textoDB('servicios_tl2') }}</h3>
+				<h4>{{ qi.textoDB('servicios_tl3') }}</h4>
+			</div>
+			{% for item in qi.galeria('servicios') %}
+				<div class="wrap_servicios">
+					<div class="col">
+						<div class="img" style="background-image: url({{ qi.imagen('servicios_back') }})">
+							<div class="wr_center">
+								<img src="{{ item.imagen }}" alt="imagen">
+								<h5>{{ item.titulo | raw}}</h5>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="txt">
+							<div class="wr_center">
+								{{ item.resumen | raw }}
+								<br>
+								<a href="{{ path('unidad-marcas',{id:item.llave}) }}">{{ qi.textoDB("ver-detalles") }}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			{%  endfor %}
+		</div>
+
+		{#<div class="promociones scroll-section" id="">
+																																								            <b class="no-visibilty">Promociones</b>
+																																								            <h2>{{ qi.textoDB('promociones_tl') }}</h2>
+																																								            <h3>{{ qi.textoDB('promociones_tl2') }}</h3>
+																																								            <div class="content_promos">
+																																								                <div class="swiper-container promos_swiper">
+																																								                    <div class="swiper-wrapper">
+																																								                        {% for item in qi.galeria('promociones') %}
+																																								                            <div class="swiper-slide">
+																																								                                <img src="{{ item.imagen | imagine_filter('promos_img')}}" alt="{{ item.titulo }}" data-remodal-target="modal">
+																																								                            </div>
+																																								                        {% endfor %}
+																																								                    </div>
+																																								                </div>
+																																								                <a href="javascript:void(0)" class="swiper_arrow next"><i class="fa fa-chevron-right"></i></a>
+																																								                <a href="javascript:void(0)" class="swiper_arrow prev"><i class="fa fa-chevron-left"></i></a>
+																																								            </div>
+																																								            <a href="{{ path('promociones') }}">ver más</a>
+																																								        </div>#}
+		{% for item in qi.galeria('promociones') %}
+			<div class="remodal remodal_promos_home" data-remodal-id="modal{{ item.id }}">
+				<button data-remodal-action="close" class="remodal-close"></button>
+				<img src="{{ item.imagen }}" alt="">
+			</div>
+		{% endfor %}
+
+	</section>
 
 
 {% endblock %}
 
 {% block javascripts %}
 
-    <script type="text/javascript">
+	<script type="text/javascript">
 
 
-        // 2. This code loads the IFrame Player API code asynchronously.
-        var tag = document.createElement('script');
+		// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
 
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // 3. This function creates an <iframe> (and YouTube player)
-        //    after the API code downloads.
-        var player;
-        var e;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '360',
-                width: '640',
-                videoId: '{{ qi.textoDB("video-home") }}',
-                events: {
-                    'onReady': onPlayerReady
-                },
-                playerVars: {
-                    'autoplay': 0,
-                    'modestbranding': 1,
-                    'controls': 0,
-                    'rel': 0,
-                }
-            });
-        }
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+var player;
+var e;
+function onYouTubeIframeAPIReady() {
+player = new YT.Player('player', {
+height: '360',
+width: '640',
+videoId: '{{ qi.textoDB("video-home") }}',
+events: {
+'onReady': onPlayerReady
+},
+playerVars: {
+'autoplay': 0,
+'modestbranding': 1,
+'controls': 0,
+'rel': 0
+}
+});
+}
 
-        // 4. The API will call this function when the video player is ready.
-        function onPlayerReady(event) {
-            e = event;
-            //event.target.playVideo();
-        }
-        
-        function ocultarPreview() {
-            /*TweenMax.to($('.wr_video'), 0.5, {opacity: 0});*/
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+e = event;
+// event.target.playVideo();
+}
 
-            var panel = $('.wr_video');
+function ocultarPreview() { /*TweenMax.to($('.wr_video'), 0.5, {opacity: 0});*/
 
-            var tl = new TimelineMax({delay:0.5});
+var panel = $('.wr_video');
 
-            tl.to(panel, 0.5, {opacity:0})
-                .to(panel, 0.5, {display: 'none'});
+var tl = new TimelineMax({delay: 0.5});
 
-        }
+tl.to(panel, 0.5, {opacity: 0}).to(panel, 0.5, {display: 'none'});
 
-        function reproducir() {
-            e.target.playVideo();
-            ocultarPreview();
-        }
+}
 
-        $('.promociones').parallax({imageSrc: '{{ qi.imagen('fondo_promociones') }}'});
+function reproducir() {
+e.target.playVideo();
+ocultarPreview();
+}
+
+$('.promociones').parallax({imageSrc: '{{ qi.imagen('fondo_promociones') }}'});
 
 
-        window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 
-            console.log("alturas");
+console.log("alturas");
 
-            var max_p =0;
-            $(".desc").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            //$(".desc").height( max_p);
+var max_p = 0;
+$(".desc").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+// $(".desc").height( max_p);
 
-            var max_p =0;
-            $(".product h5").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".product h5").height( max_p);
+var max_p = 0;
+$(".product h5").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".product h5").height(max_p);
 
-            var max_p =0;
-            $(".resumen").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".resumen").height( max_p);
+var max_p = 0;
+$(".resumen").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".resumen").height(max_p);
 
 
-            var max_p =0;
-            $(".product").each(function(k,v){
-                max_p = Math.max(max_p,$(this).height());
-            });
-            $(".product").height( max_p);
-            console.log("max_he",max_p);
-        });
+var max_p = 0;
+$(".product").each(function (k, v) {
+max_p = Math.max(max_p, $(this).height());
+});
+$(".product").height(max_p);
+console.log("max_he", max_p);
+});
 
-        $(function () {
-            // var swiper = new Swiper('.swiper-container', {
-            //     navigation: {
-            //         nextEl: '.swiper-button-next',
-            //         prevEl: '.swiper-button-prev',
-            //     },
-            //     loop: true
-            // });
-        })
-    </script>
+$(function () {
+// var swiper = new Swiper('.swiper-container', {
+//     navigation: {
+//         nextEl: '.swiper-button-next',
+//         prevEl: '.swiper-button-prev',
+//     },
+//     loop: true
+// });
+})
+	</script>
 {% endblock %}
