@@ -26,10 +26,10 @@
 /public_html/uploads
 /public_html/assets/vendor
 
-/web/css
 /web/media
 /web/bundles/
 /web/assets
 /web/assets/vendor
 /web/uploads
 var/
+migrations/*
