@@ -244,12 +244,12 @@ liip_imagine:
     resolvers:
        default:
           web_path:
-            web_root: '%kernel.root_dir%/../html'
+            web_root: '%kernel.root_dir%/../public_html'
             cache_prefix: media/cache
     loaders:
         default:
             filesystem:
-                data_root: '%kernel.root_dir%/../html'
+                data_root: '%kernel.root_dir%/../public_html'
 
     filter_sets:
         cache: ~
@@ -487,10 +487,8 @@ easy_admin:
                 fields:
                     - { property: 'nombreEs'}
                     - { property: 'nombreEn'}
-                    - { property: 'iconoEsFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
-                    - { property: 'iconoEnFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
-                    - { property: 'imagenEsFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
-                    - { property: 'imagenEnFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
+                    - { property: 'iconoFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
+                    - { property: 'imagenFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType' }
                     - { property: 'descripcionEs', type: 'Ivory\CKEditorBundle\Form\Type\CKEditorType' }
                     - { property: 'descripcionEn', type: 'Ivory\CKEditorBundle\Form\Type\CKEditorType' }
                     - { property: 'galeria'}
@@ -718,6 +716,7 @@ easy_admin:
                     - { property: 'nombreEs'}
                     - { property: 'imagen', type: 'image', base_path: '%app.path.productos%'  }
                     - precio
+                    - precioUsuario
                     - destacado
                     - filtros
                     - { property: 'orden'}
@@ -732,6 +731,9 @@ easy_admin:
                     - { property: 'imageFile', type: 'Vich\UploaderBundle\Form\Type\VichImageType', type_options: { required: false } }
                     - precio
                     - precioFecha
+                    - precioUsuario
+                    - precioFechaUsuario
+                    - iva
                     - destacado
                     - filtros
                     - { property: 'descripcionEs', type: 'Ivory\CKEditorBundle\Form\Type\CKEditorType' }

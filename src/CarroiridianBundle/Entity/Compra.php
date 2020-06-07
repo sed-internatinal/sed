@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use PagosPayuBundle\Entity\RepuestaPago;
 
 /**
- * Compra
+ * Compra.
  *
  * @ORM\Table(name="compra")
  * @ORM\Entity(repositoryClass="CarroiridianBundle\Repository\CompraRepository")
@@ -97,10 +97,10 @@ class Compra
     private $descripcion;
 
     /**
- * @var string
- *
- * @ORM\Column(name="message", type="text", nullable=true)
- */
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", nullable=true)
+     */
     private $message;
 
     /**
@@ -209,8 +209,13 @@ class Compra
      * @ORM\Column(name="desc_text", type="string", nullable=true)
      */
     private $descText;
-
-
+    //dware
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_comprador", type="string", columnDefinition="enum('USUARIO', 'EMPRESA')")
+     */
+    private $tipoComprador;
 
     /**
      * (Initialize some fields).
@@ -221,7 +226,6 @@ class Compra
         $this->guid = $this->id;
         $this->compraitems = new ArrayCollection();
         $this->createdAt = new \DateTime();
-
     }
 
     public function __toString()
@@ -240,7 +244,7 @@ class Compra
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */
@@ -250,7 +254,7 @@ class Compra
     }
 
     /**
-     * Set guid
+     * Set guid.
      *
      * @param guid $guid
      *
@@ -259,12 +263,12 @@ class Compra
     public function setGuid($guid)
     {
         $this->guid = $guid;
-    
+
         return $this;
     }
 
     /**
-     * Get guid
+     * Get guid.
      *
      * @return guid
      */
@@ -274,7 +278,7 @@ class Compra
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \DateTime $createdAt
      *
@@ -283,12 +287,12 @@ class Compra
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get createdAt.
      *
      * @return \DateTime
      */
@@ -298,7 +302,7 @@ class Compra
     }
 
     /**
-     * Set comprador
+     * Set comprador.
      *
      * @param \AppBundle\Entity\User $comprador
      *
@@ -312,7 +316,7 @@ class Compra
     }
 
     /**
-     * Get comprador
+     * Get comprador.
      *
      * @return \AppBundle\Entity\User
      */
@@ -322,7 +326,7 @@ class Compra
     }
 
     /**
-     * Add compraitem
+     * Add compraitem.
      *
      * @param \CarroiridianBundle\Entity\Compraitem $compraitem
      *
@@ -331,12 +335,12 @@ class Compra
     public function addCompraitem(\CarroiridianBundle\Entity\Compraitem $compraitem)
     {
         $this->compraitems[] = $compraitem;
-    
+
         return $this;
     }
 
     /**
-     * Remove compraitem
+     * Remove compraitem.
      *
      * @param \CarroiridianBundle\Entity\Compraitem $compraitem
      */
@@ -346,7 +350,7 @@ class Compra
     }
 
     /**
-     * Get compraitems
+     * Get compraitems.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -356,7 +360,7 @@ class Compra
     }
 
     /**
-     * Set bonos
+     * Set bonos.
      *
      * @param \CarroiridianBundle\Entity\Bono $bono
      *
@@ -370,7 +374,7 @@ class Compra
     }
 
     /**
-     * Get bonos
+     * Get bonos.
      *
      * @return \CarroiridianBundle\Entity\Bono
      */
@@ -379,23 +383,22 @@ class Compra
         return $this->bonos;
     }
 
-
     /**
-     * Set prueba
+     * Set prueba.
      *
-     * @param boolean $prueba
+     * @param bool $prueba
      *
      * @return Compra
      */
     public function setPrueba($prueba)
     {
         $this->prueba = $prueba;
-    
+
         return $this;
     }
 
     /**
-     * Get prueba
+     * Get prueba.
      *
      * @return boolean
      */
@@ -405,7 +408,7 @@ class Compra
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
      *
@@ -414,12 +417,12 @@ class Compra
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -429,7 +432,7 @@ class Compra
     }
 
     /**
-     * Set estado
+     * Set estado.
      *
      * @param \CarroiridianBundle\Entity\EstadoCarrito $estado
      *
@@ -438,12 +441,12 @@ class Compra
     public function setEstado(\CarroiridianBundle\Entity\EstadoCarrito $estado = null)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
-     * Get estado
+     * Get estado.
      *
      * @return \CarroiridianBundle\Entity\EstadoCarrito
      */
@@ -453,7 +456,7 @@ class Compra
     }
 
     /**
-     * Set direccion
+     * Set direccion.
      *
      * @param \CarroiridianBundle\Entity\Envio $direccion
      *
@@ -462,12 +465,12 @@ class Compra
     public function setDireccion(\CarroiridianBundle\Entity\Envio $direccion = null)
     {
         $this->direccion = $direccion;
-    
+
         return $this;
     }
 
     /**
-     * Get direccion
+     * Get direccion.
      *
      * @return \CarroiridianBundle\Entity\Envio
      */
@@ -477,7 +480,7 @@ class Compra
     }
 
     /**
-     * Set precio
+     * Set precio.
      *
      * @param float $precio
      *
@@ -486,12 +489,12 @@ class Compra
     public function setPrecio($precio)
     {
         $this->precio = $precio;
-    
+
         return $this;
     }
 
     /**
-     * Get precio
+     * Get precio.
      *
      * @return float
      */
@@ -501,104 +504,116 @@ class Compra
     }
 
     /**
-     * Get Usuario
+     * Get Usuario.
      *
      * @return string
      */
     public function getUsuario()
     {
         $user = $this->getDireccion()->getUser();
-        if($user)
+        if ($user) {
             return $user->getNombre().' '.$user->getApellidos();
+        }
+
         return '';
     }
 
     /**
-     * Get Email
+     * Get Email.
      *
      * @return string
      */
     public function getEmail()
     {
         $user = $this->getDireccion()->getUser();
+
         return $user->getEmail();
     }
 
     /**
-     * Get Telefono
+     * Get Telefono.
      *
      * @return string
      */
     public function getTelefono()
     {
         $user = $this->getDireccion()->getUser();
+
         return $user->getTelefono();
     }
 
     /**
-     * Get UsuarioCompleto
+     * Get UsuarioCompleto.
      *
      * @return string
      */
     public function getUsuarioCompleto()
     {
         $user = $this->getDireccion()->getUser();
-        if($user){
+        if ($user) {
             $nombre = $user->getNombre().' '.$user->getApellidos();
             $cad = '<table class="table table-bordered">';
             $cad .= '<tr><td><strong>Nombre</strong></td><td>'.$nombre.'</td></tr>';
             $cad .= '<tr><td><strong>Email</strong></td><td>'.$user->getEmail().'</td></tr>';
             $cad .= '<tr><td><strong>Telefono</strong></td><td>'.$user->getTelefono().'</td></tr>';
             $cad .= '</table>';
+
             return $cad;
         }
-        return '';
 
+        return '';
     }
 
     /**
-     * Get DireccionCompleta
+     * Get DireccionCompleta.
      *
      * @return string
      */
     public function getDireccionCompleta()
     {
         $direccion = $this->getDireccion();
-        if($direccion){
+        if ($direccion) {
             $cad = '<table class="table table-bordered">';
             $cad .= '<tr><td><strong>Deparatamento</strong></td><td>'.$direccion->getDepartamento().'</td></tr>';
             $cad .= '<tr><td><strong>Ciudad</strong></td><td>'.$direccion->getCiudad().'</td></tr>';
             $cad .= '<tr><td><strong>Dirección</strong></td><td>'.$direccion->getDireccion().'</td></tr>';
-            if($direccion->getAdicionales())
-            $cad .= '<tr><td><strong>Adicionales</strong></td><td>'.$direccion->getAdicionales().'</td></tr>';
+            if ($direccion->getAdicionales()) {
+                $cad .= '<tr><td><strong>Adicionales</strong></td><td>'.$direccion->getAdicionales().'</td></tr>';
+            }
             $cad .= '</table>';
+
             return $cad;
         }
+
         return '';
     }
 
     /**
-     * Get Productos
+     * Get Productos.
      *
      * @return string
      */
     public function getProductos()
     {
         $direccion = $this->getDireccion();
-        if($direccion){
+        if ($direccion) {
             $cad = '<table class="table table-bordered"><tr><td>Nombre</td><td>Talla</td><td>Cantidad</td></tr>';
-            foreach ($this->getCompraitems() as $item){
-                if(0){$item = new Compraitem();}
+            foreach ($this->getCompraitems() as $item) {
+                if (0) {
+                    $item = new Compraitem();
+                }
                 $cad .= '<tr><td>'.$item->getProducto()->getNombreEs().'</td><td>'.$item->getTalla().'</td><td>'.$item->getCantidad().'</td></tr>';
             }
             $cad .= '</table>';
+
             return $cad;
         }
+
         return '';
     }
 
     /**
-     * Get Transaccion
+     * Get Transaccion.
      *
      * @return string
      */
@@ -606,11 +621,13 @@ class Compra
     {
         $continuar = true;
         $respuestas = $this->getRespuestasPago();
-        if($respuestas){
+        if ($respuestas) {
             $cad = '<table class="table table-bordered">';
-            foreach ($respuestas as $respuesta){
-                if(0){$respuesta = new RepuestaPago();}
-                if($respuesta->getTipo() == 'CONFIRMACION' && $continuar){
+            foreach ($respuestas as $respuesta) {
+                if (0) {
+                    $respuesta = new RepuestaPago();
+                }
+                if ($respuesta->getTipo() == 'CONFIRMACION' && $continuar) {
                     $continuar = false;
                     $cad .= '<tr><td><strong>Id Transacción</strong></td><td>'.$respuesta->getTransactionId().'</td></tr>';
                     $cad .= '<tr><td><strong>Referencia</strong></td><td>'.$respuesta->getReferenceCode().'</td></tr>';
@@ -620,15 +637,15 @@ class Compra
                 }
             }
             $cad .= '</table>';
+
             return $cad;
         }
+
         return '';
     }
 
-
-
     /**
-     * Add respuestasPago
+     * Add respuestasPago.
      *
      * @param \PagosPayuBundle\Entity\RepuestaPago $respuestasPago
      *
@@ -637,12 +654,12 @@ class Compra
     public function addRespuestasPago(\PagosPayuBundle\Entity\RepuestaPago $respuestasPago)
     {
         $this->RespuestasPago[] = $respuestasPago;
-    
+
         return $this;
     }
 
     /**
-     * Remove respuestasPago
+     * Remove respuestasPago.
      *
      * @param \PagosPayuBundle\Entity\RepuestaPago $respuestasPago
      */
@@ -652,7 +669,7 @@ class Compra
     }
 
     /**
-     * Get respuestasPago
+     * Get respuestasPago.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -662,7 +679,7 @@ class Compra
     }
 
     /**
-     * Add comprabono
+     * Add comprabono.
      *
      * @param \CarroiridianBundle\Entity\Comprabono $comprabono
      *
@@ -676,7 +693,7 @@ class Compra
     }
 
     /**
-     * Remove comprabono
+     * Remove comprabono.
      *
      * @param \CarroiridianBundle\Entity\Comprabono $comprabono
      */
@@ -686,7 +703,7 @@ class Compra
     }
 
     /**
-     * Get comprabonos
+     * Get comprabonos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -696,7 +713,7 @@ class Compra
     }
 
     /**
-     * Add bono
+     * Add bono.
      *
      * @param \CarroiridianBundle\Entity\Bono $bono
      *
@@ -710,7 +727,7 @@ class Compra
     }
 
     /**
-     * Remove bono
+     * Remove bono.
      *
      * @param \CarroiridianBundle\Entity\Bono $bono
      */
@@ -729,7 +746,7 @@ class Compra
     public function setCantidad($cantidad = null)
     {
         $this->cantidad = $cantidad;
-    
+
         return $this;
     }
 
@@ -753,7 +770,7 @@ class Compra
     public function setTotal($total = null)
     {
         $this->total = $total;
-    
+
         return $this;
     }
 
@@ -777,7 +794,7 @@ class Compra
     public function setCode($code = null)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
@@ -801,7 +818,7 @@ class Compra
     public function setOrderId($orderId = null)
     {
         $this->orderId = $orderId;
-    
+
         return $this;
     }
 
@@ -825,7 +842,7 @@ class Compra
     public function setTransactionId($transactionId = null)
     {
         $this->transactionId = $transactionId;
-    
+
         return $this;
     }
 
@@ -849,7 +866,7 @@ class Compra
     public function setState($state = null)
     {
         $this->state = $state;
-    
+
         return $this;
     }
 
@@ -873,7 +890,7 @@ class Compra
     public function setPaymentNetworkResponseCode($paymentNetworkResponseCode = null)
     {
         $this->paymentNetworkResponseCode = $paymentNetworkResponseCode;
-    
+
         return $this;
     }
 
@@ -897,7 +914,7 @@ class Compra
     public function setTrazabilityCode($trazabilityCode = null)
     {
         $this->trazabilityCode = $trazabilityCode;
-    
+
         return $this;
     }
 
@@ -921,7 +938,7 @@ class Compra
     public function setAuthorizationCode($authorizationCode = null)
     {
         $this->authorizationCode = $authorizationCode;
-    
+
         return $this;
     }
 
@@ -945,7 +962,7 @@ class Compra
     public function setResponseCode($responseCode = null)
     {
         $this->responseCode = $responseCode;
-    
+
         return $this;
     }
 
@@ -969,7 +986,7 @@ class Compra
     public function setOperationDate($operationDate = null)
     {
         $this->operationDate = $operationDate;
-    
+
         return $this;
     }
 
@@ -993,7 +1010,7 @@ class Compra
     public function setDescText($descText = null)
     {
         $this->descText = $descText;
-    
+
         return $this;
     }
 
@@ -1017,7 +1034,7 @@ class Compra
     public function setMessage($message = null)
     {
         $this->message = $message;
-    
+
         return $this;
     }
 
@@ -1041,7 +1058,7 @@ class Compra
     public function setDate($date = null)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
@@ -1053,5 +1070,31 @@ class Compra
     public function getDate()
     {
         return $this->date;
+    }
+
+    //dware
+
+    /**
+     * Set tipoComprador.
+     *
+     * @param string|null $date
+     *
+     * @return Compra
+     */
+    public function setTipoComprador($tipoComprador = null)
+    {
+        $this->tipoComprador = $tipoComprador;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoComprador.
+     *
+     * @return string|null
+     */
+    public function getTipoComprador()
+    {
+        return $this->tipoComprador;
     }
 }
