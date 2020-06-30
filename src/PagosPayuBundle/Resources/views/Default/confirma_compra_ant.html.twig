@@ -10,7 +10,6 @@
 		<table id="Table_01" width="600" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>
-
 					<img style="display: inline-block; margin: 2% 0;" src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ '/images/logo_sed.png' }}" width="600" height="191" alt="">
 				</td>
 			</tr>
@@ -71,20 +70,17 @@
 							<td>{{ totalIva | number_format }}</td>
 
 						</tr>
-
 						<tr>
 							<td></td>
 							<td></td>
 							<td>{{ qi.textoDB('c_total_envio') }}</td>
 							<td>{{ 3400 | number_format }}</td>
-
 						</tr>
-
 						<tr>
 							<td></td>
 							<td></td>
 							<td>{{ qi.textoDB('c_total') }}</td>
-							<td>{{ (total+3400) | number_format }}</td>
+							<td>{{ (total + 3400) | number_format }}</td>
 						</tr>
 					</table>
 				</td>

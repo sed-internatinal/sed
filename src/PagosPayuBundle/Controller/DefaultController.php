@@ -7,7 +7,9 @@ use CarroiridianBundle\Entity\Compraitem;
 use CarroiridianBundle\Entity\Entrada;
 use CarroiridianBundle\Entity\Envio;
 use CarroiridianBundle\Entity\PagoLogger;
+use CarroiridianBundle\Utils\Util;
 use JMS\Serializer\SerializerBuilder;
+use mysql_xdevapi\Exception;
 use PagosPayuBundle\Entity\Logger;
 use PagosPayuBundle\Entity\RepuestaPago;
 use PagosPayuBundle\Entity\TokenPayu;
@@ -40,6 +42,7 @@ class DefaultController extends Controller
         $qi = $this->get('qi');
 
         $user = $this->getUser();
+
         $compra = new Compra();
         $compra->setComprador($user);
         $compra->setDireccion($direccion);
@@ -51,6 +54,7 @@ class DefaultController extends Controller
         $repo_b = $this->getDoctrine()->getRepository('CarroiridianBundle:Bono');
         $em->persist($compra);
         $em->flush();
+
         if (isset($descuento['id'])) {
             $bono_temp = $repo_b->find($descuento['id']);
             $bono_temp->setReclama(1);
@@ -63,7 +67,8 @@ class DefaultController extends Controller
 
         /** @var $envio Envio */
         $envio = $compra->getDireccion();
-        $costo_envio = $envio->getCiudad()->getCosto();
+        $data_envio = Util::getCostoEnvio($carrito, $ciudad, $user, $this->getDoctrine(), $compra);
+        $costo_envio = $data_envio['costo_envio'];
         $total = 0;
         $descripcion_text = '';
         $descripcion = '<table align="center" border="0" cellpadding="5px" cellspacing="0" class="mcnTextContentContainer" style="color: #999;font-family: Arial, \'Helvetica Neue\', Helvetica, sans-serif;max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%">';
@@ -193,9 +198,10 @@ class DefaultController extends Controller
         $compra->setDescripcion($descripcion);
         $total = $total + $costo_envio;
         $compra->setPrecio($total);
+        $compra->setCostoEnvio($costo_envio);
         $em->persist($compra);
         $em->flush();
-        $descripcion_text .= 'Costo envio, $'.number_format($direccion->getCiudad()->getCosto()).' |';
+        $descripcion_text .= 'Costo envio, $' . number_format($costo_envio) . ' |';
         $descripcion_text .= 'TOTAL: $'.number_format($total);
         $tax = round($total * 0.19 / 1.19, 2);
         $taxReturnBase = round($total / 1.19, 2);
@@ -440,6 +446,7 @@ class DefaultController extends Controller
         if (strtoupper($firma) == strtoupper($firmacreada) || 1) {
             if ($state_pol == 4) {
                 $estadoTx = 'APROBADA';
+                Util::grabarEnvio($this->getDoctrine(), $compra);
             } elseif ($state_pol == 6) {
                 $estadoTx = 'RECHZADA';
             } elseif ($state_pol == 5) {
@@ -493,7 +500,8 @@ class DefaultController extends Controller
 
         $costo_city = 0;
         if ($direccion) {
-            $costo_city = $direccion->getCiudad()->getCosto();
+            $data_envio = Util::getCostoEnvio($carrito, $direccion->getCiudad(),$this->getUser(), $this->getDoctrine());
+            $costo_city = $data_envio['costo_envio'];
         }
         $total = $total + $costo_city;
 
@@ -764,11 +772,12 @@ class DefaultController extends Controller
         $compra->setDescripcion($descripcion);
         $costo_city = 0;
         if ($direccion) {
-            $costo_city = $compra->getDireccion()->getCiudad()->getCosto();
+            $data_envio = Util::getCostoEnvio($carrito, $compra->getDireccion()->getCiudad(),$this->getUser(), $this->getDoctrine(), $compra);
+            $costo_city = $data_envio['costo_envio'];
         }
         $total = $total + $costo_city;
         if ($direccion) {
-            $descripcion_text .= 'Costo envio, $'.number_format($direccion->getCiudad()->getCosto()).' |';
+            $descripcion_text .= 'Costo envio, $' . number_format($costo_city) . ' |';
         }
 
         $tax = round($total * 0.19 / 1.19, 2);
@@ -777,6 +786,7 @@ class DefaultController extends Controller
         $total += $tax;
         $descripcion_text .= 'TOTAL: $'.number_format($total);
         $compra->setPrecio($total);
+        $compra->setCostoEnvio($costo_city);
         $compra->setDescText($descripcion_text);
         $em->persist($compra);
         $em->flush();
@@ -984,7 +994,9 @@ class DefaultController extends Controller
         $pago = explode('|', $rs['str_res_pago']);
         $items = $compra->getCompraitems();
 
-        return $this->render('PagosPayuBundle:Default:respuesta_zona_pagos.html.twig', compact('items', 'compra', 'pago'));
+        $valor_iva_envio = $compra->getCostoEnvioMasIva() - $compra->getCostoEnvio();
+
+        return $this->render('PagosPayuBundle:Default:respuesta_zona_pagos.html.twig', compact('items', 'compra', 'pago', 'valor_iva_envio'));
     }
 
     /**
@@ -1033,7 +1045,11 @@ class DefaultController extends Controller
 
         /** @var $envio Envio */
         $envio = $compra->getDireccion();
-        $costo_envio = $envio->getCiudad()->getCosto();
+
+        $data_envio = Util::getCostoEnvio($carrito, $compra->getDireccion()->getCiudad(), $user, $this->getDoctrine(), $compra);
+        $costo_envio = $data_envio['costo_envio'];
+        $costo_envio_mas_iva = $data_envio['costo_envio_mas_iva'];
+
         $total = 0;
         $totalIva = 0;
         $descripcion_text = '';
@@ -1122,6 +1138,8 @@ class DefaultController extends Controller
             }
         }
 
+        $total  = $total + $costo_envio_mas_iva;
+
         $descripcion .= '<tr>
 
                             <td colspan="3"></td>
@@ -1148,7 +1166,7 @@ class DefaultController extends Controller
 
                             <td style="text-align: right;"><strong>Total</strong></td>
 
-                            <td style="text-align:center;">$'.number_format($total + $costo_envio).'</td>
+                            <td style="text-align:center;">$'.number_format($total).'</td>
 
                         </tr>';
 
@@ -1229,12 +1247,12 @@ class DefaultController extends Controller
                         </table>';
 
         $compra->setDescripcion($descripcion);
-        $total = $total + $costo_envio;
         $compra->setPrecio($total);
+        $compra->setCostoEnvio($costo_envio);
         $em->persist($compra);
         $em->flush();
 
-        $descripcion_text .= 'Costo envio, $'.number_format($direccion->getCiudad()->getCosto()).' |';
+        $descripcion_text .= 'Costo envio, $'.number_format($costo_envio).' |';
 
         $descripcion_text .= 'TOTAL: $'.number_format($total);
 
@@ -1246,7 +1264,7 @@ class DefaultController extends Controller
 
         $data = ['InformacionPago' => [
                 'flt_total_con_iva' => $total,
-                'flt_valor_iva' => $totalIva,
+                'flt_valor_iva' => (int) ($totalIva + $data_envio['valor_iva']),
                 'str_id_pago' => $pago_id,
                 'str_descripcion_pago' => 'Compra de productos SED',
                 'str_email' => $user->getEmail(),
@@ -1381,6 +1399,9 @@ class DefaultController extends Controller
         //ACTUALIZA STATE COMPRA
         $compra_update = $this->getDoctrine()->getRepository('CarroiridianBundle:Compra')->find($compra_id);
         //ESTADO COMPRA
+        $tcc_log = null;
+        $settings = Util::getSettings($this->getDoctrine(), ['EMAILS_CONFIRMACION_ENVIO']);
+        $error = '';
         if (isset($desc_compra[4])) {
             if (in_array($desc_compra[4], [1000, 1, 777, 4003, 1001, 1002])) {
                 $estado_t = $this->getDoctrine()->getRepository('CarroiridianBundle:EstadoCarrito')->findOneBy(array('ref' => 'TERMINADO'));
@@ -1388,8 +1409,8 @@ class DefaultController extends Controller
                 //SI EL ESTADO ES RECHAZADO
                 if (in_array($desc_compra[4], [1000, 777, 4003, 1001, 1002])) {
                     $productos = $this->getDoctrine()->getRepository('CarroiridianBundle:CompraItem')->findBy([
-                    'compra' => $compra_id,
-                ]);
+                        'compra' => $compra_id,
+                    ]);
                     foreach ($productos as $producto) {
                         //DESCONTAR DEL INVENTARIO
 
@@ -1399,24 +1420,51 @@ class DefaultController extends Controller
                         $em->persist($inventario);
                         $em->flush();
                     }
-                } elseif ($desc_compra[4] == 1) {
                 }
+
                 $comprador = $compra_update->getComprador();
                 $compra = $this->getDoctrine()->getRepository('CarroiridianBundle:Compra')->find($compra_id);
                 $compraitems = $compra->getCompraitems();
-                $data = ['summary' => $compraitems, 'qi' => $this->get('qi'), 'pago' => $desc_compra];
-                $html = $this->renderView(
-                    'PagosPayuBundle:Default:confirma_compra.html.twig', $data);
+                $costo_envio_mas_iva = $compra->getCostoEnvioMasIva();
+                $valor_iva_envio = $costo_envio_mas_iva - $compra->getCostoEnvio();
+
+                $data = [
+                    'summary' => $compraitems,
+                    'qi' => $this->get('qi'),
+                    'pago' => $desc_compra,
+                    'compra' => $compra,
+                    'costo_envio_mas_iva' => $costo_envio_mas_iva,
+                    'valor_iva_envio' => $valor_iva_envio,
+                ];
+
+                $html = $this->renderView('PagosPayuBundle:Default:confirma_compra_all_info.html.twig', $data);
 
                 $para = $comprador->getEmail();
-                $titulo = 'Transacción #'.$compra->getTransactionId();
+                $titulo = 'Transacción #' . $compra->getTransactionId() . ' | S:' . $settings['EMAILS_CONFIRMACION_ENVIO'] . ' T: ' . $desc_compra[4];
                 $mensaje = $html;
-                $cabeceras = 'From: no-replay@sed.com'."\r\n".
-                    'MIME-Version: 1.0'."\r\n".
-                    'Content-type: text/html; charset=utf-8'."\r\n".
-                    'X-Mailer: PHP/'.phpversion();
+                $cabeceras = 'From: no-replay@sed.com' . "\r\n" .
+                    'MIME-Version: 1.0' . "\r\n" .
+                    'Content-type: text/html; charset=utf-8' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
 
                 mail($para, $titulo, $mensaje, $cabeceras);
+
+                if ($desc_compra[4] == 1) {
+                    try {
+                        $tcc_log = Util::grabarEnvio($this->getDoctrine(), $compra);
+                    } catch (\Exception $e) {
+                        $error = 'ERROR DURANTE LA GRABACION EN TCC: ' . $e->getMessage();
+                    }
+                }
+
+                if ($settings['EMAILS_CONFIRMACION_ENVIO']) {
+                    if ($tcc_log) {
+                        $titulo = $titulo . '| TCC CODIGO: ' . $tcc_log->getRemesa();
+                    } else {
+                        $titulo = $titulo . '| TCC CODIGO: ' . $error;
+                    }
+                    mail($settings['EMAILS_CONFIRMACION_ENVIO'], $titulo, $mensaje, $cabeceras);
+                }
             }
             $compra_update->setState($desc_compra[4]);
 

@@ -4,7 +4,7 @@ $(function () {
     agregar();
     departamentoChange();
     //getCiudadesDept();
-    getCostoEnvio();
+    // getCostoEnvio();
     hideUser();
     activeTalla();
     formEnvio();
@@ -317,45 +317,50 @@ function departamentoChange(){
     $('#envio_departamento').change(function () {
         getCiudadesDept(true);
     });
-}
-function getCiudadesDept(loader){
-    if(window.location.href.indexOf("carrito-de-compras") > -1){
-        if(loader)
-            $.LoadingOverlay("show",{ zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
-        $.ajax({
-            url: $raiz+"/ciudades-dept/"+$('#envio_departamento').val()+"/"+$('#envio_ciudad').val(),
-        })
-            .done(function(html) {
-                $('#envio_ciudad').html(html);
-                costoEnvio();
-            })
-            .fail(function() {
-            })
-            .always(function() {
-                $.LoadingOverlay("hide");
-            });
-    }
-
-}
-function getCostoEnvio(){
     $('#envio_ciudad').change(function () {
-        costoEnvio();
+        getCostoEnvioTCC(true);
     });
 }
-function costoEnvio(){
-    $costo_envio = parseInt($('#envio_ciudad').find(':selected').data('costo-noformato'));
-    $('#costo-envio-span').html($('#envio_ciudad').find(':selected').data('costo'));
-    $('#costo-envio').val($('#envio_ciudad').find(':selected').data('costo'));
-    var result = parseInt($('#total-carrito').val()) + parseInt($('#envio_ciudad').find(':selected').data('costo-noformato'));
-    console.log($costo_envio);
-    $iva = $('#iva').data('iva');
-    var iva = Math.round(parseInt($('#carrito-iva').data('iva')) + $costo_envio * 0.19/(1.19));
+function getCiudadesDept(loader){
+    if (window.location.href.indexOf("carrito-de-compras") > -1) {
+        if (loader)
+            $.LoadingOverlay("show", {zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
+        $.ajax({
+            url: $raiz + "/ciudades-dept/" + $('#envio_departamento').val() + "/" + $('#envio_ciudad').val(),
+        }).done(function (html) {
+            $('#envio_ciudad').html(html);
+            getCostoEnvioTCC(true);
+        }).fail(function () {
+            console.log('ERROR GETTING CITIES INFORMATION BY STATE')
+        }).always(function () {
+            $.LoadingOverlay("hide");
+        });
+    }
+}
 
-    $('#carrito-iva').html("$" + addCommas( iva ))
+function getCostoEnvioTCC(loader) {
+    $('#costo-envio-span').html('');
+    $('#costo-envio').val('');
+    if (loader){
+        $.LoadingOverlay("show", {zIndex: 9999, image: '/js/jquery-loading-overlay/src/loading.gif'});
+    }
+    $.ajax({
+        url: $raiz + "/get-costo-envio-tcc/" + $('#envio_ciudad').val() + "/",
+    }).done(function (data) {
+        costoEnvio(data);
+    }).always(function () {
+        $.LoadingOverlay("hide");
+    });
+}
+
+function costoEnvio(data) {
+    $('#costo-envio-span').html("$" + addCommas(data.total_despacho));
+    $('#costo-envio').val(data.total_despacho);
+    var costo_envio = parseInt(data.total_despacho);
+    var total_iva = parseFloat($("#carrito-iva_").data("total-iva")) + parseFloat(data.total_despacho_mas_iva) - parseFloat(data.total_despacho)
+    $('#carrito-iva_').html("$" + addCommas(total_iva))
+    var result = parseInt($('#total-carrito').val()) + parseFloat(data.total_despacho_mas_iva);
     $('#total-resultado').html("$" + addCommas(result))
-    //{{ total | number_format }}
-    //round($total*0.16/1.16,2);
-
 }
 
 function addCommas(nStr)

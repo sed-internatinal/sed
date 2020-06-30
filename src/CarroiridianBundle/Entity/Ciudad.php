@@ -76,6 +76,13 @@ class Ciudad
      */
     private $lng;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo_dane", type="string", length=255)
+     */
+    private $codigoDane;
+
     public function __toString()
     {
         return $this->getNombre().' ';
@@ -281,5 +288,28 @@ class Ciudad
     public function getSede()
     {
         return $this->sede;
+    }
+
+    /**
+     * Set codigoDane
+     *
+     * @param string $codigoDane
+     *
+     * @return Ciudad
+     */
+    public function setCodigoDane($codigoDane)
+    {
+        $this->codigoDane = $codigoDane;
+        return $this;
+    }
+
+    /**
+     * Get codigoDane
+     *
+     * @return string
+     */
+    public function getCodigoDane()
+    {
+        return $this->codigoDane;
     }
 }

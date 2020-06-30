@@ -218,6 +218,13 @@ class Compra
     private $tipoComprador;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="costo_envio", type="float", nullable=true)
+     */
+    private $costoEnvio;
+
+    /**
      * (Initialize some fields).
      */
     public function __construct()
@@ -1096,5 +1103,44 @@ class Compra
     public function getTipoComprador()
     {
         return $this->tipoComprador;
+    }
+
+    /**
+     * Set costoEnvio.
+     *
+     * @param float costoEnvio
+     *
+     * @return Compra
+     */
+    public function setCostoEnvio($costoEnvio)
+    {
+        $this->costoEnvio = $costoEnvio;
+
+        return $this;
+    }
+
+    /**
+     * Get costoEnvio.
+     *
+     * @return float
+     */
+    public function getCostoEnvio()
+    {
+        return $this->costoEnvio;
+    }
+    /**
+     * Get costoEnvioMasIva.
+     *
+     * @return float
+     */
+    public function getCostoEnvioMasIva()
+    {
+        $iva = 0.0;
+        foreach ($this->getCompraitems() as &$item) {
+            if ($item->getProducto()->getIva() > $iva){
+                $iva = $item->getProducto()->getIva();
+            }
+        }
+        return $this->costoEnvio * (1 + $iva / 100);
     }
 }

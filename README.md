@@ -14,7 +14,7 @@ Used Symfony as core framework
 
 # Debian Requirements
 
-    * sudo apt-get install php7.0 php7.0-dev php7.0-zip php7.0-mysql php-pear php7.0-xml php7.0-mbstring
+    * sudo apt-get install php7.0 php7.0-dev php7.0-zip php7.0-mysql php-pear php7.0-xml php7.0-mbstring php7.0-soap
 
 # Installation
 
@@ -24,8 +24,10 @@ Install using `pip`...
     php7.0 /usr/local/bin/composer install
     
     php7.0 bin/console ckeditor:install
-    
+ 
     php7.0 bin/console assets:install
+    
+    php7.0 bin/console doctrine:generate:entity
 
 Database:
 
@@ -45,7 +47,7 @@ This "parameters.yml" file is auto-generated during the composer install
         database_name: web_sed_iri
         database_user: root
         database_password: ''
-        secret: ThisTokenIsNotSoSecretChangeIt
+        secret: ThisTokenIsNotSoSecretChangeIt`
     
 Create a super-user
 
@@ -55,3 +57,8 @@ Run server
     
     php7.0 bin/console server:run
     
+Utils
+
+    php7.0 bin/console doctrine:generate:entity # Create entity
+    
+    php7.0 bin/console doctrine:generate:entity
