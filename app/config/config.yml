@@ -87,6 +87,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        mapping_types:
+          enum: string
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -405,6 +407,7 @@ easy_admin:
                       - { entity: 'TipoFiltro', icon: 'filter', label: 'Tipos de filtro' }
                       - { entity: 'Filtro', icon: 'filter', label: 'Filtros' }
                       - { entity: 'PrecioUsuario', icon: 'filter', label: 'Precio por usuario' }
+                      - { entity: 'Caja', icon: 'th-list', label: 'Cajas' }
                       #- { entity: 'Color', icon: 'paint-brush', label: 'Colores' }
                       #- { entity: 'Talla', icon: 'child', label: 'Tallas' }
 
@@ -419,6 +422,8 @@ easy_admin:
                   icon: 'shopping-basket'
                   children:
                       - { entity: 'Compra', icon: 'shopping-basket', label: 'Compras' }
+                      - { entity: 'TCCLog', icon: 'shopping-basket', label: 'TCC Logs' }
+                      - { entity: 'EstadoEnvio', icon: 'shopping-basket', label: 'Estados de envio' }
 
                 - label: 'Directorio'
                   icon: 'newspaper-o'
@@ -721,6 +726,7 @@ easy_admin:
                     - filtros
                     - { property: 'orden'}
                     - { property: 'visible'}
+                    - { property: 'flete'}
             form:
                 fields:
                     - categoria
@@ -748,6 +754,10 @@ easy_admin:
                     - { property: 'alt'}
                     - { property: 'orden'}
                     - { property: 'visible'}
+                    - { property: 'peso'}
+                    - { property: 'alto'}
+                    - { property: 'largo'}
+                    - { property: 'ancho'}
         Categoria:
             class: CarroiridianBundle\Entity\Categoria
             list:
@@ -806,6 +816,26 @@ easy_admin:
                   - { property: 'direccionCompleta', type: 'raw' }
                   - { property: 'Productos', type: 'raw' }
                   - { property: 'Transaccion', type: 'raw' }
+        TCCLog:
+          class: CarroiridianBundle\Entity\TCCLog
+          list:
+            actions: []
+            fields:
+              - id
+              - mensaje
+              - compra
+              - remesa
+              - numeroRecogida
+              - respuesta
+              - estadoEnvio
+        EstadoEnvio:
+          class: CarroiridianBundle\Entity\EstadoEnvio
+          list:
+            actions: []
+            fields:
+              - id
+              - nombre
+              - descripcion
         ArchivoInventario:
             class: CarroiridianBundle\Entity\ArchivoInventario
             disabled_actions: ['edit']
@@ -876,6 +906,16 @@ easy_admin:
             class: HomeBundle\Entity\Sede
         Ciudad:
             class: CarroiridianBundle\Entity\Ciudad
+            list:
+              fields:
+                - id
+                - nombre
+                - orden
+                - visible
+                - sede
+                - costo
+                - lat
+                - codigoDane
         Uso:
             class: CarroiridianBundle\Entity\Uso
         TipoDoc:
@@ -888,3 +928,13 @@ easy_admin:
             class: HomeBundle\Entity\Tema
         Opcion:
             class: HomeBundle\Entity\Opcion
+        Caja:
+          class: CarroiridianBundle\Entity\Caja
+          list:
+            fields:
+              - id
+              - nombre
+              - peso
+              - largo
+              - ancho
+              - alto

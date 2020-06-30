@@ -55,8 +55,9 @@ class Settings
      */
     public function setLlave($llave)
     {
-        $this->llave = $llave;
-
+        // The fallowing line was commented in order to avoid key name overwriting
+        // It means that if you want add or edit one key name, the only way is using a SQL sentence
+        // $this->llave = $llave;
         return $this;
     }
 

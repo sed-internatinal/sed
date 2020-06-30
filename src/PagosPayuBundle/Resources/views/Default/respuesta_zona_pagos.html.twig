@@ -1,155 +1,196 @@
 {% extends 'lay_iridian.html.twig' %}
 {% block stylesheets %}
-	<link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
-	{{ parent() }}
-	<link
-	href="{{ asset('css/respuesta.css') }}" rel="stylesheet">
-{#<link href="{{ asset('css/breakpoint.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('css/header-view.css') }}" rel="stylesheet">
+    {{ parent() }}
+    <link href="{{ asset('css/respuesta.css') }}" rel="stylesheet">
+    {#<link href="{{ asset('css/breakpoint.css') }}" rel="stylesheet">#}
 {% endblock %}
 {% block content %}
+    <div class="container-cuerpo">
+        <div class="carrito" id="carrito">
+            {% if pago[4] == 1 %}
+                <h1>¡Muchas gracias por tu compra!</h1>
+            {% else %}
 
-	<div class="container-cuerpo">
-		<div class="carrito" id="carrito">
+                <h1>¡Lo sentimos tu transacción ha sido rechazada!</h1>
+            {% endif %}
+            <h2>Estos son los datos de tu pedido.</h2>
+            <div class="resumen row">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Iva</th>
+                        <th>Precio</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--dware-->
+                    {% set totalIva = 0 %}
 
+                    {% for id,item in items %}
+                        {% set producto = item.getProducto() %}
+                        {% set totalIva = totalIva +item.getPrecioIva() %}
+                        <tr>
+                            <td>{{ producto.getNombreEs() }}</td>
+                            <td>{{ item.getCantidad() }}</td>
+                            <td>{{ (item.getPrecioIva() ) | number_format(0) }}</td>
 
-			{% if pago[4] == 1 %}
-				<h1>¡Muchas gracias por tu compra!</h1>
-			{% else %}
+                            <td>{{ (item.getPrecio() ) | number_format(0) }}</td>
+                        </tr>
+                    {% endfor %}
 
-				<h1>¡Lo sentimos tu transacción ha sido rechazada!</h1>
-				{% endif%}
-				<h2>Estos son los datos de tu pedido.</h2>
+                    {% set totalIva = totalIva + valor_iva_envio %}
 
+                    </tbody>
+                </table>
+            </div>
 
-				<div class="resumen row">
-					<table class="table table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>Producto</th>
-								<th>Cantidad</th>
-								<th>Iva</th>
-								<th>Precio</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!--dware-->
-							{% set totalIva = 0 %}
+            <div class="resumen row">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr class="contenedor">
+                        <td>Estado de la transacción</td>
+                        <td>
+                            <b>
+                                {% if pago[4] ==  1 %}
+                                    APROBADA
+                                {% elseif pago[4] == 999 %}
+                                    PENDIENTE
+                                {% elseif pago[4] == 1000 %}
+                                    RECHAZADA
+                                {% endif %}
+                            </b>
+                        </td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Código Transacción (CUS)</td>
+                        <td>{{ pago[25] }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Banco</td>
+                        <td>{{ pago[24] }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Descripción</td>
+                        <td>{{ pago[8] }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Total IVA</td>
+                        <td>{{ totalIva| number_format(0) }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Valor Envío</td>
+                        <td>{{ compra.getCostoEnvio() | number_format(0) }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Total Pago</td>
+                        <td>{{ pago[5] | number_format(0) }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Fecha de la transacción</td>
+                        <td>{{ pago[19] }}</td>
+                    </tr>
 
-
-							{% for id,item in items %}
-								{% set producto = item.getProducto() %}
-								{% set totalIva = totalIva +item.getPrecioIva() %}
-
-
-								<tr>
-									<td>{{producto.getNombreEs()}}</td>
-									<td>{{item.getCantidad()}}</td>
-									<td>{{ (item.getPrecioIva() ) | number_format(0) }}</td>
-
-									<td>{{ (item.getPrecio() ) | number_format(0) }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-
-				<div class="resumen row">
-					<table class="table table-bordered table-striped">
-						<tbody>
-							<tr class="contenedor">
-								<td>Estado de la transacción</td>
-								<td>
-									<b>
-										{% if pago[4] ==  1 %}
-											APROBADA
-										{% elseif pago[4] == 999 %}
-											PENDIENTE
-										{% elseif pago[4] == 1000 %}
-											RECHAZADA
-										{% endif %}
-									</b>
-								</td>
-							</tr>
-							<tr class="contenedor">
-								<td>Código Transacción (CUS)</td>
-								<td>{{pago[25]}}</td>
-							</tr>
-							<tr class="contenedor">
-								<td>Banco</td>
-								<td>{{pago[24]}}</td>
-							</tr>
-							<tr class="contenedor">
-								<td>Descripción</td>
-								<td>{{pago[8]}}</td>
-							</tr>
-							<tr class="contenedor">
-								<td>Total IVA</td>
-								<td>{{ totalIva| number_format(0) }}</td>
-
-							</tr>
-							<tr class="contenedor">
-								<td>Valor Envío</td>
-
-								<td>{{3400 | number_format(0) }}</td>
-							</tr>
-
-							<tr class="contenedor">
-								<td>Total Pago</td>
-								<td>{{pago[5] | number_format(0) }}</td>
-							</tr>
-							<tr class="contenedor">
-								<td>Fecha de la transacción</td>
-								<td>{{pago[19]  }}</td>
-							</tr>
-
-
-						</tbody>
-					</table>
-
-
-					<a href="{{ path('homepage') }}" class="btnTarjeta">
-						<span>Volver al inicio</span>
-					</a>
-
-
-				</div>
-
-			</div>
-		</div>
-		<div class="container-parrafo">
-			<p>
-				Si tienes dudas  o inquietudes, por favor comunicate con el comercio a travéz de los siguientes contactos:
-				<br>
-				<b>Teléfono :
-				</b>
-				86 14 000
-				<br>
-				<b>E-mail :
-				</b>
-				comunicaciones@sed.international
-				<br>
-				<hr/>
-				<small>
-					El contenido de este mensaje puede ser información privilegiada y confidencial. Si usted no es el destinatario real del mismo, por favor informe de ello a quien lo envía y destrúyalo en forma inmediata. Está prohibida su retención, grabación, utilización o divulgación con cualquier propósito. Este mensaje ha sido verificado con software antivirus, en consecuencia, el remitente de este no se hace responsable por la presencia en él o en sus anexos de algún virus que pueda generar daños en los equipos o programas del destinatario.
-				</small>
-
-			</p>
-		</div>
-		<div id="print"></div>
+                    <tr>
+                        <td><h3>Envio</h3></td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Departamento</td>
+                        <td>{{ compra.direccion.ciudad.departamento.nombre }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Ciudad</td>
+                        <td>{{ compra.direccion.ciudad.nombre }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Direccion</td>
+                        <td>compra.direccion.direccion</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Adicionales</td>
+                        <td>{{ compra.direccion.adicionales }}</td>
+                    </tr>
 
 
-	{% endblock %}
-	{% block javascripts %}
-		{{ parent() }}
-		<script type="text/javascript">
-			function printDiv(nombreDiv) {
-var contenido = document.getElementById(nombreDiv).innerHTML;
-var contenidoOriginal = document.body.innerHTML;
-var myWindow = window.open("", "MsgWindow", "width=200,height=100");
-myWindow.document.write(contenido);
-myWindow.print();
+                    <tr>
+                        <td><h3>Comprador</h3></td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Nombre</td>
+                        <td>{{ compra.getUsuario }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Email</td>
+                        <td>{{ compra.comprador.email }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Telefono</td>
+                        <td>{{ compra.comprador.telefono }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Tipo Documento</td>
+                        <td>{{ compra.comprador.tipodoc }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Documento</td>
+                        <td>{{ compra.comprador.documento }}</td>
+                    </tr>
+                    <tr class="contenedor">
+                        <td>Tipo</td>
+                        <td>
+                            {% if compra.comprador.esEmpresa  %}
+                                EMPRESA
+                            {% else %}
+                                NATURAL
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a href="{{ path('homepage') }}" class="btnTarjeta">
+                    <span>Volver al inicio</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container-parrafo">
+        <p>
+            Si tienes dudas o inquietudes, por favor comunicate con el comercio a travéz de los siguientes contactos:
+            <br>
+            <b>Teléfono :
+            </b>
+            86 14 000
+            <br>
+            <b>E-mail :
+            </b>
+            comunicaciones@sed.international
+            <br>
+        <hr/>
+        <small>
+            El contenido de este mensaje puede ser información privilegiada y confidencial. Si usted no es el
+            destinatario real del mismo, por favor informe de ello a quien lo envía y destrúyalo en forma inmediata.
+            Está prohibida su retención, grabación, utilización o divulgación con cualquier propósito. Este mensaje ha
+            sido verificado con software antivirus, en consecuencia, el remitente de este no se hace responsable por la
+            presencia en él o en sus anexos de algún virus que pueda generar daños en los equipos o programas del
+            destinatario.
+        </small>
+        </p>
+    </div>
+    <div id="print"></div>
 
+{% endblock %}
 
-}
-		</script>
-	{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function printDiv(nombreDiv) {
+            var contenido = document.getElementById(nombreDiv).innerHTML;
+            var contenidoOriginal = document.body.innerHTML;
+            var myWindow = window.open("", "MsgWindow", "width=200,height=100");
+            myWindow.document.write(contenido);
+            myWindow.print();
+        }
+    </script>
+{% endblock %}

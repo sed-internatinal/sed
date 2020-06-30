@@ -1,0 +1,183 @@
+<html>
+<head>
+    <title>Mailings-2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+{% set cu = app.request.locale | capitalize %}
+<body
+        bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (Mailings-2) -->
+<table id="Table_01" width="600" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            <img style="display: inline-block; margin: 2% 0;"
+                 src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ '/images/logo_correo.png' }}" alt="">
+        </td>
+
+        <td>
+            <h2 style="display: inline-block; width: 90%; color: #FC241C; background-color: #FFF; padding: 2% 5%; 'Roboto Black'; text-align: center; font: 1.800em 'Arial'; ">
+                !Muchas gracias por tu compra¡<br>
+                Estos son los datos de tu pedido
+            </h2>
+        </td>
+
+
+    </tr>
+
+    {#  START TRANSACTION #}
+    <tr>
+        <td colspan="2">
+            <br>
+            <h3>DATOS TRANSACTION.</h3>
+            <!--dware-->
+            <table style="border: 1px solid #ddd ; width: 96%; margin: 2%; text-align: center; font-family:Arial;">
+                <thead>
+                <th style="text-align: left;">ID</th>
+                <th>Fecha</th>
+                </thead>
+                <tbody style="background-color:#f9f9f9">
+                <tr>
+                    <td>{{ compra.transactionId }}</td>
+                    <td>{{ compra.createdAt|date('Y-m-d') }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {# END TRANSACTION #}
+
+    {#   START DETALLE DE LA COMPRA #}
+    <tr>
+        <td colspan="2">
+            <!--dware-->
+            <table style="border: 1px solid #ddd ; width: 96%; margin: 2%; text-align: center; font-family:Arial;">
+                <thead>
+                <th style="text-align: left;">{{ qi.textoDB('c_produc') }}</th>
+                <th>{{ qi.textoDB('c_quantity') }}</th>
+                <th>{{ qi.textoDB('c_price') }}</th>
+                <th>{{ qi.textoDB('c_iva') }}</th>
+                <th>{{ qi.textoDB('c_total') }}</th>
+                </thead>
+                <tbody style="background-color:#f9f9f9">
+
+                {% set total = 0 %}
+                {% set totalIva = 0 %}
+
+                {% for item in summary %}
+                    <tr>
+                        <td>
+
+                            <p style="width: 50%; display: inline-block; vertical-align: middle;">
+                                <span style="width: 100%; display: inline-block;">{{ attribute(item.producto,'nombre' ~ cu) }}</span>
+                            </p>
+                        </td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${{ (item.precio-item.precioIva) /  item.cantidad | number_format(0) }}</td>
+
+                        <td>${{ item.precioIva | number_format(0) }}</td>
+                        <td>${{ (item.precio ) | number_format(0) }}</td>
+                    </tr>
+                    {% set total = total + (item.precio) %}
+
+                    {% set totalIva = totalIva + item.precioIva %}
+
+
+                {% endfor %}
+
+                {% set totalIva = totalIva + valor_iva_envio %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ qi.textoDB('c_total_iva') }}</td>
+                    <td>{{ totalIva | number_format }}</td>
+
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ qi.textoDB('c_total_envio') }}</td>
+                    <td>{{ compra.getCostoEnvio() | number_format }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ qi.textoDB('c_total') }}</td>
+                    <td>{{ (total + costo_envio_mas_iva) | number_format }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {#   END DETALLE DE LA COMPRA #}
+
+    {#   START INFORMACION DE ENVIO #}
+    <tr>
+        <td colspan="2">
+            <br>
+            <h3>DATOS ENVIO.</h3>
+            <!--dware-->
+            <table style="border: 1px solid #ddd ; width: 96%; margin: 2%; text-align: center; font-family:Arial;">
+                <thead>
+                <th style="text-align: left;">Departamento</th>
+                <th>Ciudad</th>
+                <th>Dirección</th>
+                <th>Adicionales</th>
+                </thead>
+                <tbody style="background-color:#f9f9f9">
+                <tr>
+                    <td>{{ compra.direccion.ciudad.departamento.nombre }}</td>
+                    <td>{{ compra.direccion.ciudad.nombre }}</td>
+                    <td>{{ compra.direccion.direccion }}</td>
+                    <td>{{ compra.direccion.adicionales }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {# END INFORMACION DE ENVIO #}
+
+    {#  START COMPRADOR #}
+    <tr>
+        <td colspan="2">
+            <br>
+            <h3>DATOS CLIENTE.</h3>
+            <!--dware-->
+            <table style="border: 1px solid #ddd ; width: 96%; margin: 2%; text-align: center; font-family:Arial;">
+                <thead>
+                <th style="text-align: left;">Nombre</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Tipo</th>
+                <th>Documento</th>
+                <th>Empresa</th>
+                </thead>
+                <tbody style="background-color:#f9f9f9">
+                <tr>
+                    <td>{{ compra.getUsuario }}</td>
+                    <td>{{ compra.comprador.email }}</td>
+                    <td>{{ compra.comprador.telefono }}</td>
+                    <td>{{ compra.comprador.tipodoc }}</td>
+                    <td>{{ compra.comprador.documento }}</td>
+                    <td>{{ compra.comprador.esEmpresa }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {# END COMPRADOR #}
+
+
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

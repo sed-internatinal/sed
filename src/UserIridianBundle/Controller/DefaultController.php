@@ -232,7 +232,7 @@ class DefaultController extends Controller
 
         $user = $userManager->createUser();
         $user->setUsername($request->request->get("fos_user_registration_form['email']"));
-        $user->setEnabled(false);
+        $user->setEnabled(true);
         $user->setEsEmpresa(false);
 
         $event = new GetResponseUserEvent($user, $request);

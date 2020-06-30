@@ -708,6 +708,24 @@ class User extends BaseUser
         return $this;
     }
 
+
+    /**
+     * Get tipoDocumento
+     *
+     * @return string
+     */
+    public function getTipoDocumento()
+    {
+        $tipo_doc = $this->getTipodoc();
+        if (!$tipo_doc){
+            return 'CC';
+        }
+        if ($tipo_doc->getId() == 3){
+            return 'NIT';
+        }
+        return 'CC';
+    }
+
     /**
      * Get tipodoc
      *

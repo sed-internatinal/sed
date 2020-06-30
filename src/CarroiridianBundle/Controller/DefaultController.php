@@ -7,6 +7,7 @@ use CarroiridianBundle\Entity\Envio;
 use CarroiridianBundle\Entity\Bono;
 use CarroiridianBundle\Form\Type\BonoType;
 use CarroiridianBundle\Form\Type\EnvioType;
+use CarroiridianBundle\Utils\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -78,11 +79,11 @@ class DefaultController extends Controller
 
             return $this->redirectToRoute('pagar_zona_virtual');
 
-        /* if($this->container->getParameter("pagos_payu.api_payu")){
-          return $this->redirectToRoute('tarjetas');
-          }else{
-          return $this->redirectToRoute('pagar_payu');
-          } */
+            /* if($this->container->getParameter("pagos_payu.api_payu")){
+              return $this->redirectToRoute('tarjetas');
+              }else{
+              return $this->redirectToRoute('pagar_payu');
+              } */
         } else {
             $checked = $request->request->get('direccion');
             if ($checked)
@@ -91,10 +92,10 @@ class DefaultController extends Controller
         }
 
         return $this->render('CarroiridianBundle:Default:index.html.twig', array('carrito' => $carrito, 'bonos' => $bonos, 'descuento' => $descuento,
-                    'direcciones' => $direcciones,
-                    'form' => $form->createView(),
-                    'user_dir_check' => $user_dir_check,
-                    'productos' => $productos,
+            'direcciones' => $direcciones,
+            'form' => $form->createView(),
+            'user_dir_check' => $user_dir_check,
+            'productos' => $productos,
         ));
     }
 
@@ -328,6 +329,106 @@ class DefaultController extends Controller
         return $this->render('CarroiridianBundle:Default:ciudades.html.twig', array('ciudades' => $ciudades, 'ciudad_id' => $ciudad_id));
     }
 
+    // START LEO
+
+    /**
+     * @Route("/get-costo-envio-tcc/{ciudad_id}/", name="getCostoEnvioTCC")
+     */
+    public function getCostoEnvioTCC(Request $request, $ciudad_id)
+    {
+        $ciudad_orm = $this->getDoctrine()->getRepository('CarroiridianBundle:Ciudad');
+        $ciudad = $ciudad_orm->findOneBy(['id' => $ciudad_id]);
+        if ($ciudad == null) {
+            return new JsonResponse(['detail' => 'City not found'], 404);
+        }
+        $session = new Session();
+        $carrito = $session->get('carrito', array());
+        $user = $this->getUser();
+        $data_envio = Util::getCostoEnvio($carrito, $ciudad, $user, $this->getDoctrine());
+        return new JsonResponse([
+            'total_despacho' => $data_envio['costo_envio'],
+            'total_despacho_mas_iva' => $data_envio['costo_envio_mas_iva'],
+        ]);
+    }
+
+    // TEST VIEWS
+
+    /**
+     * @Route("/test-grabar-envio/{compra_id}/", name="testGrabarEnvio")
+     */
+    public function testGrabarEnvio(Request $request, $compra_id)
+    {
+        $compra_orm = $this->getDoctrine()->getRepository('CarroiridianBundle:Compra');
+        $compra = $compra_orm->findOneBy(['id' => $compra_id]);
+        if ($compra == null) {
+            return new JsonResponse(['detail' => 'City not found'], 404);
+        }
+//        $tcc_log = Util::grabarEnvio($this->getDoctrine(), $compra);
+
+//        $settings = Util::getSettings($this->getDoctrine(), ['EMAILS_CONFIRMACION_ENVIO']);
+//
+//        $cabeceras = 'From: no-replay@sed.com' . "\r\n" .
+//            'MIME-Version: 1.0' . "\r\n" .
+//            'Content-type: text/html; charset=utf-8' . "\r\n" .
+//            'X-Mailer: PHP/' . phpversion();
+//
+//        if ($tcc_log) {
+//            $titulo = '| TCC CODIGO: ' . $tcc_log->getRemesa();
+//        } else {
+//            $titulo = '| TCC CODIGO: ';
+//        }
+
+        $compra = $this->getDoctrine()->getRepository('CarroiridianBundle:Compra')->find($compra_id);
+        $compraitems = $compra->getCompraitems();
+        $costo_envio_mas_iva = $compra->getCostoEnvioMasIva();
+        $valor_iva_envio = $costo_envio_mas_iva - $compra->getCostoEnvio();
+
+        $data = [
+            'summary' => $compraitems,
+            'qi' => $this->get('qi'),
+            'compra' => $compra,
+            'costo_envio_mas_iva' => $costo_envio_mas_iva,
+            'valor_iva_envio' => $valor_iva_envio,
+        ];
+
+//        mail($settings['EMAILS_CONFIRMACION_ENVIO'], $titulo, $titulo, $cabeceras);
+
+//        return new JsonResponse([
+//            'test' => $tcc_log->getMensaje(),
+//        ]);
+        return $this->render('PagosPayuBundle:Default:confirma_compra_all_info.html.twig', $data);
+    }
+
+    /**
+     * @Route("/test-zona-virtual-transaccion/{transaccion_id}",name="test_zona_virtual_transaccion")
+     */
+    public function TestZonaVirtualTransaccionAction($transaccion_id = null)
+    {
+        $compra = $this->getDoctrine()->getRepository('CarroiridianBundle:Compra')->findOneBy([
+            'transactionId' => $transaccion_id,
+        ]);
+        $pago = [
+            4 => 1,
+            25 => 1,
+            24 => 1,
+            8 => 1,
+            5 => 1,
+            19 => 1,
+        ];
+        $items = $compra->getCompraitems();
+
+        $valor_iva_envio = $compra->getCostoEnvioMasIva() - $compra->getCostoEnvio();
+
+        return $this->render('PagosPayuBundle:Default:respuesta_zona_pagos.html.twig', [
+            'items' => $items,
+            'compra' => $compra,
+            'pago' => $pago,
+            'valor_iva_envio' => $valor_iva_envio,
+        ]);
+    }
+
+    // END LEO
+
     /**
      * @Route("/productos", name="productos")
      */
@@ -417,9 +518,9 @@ class DefaultController extends Controller
         $path = $this->container->getParameter('app.path.productos');
         $producto = $this->getDoctrine()->getRepository('CarroiridianBundle:Producto')->find($id);
         $imagenes = array();
-        array_push($imagenes, $path.'/'.$producto->getImagen());
+        array_push($imagenes, $path . '/' . $producto->getImagen());
         foreach ($producto->getGalerias() as $galeria) {
-            array_push($imagenes, $path.'/'.$galeria->getImagen());
+            array_push($imagenes, $path . '/' . $galeria->getImagen());
         }
         $session = new Session();
         $wish_list = $session->get('wish', array());
